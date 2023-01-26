@@ -1,0 +1,7 @@
+require:
+  - bolt
+  - fixme
+data_pack:
+  load: "src"
+pipeline:
+  - mecha
