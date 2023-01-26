@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+
+# Virtualenv
+.venv/
+
+# Dist
+dist/
+
+# Cache
+.beet_cache/
+.pytest_cache/

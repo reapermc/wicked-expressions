@@ -1,0 +1,72 @@
+name: Setup template
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  template:
+    name: Prepare repository
+    runs-on: ubuntu-latest
+    if: github.repository != 'mcbeet/bolt-library-starter'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Initialize
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPOSITORY: ${{ github.repository }}
+          README: |
+            # fixme_repo_name
+
+            [![GitHub Actions](fixme_repo_url/workflows/CI/badge.svg)](fixme_repo_url/actions)
+
+            > fixme_repo_description
+
+            ## Installation
+
+            ```bash
+            pip install fixme
+            ```
+
+            ---
+
+            License - [MIT](fixme_repo_url/blob/main/LICENSE)
+        run: |
+          set -e
+
+          package_name=$(basename "$PWD" | sed "s/[^a-zA-Z0-9]/_/g" | tr '[:upper:]' '[:lower:]')
+          repo=$(gh api "/repos/$GH_REPOSITORY")
+
+          mv fixme "$package_name"
+          echo "$README" > README.md
+          sed -i 's/version = ".*"/version = "0.0.0"/' pyproject.toml
+          sed -i 's/__version__ = ".*"/__version__ = "0.0.0"/' "$package_name/__init__.py"
+          rm CHANGELOG.md
+          rm .github/workflows/template.yml
+
+          files=$(find * -type f)
+          sed -i "s|fixme_user_name|$(git show -s --format=%an)|g" $files
+          sed -i "s|fixme_user_email|$(git show -s --format=%ae)|g" $files
+          sed -i "s|fixme_repo_name|$(echo "$repo" | jq -r .name)|g" $files
+          sed -i "s|fixme_repo_description|$(echo "$repo" | jq -r '.description // ""')|g" $files
+          sed -i "s|fixme_repo_url|$(echo "$repo" | jq -r .html_url)|g" $files
+          sed -i "s|fixme|$package_name|g" $files
+
+          git config --global user.name "$(git show -s --format=%an)"
+          git config --global user.email "$(git show -s --format=%ae)"
+          git add -A
+          git commit --amend -m "chore: setup project from template"
+          git push -f origin main
+
+          for i in {1..5}; do
+            for id in $(gh api "/repos/$GH_REPOSITORY/actions/workflows/main.yml/runs?status=in_progress" | jq -r '.workflow_runs[].id'); do
+              gh api -XPOST "/repos/$GH_REPOSITORY/actions/runs/$id/cancel"
+              gh api -XPOST "/repos/$GH_REPOSITORY/actions/workflows/main.yml/dispatches" -f ref=main
+              exit 0
+            done
+            sleep 5
+          done
