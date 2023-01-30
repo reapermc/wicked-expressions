@@ -30,7 +30,7 @@ black = "^22.10.0"
 isort = "^5.10.1"
 pytest-insta = "^0.1.11"
 lectern = ">=0.25.0"
-python-semantic-release = "^7.32.1"
+python-semantic-release = "^7.33.0"
 
 [tool.pytest.ini_options]
 addopts = "tests --import-mode=importlib"
