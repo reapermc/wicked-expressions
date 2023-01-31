@@ -1,7 +1,11 @@
+output: "dist"
+
 require:
   - bolt
   - wicked_expressions
+
 data_pack:
   load: "src"
+
 pipeline:
   - mecha

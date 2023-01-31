@@ -10,3 +10,6 @@ dist/
 # Cache
 .beet_cache/
 .pytest_cache/
+
+examples/template
+

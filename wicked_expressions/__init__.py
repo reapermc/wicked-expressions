@@ -9,7 +9,8 @@ def beet_default(ctx: Context):
     ctx.require(
         load(
             data_pack={
-                "data/wicked_expressions/modules": "@wicked_expressions/modules",
+                "data/wicked_expressions/modules": "@wicked_expressions/modules"
             },
         ),
+        "bolt_expressions.plugin",
     )

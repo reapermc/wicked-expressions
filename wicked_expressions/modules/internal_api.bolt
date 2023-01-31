@@ -1,0 +1,48 @@
+import bolt_expressions.api as api
+from ./sources import ScoreSource, DataSource
+
+
+class Scoreboard(api.Scoreboard):
+    def objective(self, name, criteria=None, prefixed=True, display_name=None):
+        if prefixed:
+            name = self._expr.opts.objective_prefix + name
+
+        if criteria == None:
+            criteria = 'dummy'
+
+        if name not in self.added_objectives:
+            self.added_objectives.add(name)
+            self.create_objective(name, criteria, display_name)
+
+        # append function 'wicked_expressions/init'
+        # self.add_objective(name, criteria)
+
+        return Score(self, name)
+
+    def create_objective(self, name, criteria, display_name):
+        init_path = generate_path('wicked_expressions/init')
+
+        if display_name == None:
+            display_name = name
+
+        # default display_name color
+        if isinstance(display_name, str):
+            display_name = {"text": display_name, "color": "aqua"}
+
+        merge function_tag minecraft:load {"values": [init_path]}
+        append function init_path:
+            scoreboard objectives add name criteria display_name
+
+class Score(api.Score):
+    def __getitem__(self, scoreholder):
+        return ScoreSource.create(scoreholder, self.objective)
+
+class Data(api.Data):
+    def storage(self, resource_location):
+        return DataSource.create("storage", resource_location)
+
+    def entity(self, entity):
+        return DataSource.create("entity", entity)
+
+    def block(self, position):
+        return DataSource.create("block", position)

@@ -1,0 +1,199 @@
+from contextlib import contextmanager
+from ./utils import Rebindable, parse_holder
+
+
+class ExpressionComparison(Rebindable):
+    _INVERTED_OPERATOR = {
+        '==': '!=',
+        '!=': '==',
+        '<': '>=',
+        '>': '<=',
+        '<=': '>',
+        '>=': '<'
+    }
+
+    def __init__(self, arg_0, operator='==', arg_1=None, initialized=False):
+        self.arg_0 = arg_0
+        self.operator = operator
+        self.arg_1 = arg_1
+        self.initialized = initialized
+
+    @contextmanager
+    def __branch__(self):
+        score_count = 0
+        arg_0_class_name = self.arg_0.__class__.__name__
+        arg_1_class_name = self.arg_1.__class__.__name__
+
+        if arg_0_class_name == 'ScoreSource':
+            score_count += 1
+        if arg_1_class_name == 'ScoreSource':
+            score_count += 1
+
+        # value (exists) check
+        if self.arg_1 is None:
+            if arg_0_class_name == 'ScoreSource':
+                with self._compare_score_to_score(self.arg_0, self.arg_0):
+                    yield True
+
+            elif arg_0_class_name == 'DataSource':
+                with self._check_data_exists(self.arg_0):
+                    yield True
+
+        # score :: score
+        elif score_count == 2:
+            with self._compare_score_to_score(self.arg_0, self.arg_1):
+                yield True
+
+        # score :: any || any :: score
+        elif score_count == 1:
+            # score :: data || data :: score
+            if arg_0_class_name == 'DataSource' or arg_1_class_name == 'DataSource':
+                with self._compare_any_to_any(self.arg_0, self.arg_1):
+                    yield True
+
+            else:
+                with self._compare_score_to_static(self.arg_0, self.arg_1):
+                    yield True
+
+        # data :: data
+        elif score_count == 0:
+            # data == data || data != data
+            if self.operator in ('==', '!='):
+                with self._compare_data_to_data(self.arg_0, self.arg_1):
+                    yield True
+            else:
+                with self._compare_any_to_any(self.arg_0, self.arg_1):
+                    yield True
+
+        self.initialized = True
+
+    def __not__(self):
+        return ExpressionComparison(self.arg_0, self._INVERTED_OPERATOR[self.operator], self.arg_1, initialized=self.initialized)
+
+    @contextmanager
+    def _compare_score_to_static(self, arg_0, arg_1):
+        arg_0_holder = parse_holder(arg_0.holder)
+
+        if self.operator == '==':
+            if score arg_0_holder arg_0.obj matches arg_1:
+                yield True
+        elif self.operator == '!=':
+            unless score arg_0_holder arg_0.obj matches arg_1:
+                yield True
+        elif self.operator == '<':
+            unless score arg_0_holder arg_0.obj matches (arg_1, None):
+                yield True
+        elif self.operator == '>':
+            unless score arg_0_holder arg_0.obj matches (None, arg_1):
+                yield True
+        elif self.operator == '<=':
+            if score arg_0_holder arg_0.obj matches (None, arg_1):
+                yield True
+        elif self.operator == '>=':
+            if score arg_0_holder arg_0.obj matches (arg_1, None):
+                yield True
+
+    @contextmanager
+    def _compare_score_to_score(self, arg_0, arg_1):
+        arg_0_holder = parse_holder(arg_0.holder)
+        arg_1_holder = parse_holder(arg_1.holder)
+
+        if self.operator == '==':
+            if score arg_0_holder arg_0.obj = arg_1_holder arg_1.obj:
+                yield True
+        elif self.operator == '!=':
+            unless score arg_0_holder arg_0.obj = arg_1_holder arg_1.obj:
+                yield True
+        elif self.operator == '<':
+            if score arg_0_holder arg_0.obj < arg_1_holder arg_1.obj:
+                yield True
+        elif self.operator == '>':
+            if score arg_0_holder arg_0.obj > arg_1_holder arg_1.obj:
+                yield True
+        elif self.operator == '<=':
+            if score arg_0_holder arg_0.obj <= arg_1_holder arg_1.obj:
+                yield True
+        elif self.operator == '>=':
+            if score arg_0_holder arg_0.obj >= arg_1_holder arg_1.obj:
+                yield True
+
+    @contextmanager
+    def _compare_any_to_any(self, input_arg_0, input_arg_1):
+        arg_0 = self.temp_scoreboard['$arg_0']
+        arg_1 = self.temp_scoreboard['$arg_1']
+        arg_0_holder = parse_holder(arg_0.holder)
+        arg_1_holder = parse_holder(arg_1.holder)
+
+        if not self.initialized:
+            if self.operator not in ('==', '!='):
+                arg_0 = input_arg_0
+                arg_1 = input_arg_1
+
+        if self.operator in ('==', '!='):
+            # exception for `==` & `!=` operators
+            with self._compare_data_to_data(input_arg_0, input_arg_1):
+                yield True
+        elif self.operator == '<':
+            if score arg_0_holder arg_0.obj < arg_1_holder arg_1.obj:
+                yield True
+        elif self.operator == '>':
+            if score arg_0_holder arg_0.obj > arg_1_holder arg_1.obj:
+                yield True
+        elif self.operator == '<=':
+            if score arg_0_holder arg_0.obj <= arg_1_holder arg_1.obj:
+                yield True
+        elif self.operator == '>=':
+            if score arg_0_holder arg_0.obj >= arg_1_holder arg_1.obj:
+                yield True
+
+    @contextmanager
+    def _compare_data_to_data(self, arg_0, arg_1):
+        is_not_equal = self.temp_scoreboard['$is_not_equal']
+        tmp = self.temp_storage['temp']
+
+        if not self.initialized:
+            tmp = arg_0
+
+            # attempt override
+            store success score is_not_equal.holder is_not_equal.obj:
+                tmp = arg_1
+
+        if self.operator == '==':
+            # 0 = equal (override failed)
+            if score is_not_equal.holder is_not_equal.obj matches 0:
+                yield True
+
+        elif self.operator == '!=':
+            # 1 = not equal (override succeeded)
+            if score is_not_equal.holder is_not_equal.obj matches 1:
+                yield True
+
+    @contextmanager
+    def _check_data_exists(self, arg_0):
+        if arg_0._type == 'storage':
+            if self.operator == '==':
+                if data storage arg_0._target arg_0._path:
+                    yield True
+            elif self.operator == '!=':
+                unless data storage arg_0._target arg_0._path:
+                    yield True
+        elif arg_0._type == 'entity':
+            selector = parse_holder(arg_0._target)
+            if self.operator == '==':
+                if data entity selector arg_0._path:
+                    yield True
+            elif self.operator == '!=':
+                unless data entity selector arg_0._path:
+                    yield True
+        elif arg_0._type == 'block':
+            if self.operator == '==':
+                if data block arg_0._target arg_0._path:
+                    yield True
+            elif self.operator == '!=':
+                unless data block arg_0._target arg_0._path:
+                    yield True
+
+    @classmethod
+    def initialize_temp_expressions(cls, Scoreboard, Data):
+        cls.temp_scoreboard = Scoreboard('wicked_expressions')
+        cls.temp_storage = Data.storage('reapermc:wicked_expressions')

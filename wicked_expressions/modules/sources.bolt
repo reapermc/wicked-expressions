@@ -1,0 +1,86 @@
+from contextlib import contextmanager
+import bolt_expressions.sources as sources
+import inspect
+
+from ./low_level import store_raw, get_raw
+from ./comparison import ExpressionComparison
+
+
+class ScoreSource(sources.ScoreSource):
+    def __eq__(self, other):
+        frame = inspect.getouterframes(inspect.currentframe(), 2)[3]
+
+        if frame.function != 'root':
+            # original set/get behavior
+            if not isinstance(other, ScoreSource):
+                return NotImplemented
+            return (self.scoreholder, self.objective) == (other.scoreholder, other.objective)
+        else:
+            # bolt comparison '==' code
+            return ExpressionComparison(self, '==', other)
+
+    def __ne__(self, other):
+        return ExpressionComparison(self, '!=', other)
+
+    def __lt__(self, other):
+        return ExpressionComparison(self, '<', other)
+
+    def __gt__(self, other):
+        return ExpressionComparison(self, '>', other)
+
+    def __le__(self, other):
+        return ExpressionComparison(self, '<=', other)
+
+    def __ge__(self, other):
+        return ExpressionComparison(self, '>=', other)
+
+    @contextmanager
+    def __branch__(self):
+        if ExpressionComparison(self, '==', None):
+            yield True
+
+    def __not__(self):
+        return ExpressionComparison(self, '!=', None)
+
+    @contextmanager
+    def store(self, mode='result', type='int', scale=1):
+        with store_raw(self, mode, type, scale):
+            yield True
+
+    def get(self, scale=None):
+        get_raw(self, scale)
+
+class DataSource(sources.DataSource):
+    def __eq__(self, other):
+        return ExpressionComparison(self, '==', other)
+
+    def __ne__(self, other):
+        return ExpressionComparison(self, '!=', other)
+
+    def __lt__(self, other):
+        return ExpressionComparison(self, '<', other)
+
+    def __gt__(self, other):
+        return ExpressionComparison(self, '>', other)
+
+    def __le__(self, other):
+        return ExpressionComparison(self, '<=', other)
+
+    def __ge__(self, other):
+        return ExpressionComparison(self, '>=', other)
+
+    @contextmanager
+    def __branch__(self):
+        if ExpressionComparison(self, '==', None):
+            yield True
+
+    def __not__(self):
+        return ExpressionComparison(self, '!=', None)
+
+    @contextmanager
+    def store(self, mode='result', type='int', scale=1):
+        with store_raw(self, mode, type, scale):
+            yield True
+
+    def get(self, scale=None):
+        get_raw(self, scale)

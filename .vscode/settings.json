@@ -1,0 +1,22 @@
+{
+    "hide-files.files": [
+        ".vscode",
+        ".github",
+        ".venv",
+        ".pytest_cache",
+        "wicked_expressions/__pycache__"
+    ],
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        ".vscode": true,
+        ".github": true,
+        ".venv": true,
+        ".pytest_cache": true,
+        "wicked_expressions/__pycache__": true
+    }
+}
