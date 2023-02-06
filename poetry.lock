@@ -21,14 +21,14 @@ tests-no-zope = ["cloudpickle", "cloudpickle", "hypothesis", "hypothesis", "mypy
 
 [[package]]
 name = "beet"
-version = "0.82.1"
+version = "0.83.1"
 description = "The Minecraft pack development kit"
 category = "main"
 optional = false
 python-versions = ">=3.10,<4.0"
 files = [
-    {file = "beet-0.82.1-py3-none-any.whl", hash = "sha256:21c96a94a854fea0b5f0b8b393b9c11f2e1c38a6c10707fffc5d6db764b6104e"},
-    {file = "beet-0.82.1.tar.gz", hash = "sha256:f4e1b2d542f079282bd39ee5e5cf02117dd0a19ef3369546f5001066ab811843"},
+    {file = "beet-0.83.1-py3-none-any.whl", hash = "sha256:f2f8b261314063d47ebf205c7a4b7902dce139d9d8c1d8019277860d6558d72b"},
+    {file = "beet-0.83.1.tar.gz", hash = "sha256:775677c22ee99f8cadafa7fd8147a38a74628772624be20747031ea07d99d9df"},
 ]
 
 [package.dependencies]
