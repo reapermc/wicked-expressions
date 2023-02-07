@@ -36,7 +36,7 @@ else:
     tellraw @a "not equal!"
 ```
 
-# Complex example
+## Complex example
 
 Let's do a more complex example. First we'll import `Scoreboard` and `Data` and define our expressions.
 
@@ -67,7 +67,28 @@ else:
 ```
 
 
+## Keeping it short
 
+
+You can additionally check for simple boolean values like this.
+
+```py
+from wicked_expressions:api import Scoreboard
+
+x = Scoreboard('test')['$test']
+
+# setting it to 1
+x = 1
+
+# checking the boolean
+if x:
+    say True
+else
+    say False
+
+
+# in this case it would "say True", as we previously set the value to 1
+```
 
 
 

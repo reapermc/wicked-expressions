@@ -21,14 +21,14 @@ tests-no-zope = ["cloudpickle", "cloudpickle", "hypothesis", "hypothesis", "mypy
 
 [[package]]
 name = "beet"
-version = "0.82.1"
+version = "0.83.1"
 description = "The Minecraft pack development kit"
 category = "main"
 optional = false
 python-versions = ">=3.10,<4.0"
 files = [
-    {file = "beet-0.82.1-py3-none-any.whl", hash = "sha256:21c96a94a854fea0b5f0b8b393b9c11f2e1c38a6c10707fffc5d6db764b6104e"},
-    {file = "beet-0.82.1.tar.gz", hash = "sha256:f4e1b2d542f079282bd39ee5e5cf02117dd0a19ef3369546f5001066ab811843"},
+    {file = "beet-0.83.1-py3-none-any.whl", hash = "sha256:f2f8b261314063d47ebf205c7a4b7902dce139d9d8c1d8019277860d6558d72b"},
+    {file = "beet-0.83.1.tar.gz", hash = "sha256:775677c22ee99f8cadafa7fd8147a38a74628772624be20747031ea07d99d9df"},
 ]
 
 [package.dependencies]
@@ -101,19 +101,19 @@ css = ["tinycss2 (>=1.1.0,<1.2)"]
 
 [[package]]
 name = "bolt"
-version = "0.22.0"
+version = "0.29.0"
 description = "Supercharge Minecraft commands with Python"
 category = "main"
 optional = false
 python-versions = ">=3.10,<4.0"
 files = [
-    {file = "bolt-0.22.0-py3-none-any.whl", hash = "sha256:d3297200d073e04ace016a92a8c591c90174dd79df44f727c5129931d28e60ca"},
-    {file = "bolt-0.22.0.tar.gz", hash = "sha256:9050f48946318049f60ce2722757af6f43460c1f20c409b60cbdb3172955ee51"},
+    {file = "bolt-0.29.0-py3-none-any.whl", hash = "sha256:fa8e77260d8c05c21db3dc995be729b3c212ba576cfc2b1731233a805efac5a9"},
+    {file = "bolt-0.29.0.tar.gz", hash = "sha256:c0b210e0a8ecd31cef6a0624cc9ca0c7004d2902cf2cd21c3d7cb50db7912100"},
 ]
 
 [package.dependencies]
-beet = ">=0.80.1"
-mecha = ">=0.61.0"
+beet = ">=0.83.1"
+mecha = ">=0.66.0"
 
 [[package]]
 name = "bolt-expressions"
@@ -760,19 +760,19 @@ files = [
 
 [[package]]
 name = "mecha"
-version = "0.62.0"
+version = "0.66.0"
 description = "A powerful Minecraft command library"
 category = "main"
 optional = false
 python-versions = ">=3.10,<4.0"
 files = [
-    {file = "mecha-0.62.0-py3-none-any.whl", hash = "sha256:367d74c139e7e98aaa2026ba038f14605cf991cc2ee7160a222059a882b87999"},
-    {file = "mecha-0.62.0.tar.gz", hash = "sha256:cde519c63f35a92ac5248959d6f022086c0699c8f7f9e752970e5d471e76af3e"},
+    {file = "mecha-0.66.0-py3-none-any.whl", hash = "sha256:faf8c8b434291ddb3b630f08257bef3ee4950555bcc26b5995c7d220797abf3c"},
+    {file = "mecha-0.66.0.tar.gz", hash = "sha256:ccf6c03d5ef7dff205f20965502ea13ae07540290f56a68bc1e862dfaf22e4d0"},
 ]
 
 [package.dependencies]
-beet = ">=0.80.1"
-tokenstream = ">=1.4.2,<2.0.0"
+beet = ">=0.83.1"
+tokenstream = ">=1.5.0,<2.0.0"
 
 [[package]]
 name = "more-itertools"
@@ -1522,4 +1522,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "f9885a68e565be78ad5a66f5d5808facac09f494a14babc7f46da77a90bd2bdf"
+content-hash = "a42394a48b3b10ad5c372f3844d4fbc6441abd1ff6066e7a6c3f8128687e5007"

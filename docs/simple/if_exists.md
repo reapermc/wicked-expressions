@@ -12,29 +12,29 @@ First lets define our scoreboard and storage expressions. We will also add a fak
 from wicked_expressions:api import Scoreboard, Data
 
 test_score = Scoreboard('test_objective')['$fake_player']
-test_storage = Data.storage('test:storage').data.brain.iq
+test_storage = Data.storage('test:storage').data.brain
 ```
 
-We can now check if the score exists head on using python's `if` statement. Checking both scoreboards and storage has the same uniform syntax.
+We can now check if the score exists head on using `if test_score.exists()`. Checking both scoreboards and storage has the same uniform syntax.
 
 ```py
-if test_score:
+if test_score.exists():
     tellraw @a "score exists!"
 
-if test_storage:
+if test_storage.exists():
     tellraw @a "data exists!"
 ```
-
-
 
 The `else` and `not` statements are also supported. Here we'll invert the initial `if` using `not` and add an `else` statement.
 
 ```py
-if not test_score:
+if not test_score.exists():
     tellraw @a "score does not exists!"
 else:
     tellraw @a "score exists!"
 ```
+
+**NOTE: Straight up calling the `.exists()` method (eg. `score_0 = score_1.exists()`) doesn't yet work.**
 
 
 ## How it works

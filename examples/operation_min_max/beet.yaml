@@ -1,0 +1,17 @@
+name: wicked-expressions-minmax
+
+data_pack:
+  load: [src]
+
+require:
+  - bolt
+  - bolt_expressions
+  - wicked_expressions
+
+pipeline:
+  - mecha
+
+output: dist
+
+meta:
+  generate_namespace: test

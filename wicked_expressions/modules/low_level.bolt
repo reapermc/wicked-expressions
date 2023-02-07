@@ -13,7 +13,7 @@ def store_raw(expression, mode='result', type='int', scale=1):
             store result score holder expression.obj:
                 yield True
         elif mode == 'success':
-            store success score selector expression.obj:
+            store success score holder expression.obj:
                 yield True
 
     elif expression_class == 'DataSource':

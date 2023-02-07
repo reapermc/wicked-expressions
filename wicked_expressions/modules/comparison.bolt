@@ -12,11 +12,12 @@ class ExpressionComparison(Rebindable):
         '>=': '<'
     }
 
-    def __init__(self, arg_0, operator='==', arg_1=None, initialized=False):
+    def __init__(self, arg_0, operator='==', arg_1=None, initialized=False, _check_exists=False):
         self.arg_0 = arg_0
         self.operator = operator
         self.arg_1 = arg_1
         self.initialized = initialized
+        self._check_exists = _check_exists
 
     @contextmanager
     def __branch__(self):
@@ -29,8 +30,9 @@ class ExpressionComparison(Rebindable):
         if arg_1_class_name == 'ScoreSource':
             score_count += 1
 
-        # value (exists) check
-        if self.arg_1 is None:
+
+        # exists check
+        if self._check_exists:
             if arg_0_class_name == 'ScoreSource':
                 with self._compare_score_to_score(self.arg_0, self.arg_0):
                     yield True
@@ -38,6 +40,12 @@ class ExpressionComparison(Rebindable):
             elif arg_0_class_name == 'DataSource':
                 with self._check_data_exists(self.arg_0):
                     yield True
+
+        # pseudo boolean check
+        # any :: 
+        elif self.arg_1 is None:
+            with self._check_boolean(self.arg_0):
+                yield True
 
         # score :: score
         elif score_count == 2:
@@ -52,7 +60,7 @@ class ExpressionComparison(Rebindable):
                     yield True
 
             else:
-                with self._compare_score_to_static(self.arg_0, self.arg_1):
+                with self._compare_score_to_constant(self.arg_0, self.arg_1):
                     yield True
 
         # data :: data
@@ -68,10 +76,25 @@ class ExpressionComparison(Rebindable):
         self.initialized = True
 
     def __not__(self):
-        return ExpressionComparison(self.arg_0, self._INVERTED_OPERATOR[self.operator], self.arg_1, initialized=self.initialized)
+        return ExpressionComparison(self.arg_0, self._INVERTED_OPERATOR[self.operator], self.arg_1, initialized=self.initialized, _check_exists=self._check_exists)
+
 
     @contextmanager
-    def _compare_score_to_static(self, arg_0, arg_1):
+    def _check_boolean(self, arg_0):
+        temp = self.temp_scoreboard['$temp']
+
+        if not self.initialized:
+            temp = arg_0
+
+        if self.operator == '==':
+            if score temp.holder temp.obj matches 1:
+                yield True
+        elif self.operator == '!=':
+            if score temp.holder temp.obj matches 0:
+                yield True
+
+    @contextmanager
+    def _compare_score_to_constant(self, arg_0, arg_1):
         arg_0_holder = parse_holder(arg_0.holder)
 
         if self.operator == '==':

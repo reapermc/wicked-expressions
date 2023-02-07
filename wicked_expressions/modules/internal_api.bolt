@@ -1,9 +1,14 @@
+from dataclasses import dataclass
+from typing import Union, List
 import bolt_expressions.api as api
-from ./sources import ScoreSource, DataSource
+
+import ./sources as sources
 
 
+@dataclass
 class Scoreboard(api.Scoreboard):
-    def objective(self, name, criteria=None, prefixed=True, display_name=None):
+    def objective(self, name: str, criteria: str = "dummy", prefixed=True, display_name=None):
+        """Get a Score instance through the Scoreboard API"""
         if prefixed:
             name = self._expr.opts.objective_prefix + name
 
@@ -14,8 +19,6 @@ class Scoreboard(api.Scoreboard):
             self.added_objectives.add(name)
             self.create_objective(name, criteria, display_name)
 
-        # append function 'wicked_expressions/init'
-        # self.add_objective(name, criteria)
 
         return Score(self, name)
 
@@ -33,16 +36,29 @@ class Scoreboard(api.Scoreboard):
         append function init_path:
             scoreboard objectives add name criteria display_name
 
+@dataclass
 class Score(api.Score):
-    def __getitem__(self, scoreholder):
-        return ScoreSource.create(scoreholder, self.objective)
+    def __getitem__(self, scoreholder: Union[str, List[str]]) -> sources.ScoreSource:
+        if isinstance(scoreholder, str):
+            return sources.ScoreSource.create(scoreholder, self.objective)
+        
+        tmp = []
+        for holder in scoreholder:
+            tmp.append(sources.ScoreSource.create(holder, self.objective))
 
+        return tmp
+
+
+@dataclass
 class Data(api.Data):
-    def storage(self, resource_location):
-        return DataSource.create("storage", resource_location)
+    def storage(self, resource_location: str):
+        return sources.DataSource.create("storage", resource_location)
 
-    def entity(self, entity):
-        return DataSource.create("entity", entity)
+    def entity(self, entity: str):
+        return sources.DataSource.create("entity", entity)
 
-    def block(self, position):
-        return DataSource.create("block", position)
+    def block(self, position: str):
+        return sources.DataSource.create("block", position)
+
+
+

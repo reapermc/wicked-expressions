@@ -5,7 +5,7 @@ mc = ctx.inject(Mecha)
 
 
 class Rebindable:
-    # allows scoreboard expressions __rebind__ to function correctly inside of classes
+    """ allows scoreboard expressions __rebind__ to function correctly inside of classes """
     def __setattr__(self, name, value):
         attr = getattr(self, name, None)
 
@@ -15,5 +15,5 @@ class Rebindable:
         new_attr = attr.__rebind__(value)
         super().__setattr__(name, new_attr)
 
-def parse_holder(holder):
+def parse_holder(holder: str):
     return mc.parse(holder, using="score_holder", provide={"properties":{"amount":"single"}})
