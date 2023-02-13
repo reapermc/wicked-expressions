@@ -21,7 +21,7 @@ include = ["wicked_expressions/py.typed"]
 [tool.poetry.dependencies]
 python = "^3.10"
 beet = "^0.83.1"
-mecha = "^0.66.0"
+mecha = ">=0.66,<0.68"
 bolt = "^0.29.0"
 bolt-expressions = "0.12.2"
 
