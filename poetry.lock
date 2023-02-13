@@ -21,14 +21,14 @@ tests-no-zope = ["cloudpickle", "cloudpickle", "hypothesis", "hypothesis", "mypy
 
 [[package]]
 name = "beet"
-version = "0.83.1"
+version = "0.84.0"
 description = "The Minecraft pack development kit"
 category = "main"
 optional = false
 python-versions = ">=3.10,<4.0"
 files = [
-    {file = "beet-0.83.1-py3-none-any.whl", hash = "sha256:f2f8b261314063d47ebf205c7a4b7902dce139d9d8c1d8019277860d6558d72b"},
-    {file = "beet-0.83.1.tar.gz", hash = "sha256:775677c22ee99f8cadafa7fd8147a38a74628772624be20747031ea07d99d9df"},
+    {file = "beet-0.84.0-py3-none-any.whl", hash = "sha256:3a4c9111936056d156aea5faaef650bc875f807a9e41d4a591bdd8f26bffe7b1"},
+    {file = "beet-0.84.0.tar.gz", hash = "sha256:633f171abcf392071d70cba15f0c9b435a7b9b56dabc248cd25bf967c9e8d288"},
 ]
 
 [package.dependencies]
@@ -37,7 +37,7 @@ click-help-colors = ">=0.9.1,<0.10.0"
 colorama = {version = "*", markers = "sys_platform == \"win32\""}
 Jinja2 = ">=3.1.2,<4.0.0"
 nbtlib = ">=1.12.1,<2.0.0"
-pathspec = ">=0.10.2,<0.11.0"
+pathspec = ">=0.11.0,<0.12.0"
 pydantic = ">=1.10.2,<2.0.0"
 PyYAML = ">=6.0,<7.0"
 toml = ">=0.10.2,<0.11.0"
@@ -865,14 +865,14 @@ files = [
 
 [[package]]
 name = "pathspec"
-version = "0.10.3"
+version = "0.11.0"
 description = "Utility library for gitignore style pattern matching of file paths."
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "pathspec-0.10.3-py3-none-any.whl", hash = "sha256:3c95343af8b756205e2aba76e843ba9520a24dd84f68c22b9f93251507509dd6"},
-    {file = "pathspec-0.10.3.tar.gz", hash = "sha256:56200de4077d9d0791465aa9095a01d421861e405b5096955051deefd697d6f6"},
+    {file = "pathspec-0.11.0-py3-none-any.whl", hash = "sha256:3a66eb970cbac598f9e5ccb5b2cf58930cd8e3ed86d393d541eaf2d8b1705229"},
+    {file = "pathspec-0.11.0.tar.gz", hash = "sha256:64d338d4e0914e91c1792321e6907b5a593f1ab1851de7fc269557a21b30ebbc"},
 ]
 
 [[package]]
@@ -1522,4 +1522,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "a42394a48b3b10ad5c372f3844d4fbc6441abd1ff6066e7a6c3f8128687e5007"
+content-hash = "2a9750b123836125039b3f0c73a597a8d6204b0f961868302543cb70599eee51"
