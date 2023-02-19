@@ -12,75 +12,76 @@ class ExpressionComparison(Rebindable):
         '>=': '<'
     }
 
-    def __init__(self, arg_0, operator='==', arg_1=None, initialized=False, _check_exists=False):
+    def __init__(self, arg_0, operator='==', arg_1=None, initialized=False, check_exists=False):
         self.arg_0 = arg_0
         self.operator = operator
         self.arg_1 = arg_1
         self.initialized = initialized
-        self._check_exists = _check_exists
+        self.check_exists = check_exists
+
+    @classmethod
+    def monkeypatch(cls, Scoreboard, Data, ScoreSource, DataSource):
+        cls.ScoreSource = ScoreSource
+        cls.DataSource = DataSource
+        cls.temp_scoreboard = Scoreboard('wicked_expressions')
+        cls.temp_storage = Data.storage('wicked_expressions:private')
 
     @contextmanager
     def __branch__(self):
         score_count = 0
-        arg_0_class_name = self.arg_0.__class__.__name__
-        arg_1_class_name = self.arg_1.__class__.__name__
-
-        if arg_0_class_name == 'ScoreSource':
+        
+        if isinstance(self.arg_0, self.ScoreSource):
             score_count += 1
-        if arg_1_class_name == 'ScoreSource':
+        if isinstance(self.arg_1, self.ScoreSource):
             score_count += 1
-
-
+        
         # exists check
-        if self._check_exists:
-            if arg_0_class_name == 'ScoreSource':
-                with self._compare_score_to_score(self.arg_0, self.arg_0):
+        if self.check_exists:
+            if isinstance(self.arg_0, self.ScoreSource):
+                with self.compare_score_to_score(self.arg_0, self.arg_0):
                     yield True
-
-            elif arg_0_class_name == 'DataSource':
-                with self._check_data_exists(self.arg_0):
+            elif isinstance(self.arg_0, self.DataSource):
+                with self.check_data_exists(self.arg_0):
                     yield True
-
-        # pseudo boolean check
-        # any :: 
+        
+        # pseudo bool check
+        # Any :: None
         elif self.arg_1 is None:
-            with self._check_boolean(self.arg_0):
+            with self.check_boolean(self.arg_0):
                 yield True
-
-        # score :: score
+        
+        # ScoreSource :: ScoreSource
         elif score_count == 2:
-            with self._compare_score_to_score(self.arg_0, self.arg_1):
+            with self.compare_score_to_score(self.arg_0, self.arg_1):
                 yield True
-
-        # score :: any || any :: score
+        
+        # ScoreSource :: Any || Any :: ScoreSource
         elif score_count == 1:
-            # score :: data || data :: score
-            if arg_0_class_name == 'DataSource' or arg_1_class_name == 'DataSource':
-                with self._compare_any_to_any(self.arg_0, self.arg_1):
+            # Any = DataSource
+            if isinstance(self.arg_0, self.DataSource) or isinstance(self.arg_1, self.DataSource):
+                with self.compare_any_to_any(self.arg_0, self.arg_1):
                     yield True
-
+            # Any = ScoreSource
             else:
-                with self._compare_score_to_constant(self.arg_0, self.arg_1):
+                with self.compare_score_to_constant(self.arg_0, self.arg_1):
                     yield True
-
-        # data :: data
+    
+        # DataSource :: DataSource
         elif score_count == 0:
-            # data == data || data != data
             if self.operator in ('==', '!='):
-                with self._compare_data_to_data(self.arg_0, self.arg_1):
+                with self.compare_data_to_data(self.arg_0, self.arg_1):
                     yield True
             else:
-                with self._compare_any_to_any(self.arg_0, self.arg_1):
+                with self.compare_any_to_any(self.arg_0, self.arg_1):
                     yield True
 
         self.initialized = True
 
     def __not__(self):
-        return ExpressionComparison(self.arg_0, self._INVERTED_OPERATOR[self.operator], self.arg_1, initialized=self.initialized, _check_exists=self._check_exists)
-
+        return ExpressionComparison(self.arg_0, self._INVERTED_OPERATOR[self.operator], self.arg_1, initialized=self.initialized, check_exists=self.check_exists)
 
     @contextmanager
-    def _check_boolean(self, arg_0):
+    def check_boolean(self, arg_0):
         temp = self.temp_scoreboard['$temp']
 
         if not self.initialized:
@@ -94,7 +95,7 @@ class ExpressionComparison(Rebindable):
                 yield True
 
     @contextmanager
-    def _compare_score_to_constant(self, arg_0, arg_1):
+    def compare_score_to_constant(self, arg_0, arg_1):
         arg_0_holder = parse_holder(arg_0.holder)
 
         if self.operator == '==':
@@ -117,7 +118,7 @@ class ExpressionComparison(Rebindable):
                 yield True
 
     @contextmanager
-    def _compare_score_to_score(self, arg_0, arg_1):
+    def compare_score_to_score(self, arg_0, arg_1):
         arg_0_holder = parse_holder(arg_0.holder)
         arg_1_holder = parse_holder(arg_1.holder)
 
@@ -141,7 +142,7 @@ class ExpressionComparison(Rebindable):
                 yield True
 
     @contextmanager
-    def _compare_any_to_any(self, input_arg_0, input_arg_1):
+    def compare_any_to_any(self, input_arg_0, input_arg_1):
         arg_0 = self.temp_scoreboard['$arg_0']
         arg_1 = self.temp_scoreboard['$arg_1']
         arg_0_holder = parse_holder(arg_0.holder)
@@ -154,7 +155,7 @@ class ExpressionComparison(Rebindable):
 
         if self.operator in ('==', '!='):
             # exception for `==` & `!=` operators
-            with self._compare_data_to_data(input_arg_0, input_arg_1):
+            with self.compare_data_to_data(input_arg_0, input_arg_1):
                 yield True
         elif self.operator == '<':
             if score arg_0_holder arg_0.obj < arg_1_holder arg_1.obj:
@@ -170,7 +171,7 @@ class ExpressionComparison(Rebindable):
                 yield True
 
     @contextmanager
-    def _compare_data_to_data(self, arg_0, arg_1):
+    def compare_data_to_data(self, arg_0, arg_1):
         is_not_equal = self.temp_scoreboard['$is_not_equal']
         tmp = self.temp_storage['temp']
 
@@ -192,7 +193,7 @@ class ExpressionComparison(Rebindable):
                 yield True
 
     @contextmanager
-    def _check_data_exists(self, arg_0):
+    def check_data_exists(self, arg_0):
         if arg_0._type == 'storage':
             if self.operator == '==':
                 if data storage arg_0._target arg_0._path:
@@ -215,8 +216,3 @@ class ExpressionComparison(Rebindable):
             elif self.operator == '!=':
                 unless data block arg_0._target arg_0._path:
                     yield True
-
-    @classmethod
-    def initialize_temp_expressions(cls, Scoreboard, Data):
-        cls.temp_scoreboard = Scoreboard('wicked_expressions')
-        cls.temp_storage = Data.storage('reapermc:wicked_expressions')

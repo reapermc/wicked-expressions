@@ -62,8 +62,8 @@ execute unless score $score_0 objective_0 = $score_0 objective_0 run say false
 `@function demo:eq_score_data`
 
 ```mcfunction
-execute store result storage reapermc:wicked_expressions temp int 1 run scoreboard players get $score_0 objective_0
-execute store success score $is_not_equal wicked_expressions run data modify storage reapermc:wicked_expressions temp set from storage test:storage_0 data_0
+execute store result storage wicked_expressions:private temp int 1 run scoreboard players get $score_0 objective_0
+execute store success score $is_not_equal wicked_expressions run data modify storage wicked_expressions:private temp set from storage test:storage_0 data_0
 execute if score $is_not_equal wicked_expressions matches 0 run say true
 execute if score $is_not_equal wicked_expressions matches 1 run say false
 ```
@@ -71,8 +71,8 @@ execute if score $is_not_equal wicked_expressions matches 1 run say false
 `@function demo:eq_data_any`
 
 ```mcfunction
-data modify storage reapermc:wicked_expressions temp set from storage test:storage_0 data_0
-execute store success score $is_not_equal wicked_expressions run data modify storage reapermc:wicked_expressions temp set value 0.5f
+data modify storage wicked_expressions:private temp set from storage test:storage_0 data_0
+execute store success score $is_not_equal wicked_expressions run data modify storage wicked_expressions:private temp set value 0.5f
 execute if score $is_not_equal wicked_expressions matches 0 run say true
 execute if score $is_not_equal wicked_expressions matches 1 run say false
 ```
@@ -80,8 +80,8 @@ execute if score $is_not_equal wicked_expressions matches 1 run say false
 `@function demo:eq_data_score`
 
 ```mcfunction
-data modify storage reapermc:wicked_expressions temp set from storage test:storage_0 data_0
-execute store success score $is_not_equal wicked_expressions store result storage reapermc:wicked_expressions temp int 1 run scoreboard players get $score_0 objective_0
+data modify storage wicked_expressions:private temp set from storage test:storage_0 data_0
+execute store success score $is_not_equal wicked_expressions store result storage wicked_expressions:private temp int 1 run scoreboard players get $score_0 objective_0
 execute if score $is_not_equal wicked_expressions matches 0 run say true
 execute if score $is_not_equal wicked_expressions matches 1 run say false
 ```
@@ -89,8 +89,8 @@ execute if score $is_not_equal wicked_expressions matches 1 run say false
 `@function demo:eq_data_data`
 
 ```mcfunction
-data modify storage reapermc:wicked_expressions temp set from storage test:storage_0 data_0
-execute store success score $is_not_equal wicked_expressions run data modify storage reapermc:wicked_expressions temp set from storage test:storage_0 data_0
+data modify storage wicked_expressions:private temp set from storage test:storage_0 data_0
+execute store success score $is_not_equal wicked_expressions run data modify storage wicked_expressions:private temp set from storage test:storage_0 data_0
 execute if score $is_not_equal wicked_expressions matches 0 run say true
 execute if score $is_not_equal wicked_expressions matches 1 run say false
 ```
@@ -112,8 +112,8 @@ execute if score $score_0 objective_0 = $score_0 objective_0 run say false
 `@function demo:ne_score_data`
 
 ```mcfunction
-execute store result storage reapermc:wicked_expressions temp int 1 run scoreboard players get $score_0 objective_0
-execute store success score $is_not_equal wicked_expressions run data modify storage reapermc:wicked_expressions temp set from storage test:storage_0 data_0
+execute store result storage wicked_expressions:private temp int 1 run scoreboard players get $score_0 objective_0
+execute store success score $is_not_equal wicked_expressions run data modify storage wicked_expressions:private temp set from storage test:storage_0 data_0
 execute if score $is_not_equal wicked_expressions matches 1 run say true
 execute if score $is_not_equal wicked_expressions matches 0 run say false
 ```
@@ -121,8 +121,8 @@ execute if score $is_not_equal wicked_expressions matches 0 run say false
 `@function demo:ne_data_any`
 
 ```mcfunction
-data modify storage reapermc:wicked_expressions temp set from storage test:storage_0 data_0
-execute store success score $is_not_equal wicked_expressions run data modify storage reapermc:wicked_expressions temp set value 0.5f
+data modify storage wicked_expressions:private temp set from storage test:storage_0 data_0
+execute store success score $is_not_equal wicked_expressions run data modify storage wicked_expressions:private temp set value 0.5f
 execute if score $is_not_equal wicked_expressions matches 1 run say true
 execute if score $is_not_equal wicked_expressions matches 0 run say false
 ```
@@ -130,8 +130,8 @@ execute if score $is_not_equal wicked_expressions matches 0 run say false
 `@function demo:ne_data_score`
 
 ```mcfunction
-data modify storage reapermc:wicked_expressions temp set from storage test:storage_0 data_0
-execute store success score $is_not_equal wicked_expressions store result storage reapermc:wicked_expressions temp int 1 run scoreboard players get $score_0 objective_0
+data modify storage wicked_expressions:private temp set from storage test:storage_0 data_0
+execute store success score $is_not_equal wicked_expressions store result storage wicked_expressions:private temp int 1 run scoreboard players get $score_0 objective_0
 execute if score $is_not_equal wicked_expressions matches 1 run say true
 execute if score $is_not_equal wicked_expressions matches 0 run say false
 ```
@@ -139,8 +139,8 @@ execute if score $is_not_equal wicked_expressions matches 0 run say false
 `@function demo:ne_data_data`
 
 ```mcfunction
-data modify storage reapermc:wicked_expressions temp set from storage test:storage_0 data_0
-execute store success score $is_not_equal wicked_expressions run data modify storage reapermc:wicked_expressions temp set from storage test:storage_0 data_0
+data modify storage wicked_expressions:private temp set from storage test:storage_0 data_0
+execute store success score $is_not_equal wicked_expressions run data modify storage wicked_expressions:private temp set from storage test:storage_0 data_0
 execute if score $is_not_equal wicked_expressions matches 1 run say true
 execute if score $is_not_equal wicked_expressions matches 0 run say false
 ```
@@ -352,14 +352,14 @@ execute if score $arg_0 wicked_expressions < $arg_1 wicked_expressions run say f
 ```json
 {
   "values": [
-    "we_basic2:wicked_expressions/init"
+    "we_basic2:wicked_expressions/create_objective"
   ]
 }
 ```
 
 ### we_basic2
 
-`@function we_basic2:wicked_expressions/init`
+`@function we_basic2:wicked_expressions/create_objective`
 
 ```mcfunction
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}

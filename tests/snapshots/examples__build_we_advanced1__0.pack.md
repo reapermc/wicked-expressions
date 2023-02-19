@@ -33,8 +33,8 @@ execute if score $arg_0 wicked_expressions <= $arg_1 wicked_expressions run func
 `@function demo:main/nested_execute_0`
 
 ```mcfunction
-data modify storage reapermc:wicked_expressions temp set from storage my_library:internal data_0
-execute store success score $is_not_equal wicked_expressions store result storage reapermc:wicked_expressions temp int 1 run scoreboard players get $score_0 test_objective
+data modify storage wicked_expressions:private temp set from storage my_library:internal data_0
+execute store success score $is_not_equal wicked_expressions store result storage wicked_expressions:private temp int 1 run scoreboard players get $score_0 test_objective
 execute if score $is_not_equal wicked_expressions matches 0 run say data_0 is equal to score_0
 ```
 
@@ -45,14 +45,14 @@ execute if score $is_not_equal wicked_expressions matches 0 run say data_0 is eq
 ```json
 {
   "values": [
-    "we_advanced1:wicked_expressions/init"
+    "we_advanced1:wicked_expressions/create_objective"
   ]
 }
 ```
 
 ### we_advanced1
 
-`@function we_advanced1:wicked_expressions/init`
+`@function we_advanced1:wicked_expressions/create_objective`
 
 ```mcfunction
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}

@@ -1,32 +1,25 @@
-from dataclasses import dataclass
 from contextlib import contextmanager
 import bolt_expressions.sources as sources
 import inspect
 import re
 
-from ./low_level import store_raw, get_raw
+from ./low_level import StoreRaw, GetRaw
 from ./comparison import ExpressionComparison
 
+store_raw = StoreRaw()
+get_raw = GetRaw()
 
-@dataclass(unsafe_hash=True, order=False)
+
 class ScoreSource(sources.ScoreSource):
     def __eq__(self, other):
         if is_comparison_case():
             return ExpressionComparison(self, '==', other)
-
-        elif not isinstance(other, ScoreSource):
-            return NotImplemented
-
-        return (self.scoreholder, self.objective) == (other.scoreholder, other.objective)
+        return super().__eq__(other)
 
     def __ne__(self, other):
         if is_comparison_case():
             return ExpressionComparison(self, '!=', other)
-
-        elif not isinstance(other, ScoreSource):
-            return NotImplemented
-
-        return (self.scoreholder, self.objective) != (other.scoreholder, other.objective)
+        return super().__ne__(other)
 
     def __lt__(self, other):
         return ExpressionComparison(self, '<', other)
@@ -49,7 +42,7 @@ class ScoreSource(sources.ScoreSource):
         return ExpressionComparison(self, '!=', None)
 
     def exists(self):
-        return ExpressionComparison(self, '==', None, _check_exists=True)
+        return ExpressionComparison(self, '==', None, check_exists=True)
 
     @contextmanager
     def store(self, mode='result', type='int', scale=1):
@@ -59,25 +52,16 @@ class ScoreSource(sources.ScoreSource):
     def get(self, scale=None):
         get_raw(self, scale)
 
-@dataclass(unsafe_hash=True, order=False)
 class DataSource(sources.DataSource):
     def __eq__(self, other):
         if is_comparison_case():
             return ExpressionComparison(self, '==', other)
-
-        elif not isinstance(other, DataSource):
-            return NotImplemented
-
-        return (self._type, self._target, self._path, self._scale, self._nbt_type, self._constructed) == (other._type, other._target, other._path, other._scale, other._nbt_type, other._constructed)
+        return super().__eq__(other)
 
     def __ne__(self, other):
         if is_comparison_case():
             return ExpressionComparison(self, '!=', other)
-
-        elif not isinstance(other, ScoreSource):
-            return NotImplemented
-
-        return (self.scoreholder, self.objective) != (other.scoreholder, other.objective)
+        return super().__ne__(other)
 
     def __lt__(self, other):
         return ExpressionComparison(self, '<', other)
@@ -100,7 +84,7 @@ class DataSource(sources.DataSource):
         return ExpressionComparison(self, '!=', None)
 
     def exists(self):
-        return ExpressionComparison(self, '==', None, _check_exists=True)
+        return ExpressionComparison(self, '==', None, check_exists=True)
 
     @contextmanager
     def store(self, mode='result', type='int', scale=1):
@@ -110,12 +94,20 @@ class DataSource(sources.DataSource):
     def get(self, scale=None):
         get_raw(self, scale)
 
+
 def is_comparison_case() -> bool:
-    """ Determines whether a comparison dunder method call was intended to compare """
+    """Determines whether a comparison dunder method call was intended to compare"""
 
     frame = inspect.getouterframes(inspect.currentframe(), 2)[2]
     output = re.compile(r"sources.|optimizer.").search(frame.filename) == None
-
     # print([' ', '+'][output], frame.filename)
     return output
+
+
+
+
+
+
+
+
 

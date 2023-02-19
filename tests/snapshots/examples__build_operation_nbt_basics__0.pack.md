@@ -21,7 +21,7 @@
 
 ```
 
-`@function test:wicked_expressions/init`
+`@function test:wicked_expressions/create_objective`
 
 ```mcfunction
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
@@ -115,7 +115,7 @@ scoreboard players set $60 bolt.expr.const 60
 {
   "values": [
     "test:init_expressions",
-    "test:wicked_expressions/init"
+    "test:wicked_expressions/create_objective"
   ]
 }
 ```

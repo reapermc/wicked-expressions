@@ -1,7 +1,9 @@
 from mecha import Mecha
-
+import logging
 
 mc = ctx.inject(Mecha)
+logger = logging.getLogger("wicked_expressions")
+
 
 
 class Rebindable:
@@ -17,3 +19,6 @@ class Rebindable:
 
 def parse_holder(holder: str):
     return mc.parse(holder, using="score_holder", provide={"properties":{"amount":"single"}})
+
+
+

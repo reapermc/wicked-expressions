@@ -25,7 +25,7 @@ data modify storage demo:prefix/temp items[2] set value {id: "iron_sword", Count
 data modify storage demo:prefix/temp foo set from storage demo:prefix/temp bar
 ```
 
-`@function test:wicked_expressions/init`
+`@function test:wicked_expressions/create_objective`
 
 ```mcfunction
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
@@ -39,7 +39,7 @@ scoreboard objectives add abc.main dummy {"text": "abc.main", "color": "aqua"}
 ```json
 {
   "values": [
-    "test:wicked_expressions/init"
+    "test:wicked_expressions/create_objective"
   ]
 }
 ```

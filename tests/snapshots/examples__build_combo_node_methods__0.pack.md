@@ -62,7 +62,7 @@ data modify storage demo:temp item merge value 0
 data merge storage demo:temp {installed: 1b}
 ```
 
-`@function test:wicked_expressions/init`
+`@function test:wicked_expressions/create_objective`
 
 ```mcfunction
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
@@ -84,7 +84,7 @@ scoreboard objectives add bolt.expr.temp dummy
 {
   "values": [
     "test:init_expressions",
-    "test:wicked_expressions/init"
+    "test:wicked_expressions/create_objective"
   ]
 }
 ```

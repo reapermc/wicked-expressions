@@ -1,56 +1,56 @@
-from dataclasses import dataclass
-from typing import Union, List
-import bolt_expressions.api as api
+from typing import Any
+
+import bolt_expressions.node as be_node
+import bolt_expressions.api as be_api
 
 import ./sources as sources
 
 
-@dataclass
-class Scoreboard(api.Scoreboard):
-    def objective(self, name: str, criteria: str = "dummy", prefixed=True, display_name=None):
+ROOT_MCFUNC_PATH = generate_path('wicked_expressions')
+
+
+class Scoreboard(be_api.Scoreboard):
+    OBJECTIVE_DISPLAY_COLOR = 'aqua'
+
+    def objective(self, name: str, criteria: str = 'dummy', prefixed=True, display_name=None):
         """Get a Score instance through the Scoreboard API"""
+
         if prefixed:
             name = self._expr.opts.objective_prefix + name
 
         if criteria == None:
             criteria = 'dummy'
-
+        
         if name not in self.added_objectives:
             self.added_objectives.add(name)
             self.create_objective(name, criteria, display_name)
-
-
+        
         return Score(self, name)
 
-    def create_objective(self, name, criteria, display_name):
-        init_path = generate_path('wicked_expressions/init')
+    def create_objective(self, objective_id: str, criteria: str, display_name: str | dict):
+        mcfunc_path = ROOT_MCFUNC_PATH + '/create_objective'
 
         if display_name == None:
-            display_name = name
+            display_name = objective_id
 
-        # default display_name color
         if isinstance(display_name, str):
-            display_name = {"text": display_name, "color": "aqua"}
+            display_name = {"text": display_name, "color": self.OBJECTIVE_DISPLAY_COLOR}
+        
+        merge function_tag minecraft:load {"values": [mcfunc_path]}
+        append function mcfunc_path:
+            scoreboard objectives add objective_id criteria display_name
 
-        merge function_tag minecraft:load {"values": [init_path]}
-        append function init_path:
-            scoreboard objectives add name criteria display_name
-
-@dataclass
-class Score(api.Score):
-    def __getitem__(self, scoreholder: Union[str, List[str]]) -> sources.ScoreSource:
+class Score(be_api.Score):
+    def __getitem__(self, scoreholder: str | list[str]) -> sources.ScoreSource | list[sources.ScoreSource]:
         if isinstance(scoreholder, str):
             return sources.ScoreSource.create(scoreholder, self.objective)
-        
-        tmp = []
+
+        score_sources = []
         for holder in scoreholder:
-            tmp.append(sources.ScoreSource.create(holder, self.objective))
+            score_sources.append(sources.ScoreSource.create(holder, self.objective))
+        return score_sources
 
-        return tmp
-
-
-@dataclass
-class Data(api.Data):
+class Data(be_api.Data):
     def storage(self, resource_location: str):
         return sources.DataSource.create("storage", resource_location)
 
@@ -60,5 +60,5 @@ class Data(api.Data):
     def block(self, position: str):
         return sources.DataSource.create("block", position)
 
-
-
+def is_expression(value: Any) -> bool:
+    return isinstance(value, be_node.ExpressionNode)

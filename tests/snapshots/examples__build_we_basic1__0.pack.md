@@ -37,8 +37,8 @@ execute store result storage test:test somenbtpath int 1 run scoreboard players 
 execute store result score $temp wicked_expressions run data get storage test:test somenbtpath 1
 execute if score $temp wicked_expressions matches 0 run say doesnt exist
 execute if score $temp wicked_expressions matches 1 run say exists
-data modify storage reapermc:wicked_expressions temp set from storage test:test somenbtpath
-execute store success score $is_not_equal wicked_expressions run data modify storage reapermc:wicked_expressions temp set value 69
+data modify storage wicked_expressions:private temp set from storage test:test somenbtpath
+execute store success score $is_not_equal wicked_expressions run data modify storage wicked_expressions:private temp set value 69
 execute if score $is_not_equal wicked_expressions matches 0 run say true
 execute if score $is_not_equal wicked_expressions matches 1 run say false
 ```
@@ -51,14 +51,14 @@ execute if score $is_not_equal wicked_expressions matches 1 run say false
 {
   "values": [
     "we_basic1:init_expressions",
-    "we_basic1:wicked_expressions/init"
+    "we_basic1:wicked_expressions/create_objective"
   ]
 }
 ```
 
 ### we_basic1
 
-`@function we_basic1:wicked_expressions/init`
+`@function we_basic1:wicked_expressions/create_objective`
 
 ```mcfunction
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}

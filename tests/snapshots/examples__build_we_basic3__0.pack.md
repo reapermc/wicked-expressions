@@ -41,14 +41,14 @@ execute if score $temp wicked_expressions matches 1 run say hello
 ```json
 {
   "values": [
-    "we_basic3:wicked_expressions/init"
+    "we_basic3:wicked_expressions/create_objective"
   ]
 }
 ```
 
 ### we_basic3
 
-`@function we_basic3:wicked_expressions/init`
+`@function we_basic3:wicked_expressions/create_objective`
 
 ```mcfunction
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}

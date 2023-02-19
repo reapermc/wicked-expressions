@@ -21,7 +21,7 @@
 
 ```
 
-`@function test:wicked_expressions/init`
+`@function test:wicked_expressions/create_objective`
 
 ```mcfunction
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
@@ -76,7 +76,7 @@ say storage demo:temp config.colors.green.hex_code
 ```json
 {
   "values": [
-    "test:wicked_expressions/init"
+    "test:wicked_expressions/create_objective"
   ]
 }
 ```

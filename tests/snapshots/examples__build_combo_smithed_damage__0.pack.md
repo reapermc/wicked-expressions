@@ -39,7 +39,7 @@ scoreboard players operation $i5 bolt.expr.temp /= $25 bolt.expr.const
 scoreboard players operation damage smithed.damage *= $i5 bolt.expr.temp
 ```
 
-`@function test:wicked_expressions/init`
+`@function test:wicked_expressions/create_objective`
 
 ```mcfunction
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
@@ -67,7 +67,7 @@ scoreboard players set $25 bolt.expr.const 25
 {
   "values": [
     "test:init_expressions",
-    "test:wicked_expressions/init"
+    "test:wicked_expressions/create_objective"
   ]
 }
 ```

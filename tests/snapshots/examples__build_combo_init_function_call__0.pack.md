@@ -42,7 +42,7 @@ scoreboard players add $i0 bolt.expr.temp 50
 scoreboard players operation @s abc.main %= $i0 bolt.expr.temp
 ```
 
-`@function test:wicked_expressions/init`
+`@function test:wicked_expressions/create_objective`
 
 ```mcfunction
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
@@ -98,7 +98,7 @@ scoreboard players set $0 bolt.expr.const 0
 ```json
 {
   "values": [
-    "test:wicked_expressions/init",
+    "test:wicked_expressions/create_objective",
     "test:load"
   ]
 }
