@@ -29,7 +29,7 @@ scoreboard players set $z abc.main 2
 scoreboard players enable @a abc.settings
 ```
 
-`@function test:wicked_expressions/create_objective`
+`@function test:wicked_expressions/create_objectives`
 
 ```mcfunction
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
@@ -46,7 +46,7 @@ scoreboard objectives add abc.settings trigger {"text": "abc.settings", "color":
 ```json
 {
   "values": [
-    "test:wicked_expressions/create_objective"
+    "test:wicked_expressions/create_objectives"
   ]
 }
 ```

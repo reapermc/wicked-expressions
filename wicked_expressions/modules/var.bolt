@@ -1,0 +1,38 @@
+import ./var_sources as sources
+from ./nbtlib_tag import
+    Bool,
+    Byte,
+    Short,
+    Int,
+    Long,
+    Float,
+    Double,
+    String,
+    List
+
+
+class Var:
+    is_static = False
+
+    def __new__(self, type_annotation):
+        if type_annotation == Bool:
+            return sources.BoolSource.create(is_static=self.is_static)
+        elif type_annotation == Byte:
+            return sources.ByteSource.create(is_static=self.is_static)
+        elif type_annotation == Short:
+            return sources.ShortSource.create(is_static=self.is_static)
+        elif type_annotation == Int:
+            return sources.IntSource.create(is_static=self.is_static)
+        elif type_annotation == Long:
+            return sources.LongSource.create(is_static=self.is_static)
+        elif type_annotation == Float:
+            return sources.FloatSource.create(is_static=self.is_static)
+        elif type_annotation == Double:
+            return sources.DoubleSource.create(is_static=self.is_static)
+        elif type_annotation == String:
+            return sources.StringSource.create(is_static=self.is_static)
+        elif type_annotation == List:
+            return sources.ListSource.create(is_static=self.is_static)
+
+class StaticVar(Var):
+    is_static = True

@@ -47,7 +47,7 @@ execute if score $test obj.temp matches 123 run say hello
 execute unless score $test obj.temp matches 123 if score $test1 obj.temp = $test2 obj.temp run say hello2
 ```
 
-`@function test:wicked_expressions/create_objective`
+`@function test:wicked_expressions/create_objectives`
 
 ```mcfunction
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
@@ -69,7 +69,7 @@ scoreboard objectives add bolt.expr.temp dummy
 {
   "values": [
     "test:init_expressions",
-    "test:wicked_expressions/create_objective"
+    "test:wicked_expressions/create_objectives"
   ]
 }
 ```

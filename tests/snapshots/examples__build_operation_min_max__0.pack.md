@@ -78,7 +78,7 @@ execute store result score $i2 bolt.expr.temp run data get storage example:main 
 scoreboard players operation $result abc.main < $i2 bolt.expr.temp
 ```
 
-`@function test:wicked_expressions/create_objective`
+`@function test:wicked_expressions/create_objectives`
 
 ```mcfunction
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
@@ -100,7 +100,7 @@ scoreboard objectives add bolt.expr.temp dummy
 {
   "values": [
     "test:init_expressions",
-    "test:wicked_expressions/create_objective"
+    "test:wicked_expressions/create_objectives"
   ]
 }
 ```

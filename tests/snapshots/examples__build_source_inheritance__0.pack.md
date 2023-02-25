@@ -30,7 +30,7 @@ execute unless data storage example:main {a: 0} run say It's 0!
 execute if data storage example:main {a: 0} run say It's not 0...
 ```
 
-`@function test:wicked_expressions/create_objective`
+`@function test:wicked_expressions/create_objectives`
 
 ```mcfunction
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
@@ -52,7 +52,7 @@ scoreboard objectives add bolt.expr.temp dummy
 {
   "values": [
     "test:init_expressions",
-    "test:wicked_expressions/create_objective"
+    "test:wicked_expressions/create_objectives"
   ]
 }
 ```

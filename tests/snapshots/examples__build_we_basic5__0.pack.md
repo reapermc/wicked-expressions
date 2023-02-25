@@ -31,14 +31,14 @@ execute unless data storage test:storage_0 data_0 run say False
 ```json
 {
   "values": [
-    "we_basic5:wicked_expressions/create_objective"
+    "we_basic5:wicked_expressions/create_objectives"
   ]
 }
 ```
 
 ### we_basic5
 
-`@function we_basic5:wicked_expressions/create_objective`
+`@function we_basic5:wicked_expressions/create_objectives`
 
 ```mcfunction
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}

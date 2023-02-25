@@ -5,6 +5,17 @@ import ./internal_api as internal_api
 from ./sources import ScoreSource, DataSource
 from ./comparison import ExpressionComparison
 from ./low_level import StoreRaw, GetRaw
+from ./var import Var, StaticVar
+from ./nbtlib_tag import
+    Bool,
+    Byte,
+    Short,
+    Int,
+    Long,
+    Float,
+    Double,
+    String,
+    List
 
 Scoreboard = ctx.inject(internal_api.Scoreboard)
 Data = ctx.inject(internal_api.Data)

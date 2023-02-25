@@ -24,7 +24,7 @@ execute store result score #value abc.temp run scoreboard players add #foo abc.t
 execute if score $435asd abc.main matches 123 run say hello
 ```
 
-`@function test:wicked_expressions/create_objective`
+`@function test:wicked_expressions/create_objectives`
 
 ```mcfunction
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
@@ -110,7 +110,7 @@ scoreboard players set $3 bolt.expr.const 3
 {
   "values": [
     "test:init_expressions",
-    "test:wicked_expressions/create_objective"
+    "test:wicked_expressions/create_objectives"
   ]
 }
 ```

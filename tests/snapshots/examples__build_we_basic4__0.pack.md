@@ -30,14 +30,14 @@ execute if score $score_0 objective_0 matches 10 run say hello!
 ```json
 {
   "values": [
-    "we_basic4:wicked_expressions/create_objective"
+    "we_basic4:wicked_expressions/create_objectives"
   ]
 }
 ```
 
 ### we_basic4
 
-`@function we_basic4:wicked_expressions/create_objective`
+`@function we_basic4:wicked_expressions/create_objectives`
 
 ```mcfunction
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}

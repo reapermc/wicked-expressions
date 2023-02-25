@@ -45,14 +45,14 @@ execute if score $is_not_equal wicked_expressions matches 0 run say data_0 is eq
 ```json
 {
   "values": [
-    "we_advanced1:wicked_expressions/create_objective"
+    "we_advanced1:wicked_expressions/create_objectives"
   ]
 }
 ```
 
 ### we_advanced1
 
-`@function we_advanced1:wicked_expressions/create_objective`
+`@function we_advanced1:wicked_expressions/create_objectives`
 
 ```mcfunction
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}

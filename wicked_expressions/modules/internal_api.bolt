@@ -6,9 +6,6 @@ import bolt_expressions.api as be_api
 import ./sources as sources
 
 
-ROOT_MCFUNC_PATH = generate_path('wicked_expressions')
-
-
 class Scoreboard(be_api.Scoreboard):
     OBJECTIVE_DISPLAY_COLOR = 'aqua'
 
@@ -28,7 +25,7 @@ class Scoreboard(be_api.Scoreboard):
         return Score(self, name)
 
     def create_objective(self, objective_id: str, criteria: str, display_name: str | dict):
-        mcfunc_path = ROOT_MCFUNC_PATH + '/create_objective'
+        mcfunc_path = generate_path('wicked_expressions/create_objectives')
 
         if display_name == None:
             display_name = objective_id

@@ -1,0 +1,184 @@
+from bolt_expressions.node import ExpressionNode
+import base64
+import inspect
+import nbtlib
+
+from ./sources import ScoreSource, DataSource
+from ./utils import logger, defer
+
+
+STORAGE_TARGET = 'wicked_expressions:private'
+OBJECTIVE = 'wicked_expressions'
+
+
+class BaseVar:
+    _scoreboard_location = 'wicked_expressions'
+    _storage_location = 'wicked_expressions:private'
+    _VAR_TYPE = ''
+    _location_index = -1
+    _static_cache = {}
+
+    @classmethod
+    def _evaluate_location_index(cls, is_static: bool) -> int:
+        if not is_static:
+            cls._location_index += 1
+            return cls._location_index
+
+        frame_context = cls._get_frame_context()
+        cache_key = base64_encode(f"{frame_context[0]}#{frame_context[1]}")
+
+        retrieved_index = cls._static_cache.get(cache_key)
+
+        if retrieved_index == None:
+            cls._location_index += 1
+            cls._static_cache[cache_key] = cls._location_index
+            return cls._location_index
+
+        return retrieved_index
+
+    @classmethod
+    def _monkeypatch(cls, Scoreboard, Data):
+        cls._main_scoreboard = Scoreboard(cls._scoreboard_location)
+        cls._main_storage = Data.storage(cls._storage_location)
+
+    @staticmethod
+    def _get_frame_context() -> tuple:
+        frame = inspect.getouterframes(inspect.currentframe(), 2)[4]
+        path = frame.filename[len(str(ctx.directory)):]
+        return (frame.lineno, path)
+
+
+class VarScoreSource(ScoreSource, BaseVar):
+    @classmethod
+    def create(cls, is_static: bool):
+        location_index = cls._evaluate_location_index(is_static)
+        return cls(f"${ctx.project_id}#{cls._VAR_TYPE}${location_index}", OBJECTIVE)
+
+    @classmethod
+    def _flush_on_load(cls):
+        mcfunc_path = generate_path('wicked_expressions/flush_variables')
+
+        for index in range(cls._location_index):
+            merge function_tag minecraft:load {"values": [mcfunc_path]}
+            append function mcfunc_path:
+                scoreboard players reset f"${ctx.project_id}#{cls._VAR_TYPE}${index}" OBJECTIVE
+
+class VarStorageSource(DataSource, BaseVar):
+    @classmethod
+    def create(cls, is_static: bool):
+        location_index = cls._evaluate_location_index(is_static)
+        return cls('storage', STORAGE_TARGET)[ctx.project_id]['data'][cls._VAR_TYPE][location_index]
+
+    @classmethod
+    def _flush_on_load(cls):
+        mcfunc_path = generate_path('wicked_expressions/flush_variables')
+
+        if cls._location_index < 0:
+            return 0
+
+        fresh_slots = []
+        for n in range(cls._location_index+1):
+            fresh_slots.append(cls._DEFAULT_SLOT_VALUE)
+
+        append function mcfunc_path:
+            nbt_path = f"{ctx.project_id}.data.{cls._VAR_TYPE}"
+            data modify storage STORAGE_TARGET nbt_path set value fresh_slots
+
+class BoolSource(VarScoreSource):
+    _VAR_TYPE = 'int'
+
+    def _rebind(self, score, value):
+        if not isinstance(value, ExpressionNode):
+            value = int(value)
+            
+            if value not in (0, 1):
+                return logger.error(f"Invalid assignment attempt of value {value} to a Bool variable.")
+
+        return super()._rebind(score, value)
+
+class ByteSource(VarScoreSource):
+    _VAR_TYPE = 'byte'
+
+    def _rebind(self, score, value):
+        if not isinstance(value, ExpressionNode) and value not in range(-128, 127):
+            return logger.error(f"Invalid assignment attempt of value {value} to a Byte variable.")
+        return super()._rebind(score, value)
+
+class ShortSource(VarScoreSource):
+    _VAR_TYPE = 'short'
+
+    def _rebind(self, score, value):
+        if not isinstance(value, ExpressionNode) and value not in range(-32768, 32767):
+            return logger.error(f"Invalid assignment attempt of value {value} to a Short variable.")
+
+class IntSource(VarScoreSource):
+    _VAR_TYPE = 'int'
+
+class LongSource(VarStorageSource):
+    _default_nbt_type = 'long'
+    _DEFAULT_SLOT_VALUE = nbtlib.Long(0)
+    _VAR_TYPE = 'long'
+
+    def _rebind(self, source, value):
+        if not isinstance(value, ExpressionNode):
+            value = nbtlib.Long(value)
+        return super()._rebind(source, value)
+
+# float <-> double
+# 0.000000953674316
+# 1048576
+
+class FloatSource(VarStorageSource):
+    _default_nbt_type = 'float'
+    _DEFAULT_SLOT_VALUE = nbtlib.Float(0)
+    _VAR_TYPE = 'float'
+    
+
+    def _rebind(self, source, value):
+        if not isinstance(value, ExpressionNode):
+            value = nbtlib.Float(value)
+        return super()._rebind(source, value)
+
+class DoubleSource(VarStorageSource):
+    _default_nbt_type = 'double'
+    _DEFAULT_SLOT_VALUE = nbtlib.Double(0)
+    _VAR_TYPE = 'double'
+
+    def _rebind(self, source, value):
+        if not isinstance(value, ExpressionNode):
+            value = nbtlib.Double(value)
+        return super()._rebind(source, value)
+
+class StringSource(VarStorageSource):
+    _default_nbt_type = 'string'
+    _DEFAULT_SLOT_VALUE = nbtlib.String('')
+    _VAR_TYPE = 'string'
+
+    def _rebind(self, source, value):
+        if not isinstance(value, ExpressionNode):
+            value = nbtlib.String(value)
+        return super()._rebind(source, value)
+
+class ListSource(VarStorageSource):
+    _VAR_TYPE = 'list'
+    _DEFAULT_SLOT_VALUE = []
+
+@defer
+def setup():
+    BoolSource._flush_on_load()
+    ByteSource._flush_on_load()
+    ShortSource._flush_on_load()
+    IntSource._flush_on_load()
+    LongSource._flush_on_load()
+    FloatSource._flush_on_load()
+    DoubleSource._flush_on_load()
+    StringSource._flush_on_load()
+    ListSource._flush_on_load()
+
+def base64_encode(s: str) -> str:
+    return base64.b64encode(s.encode()).decode()
+
+
+
+
+

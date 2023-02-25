@@ -57,7 +57,7 @@ execute store result storage bolt.expr:temp 2384k242hd495_10 int 0.1 run data ge
 data modify storage demo bar set from storage bolt.expr:temp 2384k242hd495_10
 ```
 
-`@function test:wicked_expressions/create_objective`
+`@function test:wicked_expressions/create_objectives`
 
 ```mcfunction
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
@@ -79,7 +79,7 @@ scoreboard objectives add bolt.expr.temp dummy
 {
   "values": [
     "test:init_expressions",
-    "test:wicked_expressions/create_objective"
+    "test:wicked_expressions/create_objectives"
   ]
 }
 ```

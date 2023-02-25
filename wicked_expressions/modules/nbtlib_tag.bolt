@@ -1,0 +1,29 @@
+import nbtlib as nbtlib
+
+
+class Bool(nbtlib.Byte):
+    ...
+
+class Byte(nbtlib.Byte):
+    ...
+
+class Short(nbtlib.Short):
+    ...
+
+class Int(nbtlib.Int):
+    ...
+
+class Long(nbtlib.Long):
+    ...
+
+class Float(nbtlib.Float):
+    ...
+
+class Double(nbtlib.Double):
+    ...
+
+class String(nbtlib.String):
+    ...
+
+class List(nbtlib.List):
+    ...

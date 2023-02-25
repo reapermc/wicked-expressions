@@ -1,6 +1,8 @@
 from mecha import Mecha
 import logging
+from bolt.contrib.defer import Defer
 
+defer = ctx.inject(Defer)
 mc = ctx.inject(Mecha)
 logger = logging.getLogger("wicked_expressions")
 

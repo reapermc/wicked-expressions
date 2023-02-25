@@ -51,14 +51,14 @@ execute if score $is_not_equal wicked_expressions matches 1 run say false
 {
   "values": [
     "we_basic1:init_expressions",
-    "we_basic1:wicked_expressions/create_objective"
+    "we_basic1:wicked_expressions/create_objectives"
   ]
 }
 ```
 
 ### we_basic1
 
-`@function we_basic1:wicked_expressions/create_objective`
+`@function we_basic1:wicked_expressions/create_objectives`
 
 ```mcfunction
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
