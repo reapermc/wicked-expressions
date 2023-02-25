@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.3.0 (2023-02-25)
+### Feature
+* Add runtime variables feature ([`30f5305`](https://github.com/reapermc/wicked-expressions/commit/30f530517477637388c26e2f556fddc6ad8f8f68))
+
 ## v0.2.1 (2023-02-19)
 ### Fix
 * Inherited sources malfunctioning due to checking classnames instead of using isinstance ([`1a99a32`](https://github.com/reapermc/wicked-expressions/commit/1a99a32c93af15c962064af822a4cd0a07b05935))
