@@ -33,6 +33,7 @@ tellraw @a [{"score": {"name": "$value", "objective": "obj.temp"}}, {"nbt": "Ite
 `@function test:wicked_expressions/create_objectives`
 
 ```mcfunction
+help # placeholder contents
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
 scoreboard objectives add obj.temp dummy {"text": "obj.temp", "color": "aqua"}
 ```

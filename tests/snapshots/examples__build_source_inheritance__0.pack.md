@@ -33,6 +33,7 @@ execute if data storage example:main {a: 0} run say It's not 0...
 `@function test:wicked_expressions/create_objectives`
 
 ```mcfunction
+help # placeholder contents
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
 scoreboard objectives add obj.temp dummy {"text": "obj.temp", "color": "aqua"}
 ```

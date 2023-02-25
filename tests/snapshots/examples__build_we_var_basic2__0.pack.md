@@ -35,28 +35,30 @@ data modify storage wicked_expressions:private we_var_basic2.data.list[0] append
 ```json
 {
   "values": [
-    "we_var_basic2:wicked_expressions/flush_variables",
-    "we_var_basic2:wicked_expressions/create_objectives"
+    "we_var_basic2:wicked_expressions/create_objectives",
+    "we_var_basic2:wicked_expressions/flush_variables"
   ]
 }
 ```
 
 ### we_var_basic2
 
+`@function we_var_basic2:wicked_expressions/create_objectives`
+
+```mcfunction
+help # placeholder contents
+scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
+```
+
 `@function we_var_basic2:wicked_expressions/flush_variables`
 
 ```mcfunction
 scoreboard players reset $we_var_basic2#int$0 wicked_expressions
 scoreboard players reset $we_var_basic2#int$1 wicked_expressions
+scoreboard players reset $we_var_basic2#int$2 wicked_expressions
 data modify storage wicked_expressions:private we_var_basic2.data.long set value [0L]
 data modify storage wicked_expressions:private we_var_basic2.data.float set value [0.0f, 0.0f]
 data modify storage wicked_expressions:private we_var_basic2.data.double set value [0.0d]
 data modify storage wicked_expressions:private we_var_basic2.data.string set value [""]
 data modify storage wicked_expressions:private we_var_basic2.data.list set value [[]]
-```
-
-`@function we_var_basic2:wicked_expressions/create_objectives`
-
-```mcfunction
-scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
 ```

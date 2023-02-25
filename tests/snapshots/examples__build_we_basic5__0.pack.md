@@ -41,6 +41,7 @@ execute unless data storage test:storage_0 data_0 run say False
 `@function we_basic5:wicked_expressions/create_objectives`
 
 ```mcfunction
+help # placeholder contents
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
 scoreboard objectives add objective_0 dummy {"text": "objective_0", "color": "aqua"}
 ```

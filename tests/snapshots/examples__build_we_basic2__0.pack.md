@@ -362,6 +362,7 @@ execute if score $arg_0 wicked_expressions < $arg_1 wicked_expressions run say f
 `@function we_basic2:wicked_expressions/create_objectives`
 
 ```mcfunction
+help # placeholder contents
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
 scoreboard objectives add objective_0 dummy {"text": "objective_0", "color": "aqua"}
 ```

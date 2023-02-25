@@ -60,6 +60,7 @@ data modify storage demo bar set from storage bolt.expr:temp 2384k242hd495_10
 `@function test:wicked_expressions/create_objectives`
 
 ```mcfunction
+help # placeholder contents
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
 scoreboard objectives add obj dummy {"text": "obj", "color": "aqua"}
 ```

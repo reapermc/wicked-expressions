@@ -50,6 +50,7 @@ execute unless score $test obj.temp matches 123 if score $test1 obj.temp = $test
 `@function test:wicked_expressions/create_objectives`
 
 ```mcfunction
+help # placeholder contents
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
 scoreboard objectives add obj.temp dummy {"text": "obj.temp", "color": "aqua"}
 ```

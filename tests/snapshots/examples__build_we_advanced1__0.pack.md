@@ -55,6 +55,7 @@ execute if score $is_not_equal wicked_expressions matches 0 run say data_0 is eq
 `@function we_advanced1:wicked_expressions/create_objectives`
 
 ```mcfunction
+help # placeholder contents
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
 scoreboard objectives add test_objective dummy {"text": "test_objective", "color": "aqua"}
 ```

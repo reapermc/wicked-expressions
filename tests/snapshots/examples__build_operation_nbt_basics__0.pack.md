@@ -24,6 +24,7 @@
 `@function test:wicked_expressions/create_objectives`
 
 ```mcfunction
+help # placeholder contents
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
 scoreboard objectives add abc.main dummy {"text": "abc.main", "color": "aqua"}
 ```

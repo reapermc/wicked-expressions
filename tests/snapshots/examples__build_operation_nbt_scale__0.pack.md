@@ -62,6 +62,7 @@ execute store result storage demo list[3] int 100 run scoreboard players get $i3
 `@function test:wicked_expressions/create_objectives`
 
 ```mcfunction
+help # placeholder contents
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
 scoreboard objectives add obj dummy {"text": "obj", "color": "aqua"}
 ```

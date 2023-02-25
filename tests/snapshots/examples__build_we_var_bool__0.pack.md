@@ -34,7 +34,8 @@ execute if score $temp wicked_expressions matches 0 run say yes
 ```json
 {
   "values": [
-    "we_var_bool:wicked_expressions/create_objectives"
+    "we_var_bool:wicked_expressions/create_objectives",
+    "we_var_bool:wicked_expressions/flush_variables"
   ]
 }
 ```
@@ -44,6 +45,13 @@ execute if score $temp wicked_expressions matches 0 run say yes
 `@function we_var_bool:wicked_expressions/create_objectives`
 
 ```mcfunction
+help # placeholder contents
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
 scoreboard objectives add test dummy {"text": "test", "color": "aqua"}
+```
+
+`@function we_var_bool:wicked_expressions/flush_variables`
+
+```mcfunction
+scoreboard players reset $we_var_bool#int$0 wicked_expressions
 ```

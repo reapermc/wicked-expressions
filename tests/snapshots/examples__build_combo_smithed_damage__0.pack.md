@@ -42,6 +42,7 @@ scoreboard players operation damage smithed.damage *= $i5 bolt.expr.temp
 `@function test:wicked_expressions/create_objectives`
 
 ```mcfunction
+help # placeholder contents
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
 scoreboard objectives add smithed.damage dummy {"text": "smithed.damage", "color": "aqua"}
 ```

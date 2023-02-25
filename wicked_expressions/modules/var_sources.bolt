@@ -58,7 +58,7 @@ class VarScoreSource(ScoreSource, BaseVar):
     def _flush_on_load(cls):
         mcfunc_path = generate_path('wicked_expressions/flush_variables')
 
-        for index in range(cls._location_index):
+        for index in range(cls._location_index+1):
             merge function_tag minecraft:load {"values": [mcfunc_path]}
             append function mcfunc_path:
                 scoreboard players reset f"${ctx.project_id}#{cls._VAR_TYPE}${index}" OBJECTIVE
@@ -165,6 +165,12 @@ class ListSource(VarStorageSource):
 
 @defer
 def setup():
+    # patchy fix, ensures `create_objectives` will run before flushing
+    mcfunc_path = generate_path('wicked_expressions/create_objectives')
+    merge function_tag minecraft:load {"values": [mcfunc_path]}
+    function mcfunc_path:
+        help    # placeholder contents
+
     BoolSource._flush_on_load()
     ByteSource._flush_on_load()
     ShortSource._flush_on_load()

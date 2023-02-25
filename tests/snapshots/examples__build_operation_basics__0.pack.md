@@ -27,6 +27,7 @@ execute if score $435asd abc.main matches 123 run say hello
 `@function test:wicked_expressions/create_objectives`
 
 ```mcfunction
+help # placeholder contents
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
 scoreboard objectives add abc.main dummy {"text": "abc.main", "color": "aqua"}
 scoreboard objectives add abc.temp dummy {"text": "abc.temp", "color": "aqua"}

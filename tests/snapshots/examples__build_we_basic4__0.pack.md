@@ -40,6 +40,7 @@ execute if score $score_0 objective_0 matches 10 run say hello!
 `@function we_basic4:wicked_expressions/create_objectives`
 
 ```mcfunction
+help # placeholder contents
 scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
 scoreboard objectives add objective_0 dummy {"text": "objective_0", "color": "aqua"}
 ```
