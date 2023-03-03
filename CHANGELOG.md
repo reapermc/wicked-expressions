@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.3.1 (2023-02-25)
+### Fix
+* Setup functions running in wrong order on minecraft:load ([`e2eb18a`](https://github.com/reapermc/wicked-expressions/commit/e2eb18af9f8efdb81a3b3671020fd1f89510f278))
+
+### Documentation
+* Rework docs ([`f3fa66c`](https://github.com/reapermc/wicked-expressions/commit/f3fa66ccaeed9dd13c4045cc3488b0f57e0bbedc))
+
 ## v0.3.0 (2023-02-25)
 ### Feature
 * Add runtime variables feature ([`30f5305`](https://github.com/reapermc/wicked-expressions/commit/30f530517477637388c26e2f556fddc6ad8f8f68))
