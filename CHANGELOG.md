@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.3.2 (2023-03-04)
+### Fix
+* Update deps ([`48aac05`](https://github.com/reapermc/wicked-expressions/commit/48aac051ace9d148bde8c4dba32d37173310622d))
+
 ## v0.3.1 (2023-02-25)
 ### Fix
 * Setup functions running in wrong order on minecraft:load ([`e2eb18a`](https://github.com/reapermc/wicked-expressions/commit/e2eb18af9f8efdb81a3b3671020fd1f89510f278))
