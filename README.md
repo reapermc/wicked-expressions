@@ -20,9 +20,9 @@ score_0 = 123
 data_0 = 30
 
 if score_0:
-    tellraw @a "score_0 has a value"
+    tellraw @a "score_0 != 0"
 else:
-    tellraw @a "score_0 has no value"
+    tellraw @a "score_0 == 0"
 
 if data_0 > score_0:
     tellraw @a "data_0 is bigger than 30"
@@ -66,6 +66,7 @@ Check out the documentation [here](./docs/home.md).
 - Most if not all the functionality of [bolt-expressions](https://github.com/rx-modules/bolt-expressions).
 - Built in score & data comparison using python's comparison operators.
 - Useful functions and methods especially for bolt library developers such as `.store()` and `.get()`.
+- Anonymous runtime variables.
 
 
 ---
