@@ -54,9 +54,9 @@ class DataStash(Rebindable):
         with self._use_stash_selector():
             self._this[self.nbt_path].prepend(value)
     
-    def insert(self, value):
+    def insert(self, index, value):
         with self._use_stash_selector():
-            self._this[self.nbt_path] = value
+            self._this[self.nbt_path].insert(index, value)
     
     def remove(self, index=None):
         with self._use_stash_selector():
