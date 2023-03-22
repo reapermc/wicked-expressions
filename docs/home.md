@@ -8,3 +8,5 @@
 - [Comparing expressions](./tutorial/comparing_expressions.md)
 - [Low level operations](./tutorial/low_level_operations.md)
 - [Checking if a value is an expression](./tutorial/check_is_expression.md)
+- [Runtime variables](./tutorial/runtime_variables.md)
+- [DataStash, aka per-entity data](./tutorial/datastash.md)
