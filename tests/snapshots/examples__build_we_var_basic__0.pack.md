@@ -13,6 +13,16 @@
 }
 ```
 
+### wicked_expressions
+
+`@function wicked_expressions:scoreboard_setup`
+
+```mcfunction
+help # placeholder contents
+scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
+scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
+```
+
 ### demo
 
 `@function(strip_final_newline) demo:main`
@@ -28,20 +38,13 @@
 ```json
 {
   "values": [
-    "we_var_basic:wicked_expressions/create_objectives",
+    "wicked_expressions:scoreboard_setup",
     "we_var_basic:wicked_expressions/flush_variables"
   ]
 }
 ```
 
 ### we_var_basic
-
-`@function we_var_basic:wicked_expressions/create_objectives`
-
-```mcfunction
-help # placeholder contents
-scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
-```
 
 `@function we_var_basic:wicked_expressions/flush_variables`
 

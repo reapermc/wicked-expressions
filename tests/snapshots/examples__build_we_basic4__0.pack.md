@@ -13,6 +13,17 @@
 }
 ```
 
+### wicked_expressions
+
+`@function wicked_expressions:scoreboard_setup`
+
+```mcfunction
+help # placeholder contents
+scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
+scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
+scoreboard objectives add objective_0 dummy {"text": "objective_0", "color": "aqua"}
+```
+
 ### demo
 
 `@function demo:main`
@@ -30,17 +41,7 @@ execute if score $score_0 objective_0 matches 10 run say hello!
 ```json
 {
   "values": [
-    "we_basic4:wicked_expressions/create_objectives"
+    "wicked_expressions:scoreboard_setup"
   ]
 }
-```
-
-### we_basic4
-
-`@function we_basic4:wicked_expressions/create_objectives`
-
-```mcfunction
-help # placeholder contents
-scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
-scoreboard objectives add objective_0 dummy {"text": "objective_0", "color": "aqua"}
 ```

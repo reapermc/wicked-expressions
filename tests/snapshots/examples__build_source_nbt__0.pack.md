@@ -13,19 +13,22 @@
 }
 ```
 
+### wicked_expressions
+
+`@function wicked_expressions:scoreboard_setup`
+
+```mcfunction
+help # placeholder contents
+scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
+scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
+```
+
 ### test
 
 `@function(strip_final_newline) test:main`
 
 ```mcfunction
 
-```
-
-`@function test:wicked_expressions/create_objectives`
-
-```mcfunction
-help # placeholder contents
-scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
 ```
 
 `@function test:paths`
@@ -77,7 +80,7 @@ say storage demo:temp config.colors.green.hex_code
 ```json
 {
   "values": [
-    "test:wicked_expressions/create_objectives"
+    "wicked_expressions:scoreboard_setup"
   ]
 }
 ```

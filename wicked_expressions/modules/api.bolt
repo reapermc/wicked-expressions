@@ -6,16 +6,9 @@ from ./sources import ScoreSource, DataSource
 from ./comparison import ExpressionComparison
 from ./low_level import StoreRaw, GetRaw
 from ./var import Var, StaticVar
-from ./nbtlib_tag import
-    Bool,
-    Byte,
-    Short,
-    Int,
-    Long,
-    Float,
-    Double,
-    String,
-    List
+from ./nbtlib_tag import Bool, Byte, Short, Int, Long, Float, Double, String, List
+from ./datastash import DataStash
+
 
 Scoreboard = ctx.inject(internal_api.Scoreboard)
 Data = ctx.inject(internal_api.Data)
@@ -27,4 +20,4 @@ this = Data.entity('@s')
 ExpressionComparison.monkeypatch(Scoreboard, Data, ScoreSource, DataSource)
 StoreRaw.monkeypatch(ScoreSource, DataSource)
 GetRaw.monkeypatch(ScoreSource, DataSource)
-
+DataStash.monkeypatch(Scoreboard, Data)

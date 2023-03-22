@@ -7,6 +7,8 @@
 
 ## Introduction
 
+**Minecraft version: `1.19.4`**
+
 This is an extension of the [bolt-expressions](https://github.com/rx-modules/bolt-expressions) package. I highly recommend getting accustom to the original before using this one. This package is meant to build upon it by adding more functionality.
 
 
@@ -20,18 +22,15 @@ score_0 = 123
 data_0 = 30
 
 if score_0:
-    tellraw @a "score_0 != 0"
+    tellraw @a "score_0 == 1"
 else:
-    tellraw @a "score_0 == 0"
+    tellraw @a "score_0 != 1"
 
 if data_0 > score_0:
     tellraw @a "data_0 is bigger than 30"
 elif data_0 == score_0:
     tellraw @a "data_0 is equal to score_0"
 ```
-
-**NOTE**: May not be fully reverse compatible with the original [bolt-expressions](https://github.com/rx-modules/bolt-expressions).
-
 
 ## Installation
 
@@ -51,7 +50,7 @@ pipeline:
     - mecha
 ```
 
-Once you've required `bolt` and `wicked-expressions`, you are able to import the python package's `api` module directly inside your bolt script.
+Once you've required `bolt` and `wicked-expressions`, you are able to import the python package's `api` module directly inside your bolt scripts.
 
 ```py
 from wicked_expressions:api import Scoreboard, Data
@@ -59,7 +58,9 @@ from wicked_expressions:api import Scoreboard, Data
 
 Now you're free to use the API objects. Create simple and complex expressions, compare storages with scores, scores with scores, check if scores exist and more.
 
-Check out the documentation [here](./docs/home.md).
+## Documentation
+
+Check the docs out [here](./docs/home.md).
 
 ## Features
 
@@ -67,7 +68,7 @@ Check out the documentation [here](./docs/home.md).
 - Built in score & data comparison using python's comparison operators.
 - Useful functions and methods especially for bolt library developers such as `.store()` and `.get()`.
 - Anonymous runtime variables.
-
+- DataStash feature allowing per-entity data.
 
 ---
 

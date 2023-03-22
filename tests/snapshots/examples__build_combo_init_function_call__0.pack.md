@@ -13,6 +13,17 @@
 }
 ```
 
+### wicked_expressions
+
+`@function wicked_expressions:scoreboard_setup`
+
+```mcfunction
+help # placeholder contents
+scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
+scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
+scoreboard objectives add abc.main dummy {"text": "abc.main", "color": "aqua"}
+```
+
 ### test
 
 `@function test:main`
@@ -40,14 +51,6 @@ scoreboard players operation $i0 bolt.expr.temp = #value abc.main
 scoreboard players operation $i0 bolt.expr.temp *= $0 bolt.expr.const
 scoreboard players add $i0 bolt.expr.temp 50
 scoreboard players operation @s abc.main %= $i0 bolt.expr.temp
-```
-
-`@function test:wicked_expressions/create_objectives`
-
-```mcfunction
-help # placeholder contents
-scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
-scoreboard objectives add abc.main dummy {"text": "abc.main", "color": "aqua"}
 ```
 
 `@function test:install`
@@ -99,7 +102,7 @@ scoreboard players set $0 bolt.expr.const 0
 ```json
 {
   "values": [
-    "test:wicked_expressions/create_objectives",
+    "wicked_expressions:scoreboard_setup",
     "test:load"
   ]
 }

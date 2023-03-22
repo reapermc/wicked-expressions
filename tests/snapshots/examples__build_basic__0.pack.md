@@ -13,6 +13,20 @@
 }
 ```
 
+### wicked_expressions
+
+`@function wicked_expressions:scoreboard_setup`
+
+```mcfunction
+help # placeholder contents
+scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
+scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
+scoreboard objectives add abc.main dummy {"text": "abc.main", "color": "aqua"}
+scoreboard objectives add obj.random dummy {"text": "obj.random", "color": "aqua"}
+scoreboard objectives add load.status dummy {"text": "load.status", "color": "aqua"}
+scoreboard objectives add abc.settings trigger {"text": "abc.settings", "color": "aqua"}
+```
+
 ### test
 
 `@function test:main`
@@ -29,17 +43,6 @@ scoreboard players set $z abc.main 2
 scoreboard players enable @a abc.settings
 ```
 
-`@function test:wicked_expressions/create_objectives`
-
-```mcfunction
-help # placeholder contents
-scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
-scoreboard objectives add abc.main dummy {"text": "abc.main", "color": "aqua"}
-scoreboard objectives add obj.random dummy {"text": "obj.random", "color": "aqua"}
-scoreboard objectives add load.status dummy {"text": "load.status", "color": "aqua"}
-scoreboard objectives add abc.settings trigger {"text": "abc.settings", "color": "aqua"}
-```
-
 ### minecraft
 
 `@function_tag minecraft:load`
@@ -47,7 +50,7 @@ scoreboard objectives add abc.settings trigger {"text": "abc.settings", "color":
 ```json
 {
   "values": [
-    "test:wicked_expressions/create_objectives"
+    "wicked_expressions:scoreboard_setup"
   ]
 }
 ```

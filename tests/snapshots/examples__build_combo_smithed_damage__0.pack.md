@@ -13,6 +13,17 @@
 }
 ```
 
+### wicked_expressions
+
+`@function wicked_expressions:scoreboard_setup`
+
+```mcfunction
+help # placeholder contents
+scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
+scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
+scoreboard objectives add smithed.dmg dummy {"text": "smithed.dmg", "color": "aqua"}
+```
+
 ### test
 
 `@function test:main`
@@ -39,14 +50,6 @@ scoreboard players operation $i5 bolt.expr.temp /= $25 bolt.expr.const
 scoreboard players operation dmg smithed.dmg *= $i5 bolt.expr.temp
 ```
 
-`@function test:wicked_expressions/create_objectives`
-
-```mcfunction
-help # placeholder contents
-scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
-scoreboard objectives add smithed.dmg dummy {"text": "smithed.dmg", "color": "aqua"}
-```
-
 `@function test:init_expressions`
 
 ```mcfunction
@@ -68,7 +71,7 @@ scoreboard players set $25 bolt.expr.const 25
 {
   "values": [
     "test:init_expressions",
-    "test:wicked_expressions/create_objectives"
+    "wicked_expressions:scoreboard_setup"
   ]
 }
 ```
