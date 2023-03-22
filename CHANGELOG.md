@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.4.0 (2023-03-22)
+### Feature
+* Add DataStash feature ([`b38a189`](https://github.com/reapermc/wicked-expressions/commit/b38a189bf598ed89937ba068bd97b0b0e16f6eef))
+
+### Documentation
+* Fixed README ([`47a1b91`](https://github.com/reapermc/wicked-expressions/commit/47a1b910d85378b5dcea859d743544d0cec8425c))
+
 ## v0.3.2 (2023-03-04)
 ### Fix
 * Update deps ([`48aac05`](https://github.com/reapermc/wicked-expressions/commit/48aac051ace9d148bde8c4dba32d37173310622d))
