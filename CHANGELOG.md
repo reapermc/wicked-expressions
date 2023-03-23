@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.4.3 (2023-03-23)
+### Fix
+* Change Bool var internal type ([`ef7d00c`](https://github.com/reapermc/wicked-expressions/commit/ef7d00c5153873cd5c15556cf351081fd2ec555d))
+
 ## v0.4.2 (2023-03-23)
 ### Fix
 * Change internal var types ([`b42aee8`](https://github.com/reapermc/wicked-expressions/commit/b42aee83fe513f863263bde75d2fd2be0276c6ba))
