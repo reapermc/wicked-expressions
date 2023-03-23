@@ -96,20 +96,25 @@ class BoolSource(VarScoreSource):
 
         return super()._rebind(score, value)
 
-class ByteSource(VarScoreSource):
+class ByteSource(VarStorageSource):
+    _default_nbt_type = 'byte'
+    _DEFAULT_SLOT_VALUE = nbtlib.Byte(0)
     _VAR_TYPE = 'byte'
 
-    def _rebind(self, score, value):
-        if not isinstance(value, ExpressionNode) and value not in range(-128, 127):
-            return logger.error(f"Invalid assignment attempt of value {value} to a Byte variable.")
-        return super()._rebind(score, value)
+    def _rebind(self, source, value):
+        if not isinstance(value, ExpressionNode):
+            value = nbtlib.Byte(value)
+        return super()._rebind(source, value)
 
-class ShortSource(VarScoreSource):
+class ShortSource(VarStorageSource):
+    _default_nbt_type = 'short'
+    _DEFAULT_SLOT_VALUE = nbtlib.Short(0)
     _VAR_TYPE = 'short'
 
-    def _rebind(self, score, value):
-        if not isinstance(value, ExpressionNode) and value not in range(-32768, 32767):
-            return logger.error(f"Invalid assignment attempt of value {value} to a Short variable.")
+    def _rebind(self, source, value):
+        if not isinstance(value, ExpressionNode):
+            value = nbtlib.Short(value)
+        return super()._rebind(source, value)
 
 class IntSource(VarScoreSource):
     _VAR_TYPE = 'int'
@@ -132,7 +137,6 @@ class FloatSource(VarStorageSource):
     _default_nbt_type = 'float'
     _DEFAULT_SLOT_VALUE = nbtlib.Float(0)
     _VAR_TYPE = 'float'
-    
 
     def _rebind(self, source, value):
         if not isinstance(value, ExpressionNode):
@@ -160,6 +164,7 @@ class StringSource(VarStorageSource):
         return super()._rebind(source, value)
 
 class ListSource(VarStorageSource):
+    _default_nbt_type = 'list'
     _VAR_TYPE = 'list'
     _DEFAULT_SLOT_VALUE = []
 
@@ -183,8 +188,3 @@ def setup():
 
 def base64_encode(s: str) -> str:
     return base64.b64encode(s.encode()).decode()
-
-
-
-
-
