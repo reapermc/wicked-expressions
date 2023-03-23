@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v0.4.2 (2023-03-23)
+### Fix
+* Change internal var types ([`b42aee8`](https://github.com/reapermc/wicked-expressions/commit/b42aee83fe513f863263bde75d2fd2be0276c6ba))
+* Change internal var type of ByteSource and ShortSource from scoreboard to storage ([`b82cad2`](https://github.com/reapermc/wicked-expressions/commit/b82cad2db516daf731bdda654806ef1c633ca688))
+
 ## v0.4.1 (2023-03-22)
 ### Fix
 * Wrong functionality in DataStash.insert() ([`69adf29`](https://github.com/reapermc/wicked-expressions/commit/69adf29e4584cdf564ee70f2e10bea0e9f64382d))
