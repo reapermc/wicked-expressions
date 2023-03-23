@@ -10,3 +10,8 @@
 - [Checking if a value is an expression](./tutorial/check_is_expression.md)
 - [Runtime variables](./tutorial/runtime_variables.md)
 - [DataStash, aka per-entity data](./tutorial/datastash.md)
+
+
+## Technical details
+
+You can check the technical details out [here](./technical.md).

@@ -1,6 +1,7 @@
 # Runtime variables
 
-Ever needed a temporary score, but had to waste time figuring out a name for it?
+Ever needed a temporary score, but had to waste time figuring out a name for it? Or worse had to make a whole new scoreboard objective?
+
 Runtime variables offer an easy solution to that!
 
 
