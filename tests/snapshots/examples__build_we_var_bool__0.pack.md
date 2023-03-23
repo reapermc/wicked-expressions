@@ -29,12 +29,12 @@ scoreboard objectives add test dummy {"text": "test", "color": "aqua"}
 `@function demo:main`
 
 ```mcfunction
-scoreboard players operation $we_var_bool#int$0 wicked_expressions = $test test
-execute store result score $we_var_bool#int$0 wicked_expressions run data get storage test:test test 1
-scoreboard players set $we_var_bool#int$0 wicked_expressions 1
-scoreboard players operation $temp wicked_expressions = $we_var_bool#int$0 wicked_expressions
+scoreboard players operation $we_var_bool#bool$0 wicked_expressions = $test test
+execute store result score $we_var_bool#bool$0 wicked_expressions run data get storage test:test test 1
+scoreboard players set $we_var_bool#bool$0 wicked_expressions 1
+scoreboard players operation $temp wicked_expressions = $we_var_bool#bool$0 wicked_expressions
 execute if score $temp wicked_expressions matches 1 run say no
-scoreboard players operation $temp wicked_expressions = $we_var_bool#int$0 wicked_expressions
+scoreboard players operation $temp wicked_expressions = $we_var_bool#bool$0 wicked_expressions
 execute if score $temp wicked_expressions matches 0 run say yes
 ```
 
@@ -56,5 +56,5 @@ execute if score $temp wicked_expressions matches 0 run say yes
 `@function we_var_bool:wicked_expressions/flush_variables`
 
 ```mcfunction
-scoreboard players reset $we_var_bool#int$0 wicked_expressions
+scoreboard players reset $we_var_bool#bool$0 wicked_expressions
 ```

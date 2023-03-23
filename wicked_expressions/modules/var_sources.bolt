@@ -85,7 +85,7 @@ class VarStorageSource(DataSource, BaseVar):
             data modify storage STORAGE_TARGET nbt_path set value fresh_slots
 
 class BoolSource(VarScoreSource):
-    _VAR_TYPE = 'int'
+    _VAR_TYPE = 'bool'
 
     def _rebind(self, score, value):
         if not isinstance(value, ExpressionNode):

@@ -24,7 +24,7 @@ else:
     say yes
 
 
-
+print(x)
 
 
 
