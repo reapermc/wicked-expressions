@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.4.1 (2023-03-22)
+### Fix
+* Wrong functionality in DataStash.insert() ([`69adf29`](https://github.com/reapermc/wicked-expressions/commit/69adf29e4584cdf564ee70f2e10bea0e9f64382d))
+
+### Documentation
+* Update docs ([`febbd69`](https://github.com/reapermc/wicked-expressions/commit/febbd69d27260cafa864ad71484fc0d1eb181a9b))
+
 ## v0.4.0 (2023-03-22)
 ### Feature
 * Add DataStash feature ([`b38a189`](https://github.com/reapermc/wicked-expressions/commit/b38a189bf598ed89937ba068bd97b0b0e16f6eef))
