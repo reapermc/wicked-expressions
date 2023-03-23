@@ -29,8 +29,10 @@ scoreboard objectives add test dummy {"text": "test", "color": "aqua"}
 `@function demo:main`
 
 ```mcfunction
-scoreboard players operation $we_var_byte#byte$0 wicked_expressions = $test test
-execute if score $we_var_byte#byte$0 wicked_expressions = $test test run say hello!
+execute store result storage wicked_expressions:private we_var_byte.data.byte[0] byte 1 run scoreboard players get $test test
+data modify storage wicked_expressions:private temp set from storage wicked_expressions:private we_var_byte.data.byte[0]
+execute store success score $is_not_equal wicked_expressions store result storage wicked_expressions:private temp int 1 run scoreboard players get $test test
+execute if score $is_not_equal wicked_expressions matches 0 run say hello!
 ```
 
 ### minecraft
@@ -40,8 +42,7 @@ execute if score $we_var_byte#byte$0 wicked_expressions = $test test run say hel
 ```json
 {
   "values": [
-    "wicked_expressions:scoreboard_setup",
-    "we_var_byte:wicked_expressions/flush_variables"
+    "wicked_expressions:scoreboard_setup"
   ]
 }
 ```
@@ -51,5 +52,5 @@ execute if score $we_var_byte#byte$0 wicked_expressions = $test test run say hel
 `@function we_var_byte:wicked_expressions/flush_variables`
 
 ```mcfunction
-scoreboard players reset $we_var_byte#byte$0 wicked_expressions
+data modify storage wicked_expressions:private we_var_byte.data.byte set value [0b]
 ```
