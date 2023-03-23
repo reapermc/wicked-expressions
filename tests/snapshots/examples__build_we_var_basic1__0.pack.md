@@ -54,8 +54,8 @@ data modify storage wicked_expressions:private we_var_basic1.data.float[0] set f
 `@function we_var_basic1:wicked_expressions/flush_variables`
 
 ```mcfunction
-scoreboard players reset $we_var_basic1#int$0 wicked_expressions
-scoreboard players reset $we_var_basic1#int$1 wicked_expressions
+scoreboard players reset $we_var_basic1#bool$0 wicked_expressions
+scoreboard players reset $we_var_basic1#bool$1 wicked_expressions
 data modify storage wicked_expressions:private we_var_basic1.data.byte set value [0b]
 scoreboard players reset $we_var_basic1#int$0 wicked_expressions
 data modify storage wicked_expressions:private we_var_basic1.data.float set value [0.0f]
