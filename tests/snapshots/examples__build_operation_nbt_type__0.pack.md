@@ -13,17 +13,6 @@
 }
 ```
 
-### wicked_expressions
-
-`@function wicked_expressions:scoreboard_setup`
-
-```mcfunction
-help # placeholder contents
-scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
-scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
-scoreboard objectives add obj dummy {"text": "obj", "color": "aqua"}
-```
-
 ### test
 
 `@function test:main`
@@ -68,6 +57,15 @@ execute store result storage bolt.expr:temp 2384k242hd495_10 int 0.1 run data ge
 data modify storage demo bar set from storage bolt.expr:temp 2384k242hd495_10
 ```
 
+`@function test:wicked_expressions/scoreboard/setup`
+
+```mcfunction
+help # placeholder contents
+scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
+scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
+scoreboard objectives add obj dummy {"text": "obj", "color": "aqua"}
+```
+
 `@function test:init_expressions`
 
 ```mcfunction
@@ -83,7 +81,7 @@ scoreboard objectives add bolt.expr.temp dummy
 {
   "values": [
     "test:init_expressions",
-    "wicked_expressions:scoreboard_setup"
+    "test:wicked_expressions/scoreboard/setup"
   ]
 }
 ```

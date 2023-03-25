@@ -171,7 +171,7 @@ class ListSource(VarStorageSource):
 @defer
 def setup():
     # patchy fix, ensures `create_objectives` will run before flushing
-    mcfunc_path = 'wicked_expressions:scoreboard_setup'
+    mcfunc_path = generate_path('wicked_expressions/scoreboard/setup')
     merge function_tag minecraft:load {"values": [mcfunc_path]}
     function mcfunc_path:
         help    # placeholder contents

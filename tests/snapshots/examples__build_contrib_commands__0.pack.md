@@ -13,17 +13,6 @@
 }
 ```
 
-### wicked_expressions
-
-`@function wicked_expressions:scoreboard_setup`
-
-```mcfunction
-help # placeholder contents
-scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
-scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
-scoreboard objectives add obj.temp dummy {"text": "obj.temp", "color": "aqua"}
-```
-
 ### test
 
 `@function test:main`
@@ -58,6 +47,15 @@ execute if score $test obj.temp matches 123 run say hello
 execute unless score $test obj.temp matches 123 if score $test1 obj.temp = $test2 obj.temp run say hello2
 ```
 
+`@function test:wicked_expressions/scoreboard/setup`
+
+```mcfunction
+help # placeholder contents
+scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
+scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
+scoreboard objectives add obj.temp dummy {"text": "obj.temp", "color": "aqua"}
+```
+
 `@function test:init_expressions`
 
 ```mcfunction
@@ -73,7 +71,7 @@ scoreboard objectives add bolt.expr.temp dummy
 {
   "values": [
     "test:init_expressions",
-    "wicked_expressions:scoreboard_setup"
+    "test:wicked_expressions/scoreboard/setup"
   ]
 }
 ```

@@ -13,17 +13,6 @@
 }
 ```
 
-### wicked_expressions
-
-`@function wicked_expressions:scoreboard_setup`
-
-```mcfunction
-help # placeholder contents
-scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
-scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
-scoreboard objectives add abc.main dummy {"text": "abc.main", "color": "aqua"}
-```
-
 ### test
 
 `@function test:main`
@@ -35,6 +24,15 @@ scoreboard players operation my_var abc.main *= $5 bolt.expr.const
 scoreboard players operation $i1 bolt.expr.temp = @s abc.main
 scoreboard players operation $i1 bolt.expr.temp *= $2 bolt.expr.const
 scoreboard players operation my_var abc.main += $i1 bolt.expr.temp
+```
+
+`@function test:wicked_expressions/scoreboard/setup`
+
+```mcfunction
+help # placeholder contents
+scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
+scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
+scoreboard objectives add abc.main dummy {"text": "abc.main", "color": "aqua"}
 ```
 
 `@function test:init_expressions`
@@ -58,7 +56,7 @@ scoreboard players set $2 bolt.expr.const 2
 {
   "values": [
     "test:init_expressions",
-    "wicked_expressions:scoreboard_setup"
+    "test:wicked_expressions/scoreboard/setup"
   ]
 }
 ```
