@@ -25,7 +25,7 @@ class Scoreboard(be_api.Scoreboard):
         return Score(self, name)
 
     def create_objective(self, objective_id: str, criteria: str, display_name: str | dict):
-        mcfunc_path = 'wicked_expressions:scoreboard_setup'
+        mcfunc_path = generate_path('wicked_expressions/scoreboard/setup')
 
         if display_name == None:
             display_name = objective_id

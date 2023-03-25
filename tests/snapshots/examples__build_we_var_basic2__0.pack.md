@@ -13,16 +13,6 @@
 }
 ```
 
-### wicked_expressions
-
-`@function wicked_expressions:scoreboard_setup`
-
-```mcfunction
-help # placeholder contents
-scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
-scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
-```
-
 ### demo
 
 `@function demo:main`
@@ -45,13 +35,21 @@ data modify storage wicked_expressions:private we_var_basic2.data.list[0] append
 ```json
 {
   "values": [
-    "wicked_expressions:scoreboard_setup",
+    "we_var_basic2:wicked_expressions/scoreboard/setup",
     "we_var_basic2:wicked_expressions/flush_variables"
   ]
 }
 ```
 
 ### we_var_basic2
+
+`@function we_var_basic2:wicked_expressions/scoreboard/setup`
+
+```mcfunction
+help # placeholder contents
+scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
+scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
+```
 
 `@function we_var_basic2:wicked_expressions/flush_variables`
 

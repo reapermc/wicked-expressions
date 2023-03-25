@@ -13,17 +13,6 @@
 }
 ```
 
-### wicked_expressions
-
-`@function wicked_expressions:scoreboard_setup`
-
-```mcfunction
-help # placeholder contents
-scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
-scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
-scoreboard objectives add test_objective dummy {"text": "test_objective", "color": "aqua"}
-```
-
 ### demo
 
 `@function demo:main`
@@ -56,7 +45,18 @@ execute if score $is_not_equal wicked_expressions matches 0 run say data_0 is eq
 ```json
 {
   "values": [
-    "wicked_expressions:scoreboard_setup"
+    "we_advanced1:wicked_expressions/scoreboard/setup"
   ]
 }
+```
+
+### we_advanced1
+
+`@function we_advanced1:wicked_expressions/scoreboard/setup`
+
+```mcfunction
+help # placeholder contents
+scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
+scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
+scoreboard objectives add test_objective dummy {"text": "test_objective", "color": "aqua"}
 ```

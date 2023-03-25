@@ -15,14 +15,6 @@
 
 ### wicked_expressions
 
-`@function wicked_expressions:scoreboard_setup`
-
-```mcfunction
-help # placeholder contents
-scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
-scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
-```
-
 `@function wicked_expressions:datastash/garbage_collector1`
 
 ```mcfunction
@@ -124,13 +116,21 @@ execute unless entity @s[type=marker] run function we_datastash_basic1:wicked_ex
 ```json
 {
   "values": [
-    "wicked_expressions:scoreboard_setup",
+    "we_datastash_basic1:wicked_expressions/scoreboard/setup",
     "wicked_expressions:datastash/garbage_collector"
   ]
 }
 ```
 
 ### we_datastash_basic1
+
+`@function we_datastash_basic1:wicked_expressions/scoreboard/setup`
+
+```mcfunction
+help # placeholder contents
+scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
+scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
+```
 
 `@function we_datastash_basic1:wicked_expressions/datastash/cache/0_pmarker_find`
 

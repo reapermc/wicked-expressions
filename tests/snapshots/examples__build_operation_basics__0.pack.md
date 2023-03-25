@@ -13,18 +13,6 @@
 }
 ```
 
-### wicked_expressions
-
-`@function wicked_expressions:scoreboard_setup`
-
-```mcfunction
-help # placeholder contents
-scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
-scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
-scoreboard objectives add abc.main dummy {"text": "abc.main", "color": "aqua"}
-scoreboard objectives add abc.temp dummy {"text": "abc.temp", "color": "aqua"}
-```
-
 ### test
 
 `@function test:main`
@@ -34,6 +22,16 @@ execute if score #value abc.temp matches 100.. run scoreboard players set #value
 execute if score #value abc.temp matches 100.. run scoreboard players set #value abc.temp 0
 execute store result score #value abc.temp run scoreboard players add #foo abc.temp 1
 execute if score $435asd abc.main matches 123 run say hello
+```
+
+`@function test:wicked_expressions/scoreboard/setup`
+
+```mcfunction
+help # placeholder contents
+scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
+scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
+scoreboard objectives add abc.main dummy {"text": "abc.main", "color": "aqua"}
+scoreboard objectives add abc.temp dummy {"text": "abc.temp", "color": "aqua"}
 ```
 
 `@function test:operations`
@@ -114,7 +112,7 @@ scoreboard players set $3 bolt.expr.const 3
 {
   "values": [
     "test:init_expressions",
-    "wicked_expressions:scoreboard_setup"
+    "test:wicked_expressions/scoreboard/setup"
   ]
 }
 ```

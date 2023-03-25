@@ -13,17 +13,6 @@
 }
 ```
 
-### wicked_expressions
-
-`@function wicked_expressions:scoreboard_setup`
-
-```mcfunction
-help # placeholder contents
-scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
-scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
-scoreboard objectives add objective_0 dummy {"text": "objective_0", "color": "aqua"}
-```
-
 ### demo
 
 `@function demo:main`
@@ -42,7 +31,18 @@ execute unless data storage test:storage_0 data_0 run say False
 ```json
 {
   "values": [
-    "wicked_expressions:scoreboard_setup"
+    "we_basic5:wicked_expressions/scoreboard/setup"
   ]
 }
+```
+
+### we_basic5
+
+`@function we_basic5:wicked_expressions/scoreboard/setup`
+
+```mcfunction
+help # placeholder contents
+scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
+scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
+scoreboard objectives add objective_0 dummy {"text": "objective_0", "color": "aqua"}
 ```

@@ -13,17 +13,6 @@
 }
 ```
 
-### wicked_expressions
-
-`@function wicked_expressions:scoreboard_setup`
-
-```mcfunction
-help # placeholder contents
-scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
-scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
-scoreboard objectives add obj.temp dummy {"text": "obj.temp", "color": "aqua"}
-```
-
 ### test
 
 `@function test:main`
@@ -41,6 +30,15 @@ tellraw @a [{"score": {"name": "$foo", "objective": "obj.temp"}}, {"score": {"na
 tellraw @a [{"score": {"name": "$value", "objective": "obj.temp"}}, {"nbt": "Items[0]", "block": "~ ~ ~"}, {"nbt": "message", "storage": "example:main", "interpret": true}]
 ```
 
+`@function test:wicked_expressions/scoreboard/setup`
+
+```mcfunction
+help # placeholder contents
+scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
+scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
+scoreboard objectives add obj.temp dummy {"text": "obj.temp", "color": "aqua"}
+```
+
 ### minecraft
 
 `@function_tag minecraft:load`
@@ -48,7 +46,7 @@ tellraw @a [{"score": {"name": "$value", "objective": "obj.temp"}}, {"nbt": "Ite
 ```json
 {
   "values": [
-    "wicked_expressions:scoreboard_setup"
+    "test:wicked_expressions/scoreboard/setup"
   ]
 }
 ```
