@@ -26,21 +26,21 @@ scoreboard players set $testplayer anotherone 1234
 scoreboard players operation $testplayer anotherone /= $345 bolt.expr.const
 execute unless score $testplayer anotherone matches 69 run say true
 execute if score $testplayer anotherone matches 69 run say false
-scoreboard players operation $temp wicked_expressions = $testplayer anotherone
-execute if score $temp wicked_expressions matches 1 run say exists
-scoreboard players operation $temp wicked_expressions = $testplayer anotherone
-execute if score $temp wicked_expressions matches 0 run say doesnt exist
+scoreboard players operation $temp reapermc.wicked_expressions = $testplayer anotherone
+execute if score $temp reapermc.wicked_expressions matches 1 run say exists
+scoreboard players operation $temp reapermc.wicked_expressions = $testplayer anotherone
+execute if score $temp reapermc.wicked_expressions matches 0 run say doesnt exist
 data modify storage test:test somenbtpath set value 1234
 execute store result score $i0 bolt.expr.temp run data get storage test:test somenbtpath 1
 scoreboard players add $i0 bolt.expr.temp 10
 execute store result storage test:test somenbtpath int 1 run scoreboard players get $i0 bolt.expr.temp
-execute store result score $temp wicked_expressions run data get storage test:test somenbtpath 1
-execute if score $temp wicked_expressions matches 0 run say doesnt exist
-execute if score $temp wicked_expressions matches 1 run say exists
-data modify storage wicked_expressions:private temp set from storage test:test somenbtpath
-execute store success score $is_not_equal wicked_expressions run data modify storage wicked_expressions:private temp set value 69
-execute if score $is_not_equal wicked_expressions matches 0 run say true
-execute if score $is_not_equal wicked_expressions matches 1 run say false
+execute store result score $temp reapermc.wicked_expressions run data get storage test:test somenbtpath 1
+execute if score $temp reapermc.wicked_expressions matches 0 run say doesnt exist
+execute if score $temp reapermc.wicked_expressions matches 1 run say exists
+data modify storage reapermc:wicked_expressions temp set from storage test:test somenbtpath
+execute store success score $is_not_equal reapermc.wicked_expressions run data modify storage reapermc:wicked_expressions temp set value 69
+execute if score $is_not_equal reapermc.wicked_expressions matches 0 run say true
+execute if score $is_not_equal reapermc.wicked_expressions matches 1 run say false
 ```
 
 ### minecraft
@@ -51,21 +51,19 @@ execute if score $is_not_equal wicked_expressions matches 1 run say false
 {
   "values": [
     "we_basic1:init_expressions",
-    "we_basic1:wicked_expressions/scoreboard/setup"
+    "we_basic1:reapermc/wicked_expressions/scoreboard_setup"
   ]
 }
 ```
 
 ### we_basic1
 
-`@function we_basic1:wicked_expressions/scoreboard/setup`
+`@function we_basic1:reapermc/wicked_expressions/scoreboard_setup`
 
 ```mcfunction
-help # placeholder contents
-scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
-scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
-scoreboard objectives add myobjectivename dummy {"text": "myobjectivename", "color": "aqua"}
-scoreboard objectives add anotherone dummy {"text": "anotherone", "color": "aqua"}
+scoreboard objectives add reapermc.wicked_expressions dummy "reapermc.wicked_expressions"
+scoreboard objectives add myobjectivename dummy "myobjectivename"
+scoreboard objectives add anotherone dummy "anotherone"
 ```
 
 `@function we_basic1:init_expressions`

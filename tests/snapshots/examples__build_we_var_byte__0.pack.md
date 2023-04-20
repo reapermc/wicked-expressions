@@ -18,10 +18,10 @@
 `@function demo:main`
 
 ```mcfunction
-execute store result storage wicked_expressions:private we_var_byte.data.byte[0] byte 1 run scoreboard players get $test test
-data modify storage wicked_expressions:private temp set from storage wicked_expressions:private we_var_byte.data.byte[0]
-execute store success score $is_not_equal wicked_expressions store result storage wicked_expressions:private temp int 1 run scoreboard players get $test test
-execute if score $is_not_equal wicked_expressions matches 0 run say hello!
+execute store result storage reapermc:wicked_expressions we_var_byte.data.byte[0] byte 1 run scoreboard players get $test test
+data modify storage reapermc:wicked_expressions temp set from storage reapermc:wicked_expressions we_var_byte.data.byte[0]
+execute store success score $is_not_equal reapermc.wicked_expressions store result storage reapermc:wicked_expressions temp int 1 run scoreboard players get $test test
+execute if score $is_not_equal reapermc.wicked_expressions matches 0 run say hello!
 ```
 
 ### minecraft
@@ -31,24 +31,23 @@ execute if score $is_not_equal wicked_expressions matches 0 run say hello!
 ```json
 {
   "values": [
-    "we_var_byte:wicked_expressions/scoreboard/setup"
+    "we_var_byte:reapermc/wicked_expressions/scoreboard_setup",
+    "we_var_byte:reapermc/wicked_expressions/runtime_var_flush_storage"
   ]
 }
 ```
 
 ### we_var_byte
 
-`@function we_var_byte:wicked_expressions/scoreboard/setup`
+`@function we_var_byte:reapermc/wicked_expressions/scoreboard_setup`
 
 ```mcfunction
-help # placeholder contents
-scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
-scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
-scoreboard objectives add test dummy {"text": "test", "color": "aqua"}
+scoreboard objectives add reapermc.wicked_expressions dummy "reapermc.wicked_expressions"
+scoreboard objectives add test dummy "test"
 ```
 
-`@function we_var_byte:wicked_expressions/flush_variables`
+`@function we_var_byte:reapermc/wicked_expressions/runtime_var_flush_storage`
 
 ```mcfunction
-data modify storage wicked_expressions:private we_var_byte.data.byte set value [0b]
+data modify storage reapermc:wicked_expressions we_var_byte.data.byte set value [0b]
 ```

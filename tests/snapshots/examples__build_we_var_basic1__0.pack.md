@@ -18,12 +18,12 @@
 `@function demo:main`
 
 ```mcfunction
-data modify storage wicked_expressions:private we_var_basic1.data.float[0] set value 46.0f
-data modify storage wicked_expressions:private we_var_basic1.data.float[0] set value 1.2353456f
-data modify storage wicked_expressions:private we_var_basic1.data.double[0] set value 5.4357543d
-data modify storage wicked_expressions:private we_var_basic1.data.double[0] set value 3.0d
-data modify storage wicked_expressions:private we_var_basic1.data.double[0] set from storage wicked_expressions:private we_var_basic1.data.float[0]
-data modify storage wicked_expressions:private we_var_basic1.data.float[0] set from storage wicked_expressions:private we_var_basic1.data.double[0]
+data modify storage reapermc:wicked_expressions we_var_basic1.data.float[0] set value 46.0f
+data modify storage reapermc:wicked_expressions we_var_basic1.data.float[0] set value 1.2353456f
+data modify storage reapermc:wicked_expressions we_var_basic1.data.double[0] set value 5.4357543d
+data modify storage reapermc:wicked_expressions we_var_basic1.data.double[0] set value 3.0d
+data modify storage reapermc:wicked_expressions we_var_basic1.data.double[0] set from storage reapermc:wicked_expressions we_var_basic1.data.float[0]
+data modify storage reapermc:wicked_expressions we_var_basic1.data.float[0] set from storage reapermc:wicked_expressions we_var_basic1.data.double[0]
 ```
 
 ### minecraft
@@ -33,29 +33,33 @@ data modify storage wicked_expressions:private we_var_basic1.data.float[0] set f
 ```json
 {
   "values": [
-    "we_var_basic1:wicked_expressions/scoreboard/setup",
-    "we_var_basic1:wicked_expressions/flush_variables"
+    "we_var_basic1:reapermc/wicked_expressions/scoreboard_setup",
+    "we_var_basic1:reapermc/wicked_expressions/runtime_var_flush_score",
+    "we_var_basic1:reapermc/wicked_expressions/runtime_var_flush_storage"
   ]
 }
 ```
 
 ### we_var_basic1
 
-`@function we_var_basic1:wicked_expressions/scoreboard/setup`
+`@function we_var_basic1:reapermc/wicked_expressions/scoreboard_setup`
 
 ```mcfunction
-help # placeholder contents
-scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
-scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
+scoreboard objectives add reapermc.wicked_expressions dummy "reapermc.wicked_expressions"
 ```
 
-`@function we_var_basic1:wicked_expressions/flush_variables`
+`@function we_var_basic1:reapermc/wicked_expressions/runtime_var_flush_score`
 
 ```mcfunction
-scoreboard players reset $we_var_basic1#bool$0 wicked_expressions
-scoreboard players reset $we_var_basic1#bool$1 wicked_expressions
-data modify storage wicked_expressions:private we_var_basic1.data.byte set value [0b]
-scoreboard players reset $we_var_basic1#int$0 wicked_expressions
-data modify storage wicked_expressions:private we_var_basic1.data.float set value [0.0f]
-data modify storage wicked_expressions:private we_var_basic1.data.double set value [0.0d]
+scoreboard players reset $we_var_basic1#bool$0 reapermc.wicked_expressions
+scoreboard players reset $we_var_basic1#bool$1 reapermc.wicked_expressions
+scoreboard players reset $we_var_basic1#int$0 reapermc.wicked_expressions
+```
+
+`@function we_var_basic1:reapermc/wicked_expressions/runtime_var_flush_storage`
+
+```mcfunction
+data modify storage reapermc:wicked_expressions we_var_basic1.data.byte set value [0b]
+data modify storage reapermc:wicked_expressions we_var_basic1.data.float set value [0.0f]
+data modify storage reapermc:wicked_expressions we_var_basic1.data.double set value [0.0d]
 ```

@@ -1,4 +1,4 @@
-from wicked_expressions:api import Scoreboard, Data, is_expression
+from wicked_expressions:api import Scoreboard, Data
 
 
 objective_0 = Scoreboard('objective_0')
@@ -29,9 +29,6 @@ with entitydata_0.store(scale=10):
 store result score score_0.holder score_0.obj:
     entitydata_0.get()
 
-
-print('should be True: ', is_expression(entitydata_0))
-print('should be False:', is_expression(-2147483648))
 
 
 function ./eq_overload_pls_no_break_test:

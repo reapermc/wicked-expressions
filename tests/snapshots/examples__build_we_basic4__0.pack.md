@@ -30,18 +30,16 @@ execute if score $score_0 objective_0 matches 10 run say hello!
 ```json
 {
   "values": [
-    "we_basic4:wicked_expressions/scoreboard/setup"
+    "we_basic4:reapermc/wicked_expressions/scoreboard_setup"
   ]
 }
 ```
 
 ### we_basic4
 
-`@function we_basic4:wicked_expressions/scoreboard/setup`
+`@function we_basic4:reapermc/wicked_expressions/scoreboard_setup`
 
 ```mcfunction
-help # placeholder contents
-scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
-scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
-scoreboard objectives add objective_0 dummy {"text": "objective_0", "color": "aqua"}
+scoreboard objectives add reapermc.wicked_expressions dummy "reapermc.wicked_expressions"
+scoreboard objectives add objective_0 dummy "objective_0"
 ```

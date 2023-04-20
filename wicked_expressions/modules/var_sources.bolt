@@ -5,16 +5,11 @@ import nbtlib
 
 from ./sources import ScoreSource, DataSource
 from ./utils import logger, defer
-
-
-STORAGE_TARGET = 'wicked_expressions:private'
-OBJECTIVE = 'wicked_expressions'
+from ./config import Config
 
 
 class BaseVar:
-    _scoreboard_location = 'wicked_expressions'
-    _storage_location = 'wicked_expressions:private'
-    _VAR_TYPE = ''
+    _var_type = ''
     _location_index = -1
     _static_cache = {}
 
@@ -38,8 +33,8 @@ class BaseVar:
 
     @classmethod
     def _monkeypatch(cls, Scoreboard, Data):
-        cls._main_scoreboard = Scoreboard(cls._scoreboard_location)
-        cls._main_storage = Data.storage(cls._storage_location)
+        cls._main_scoreboard = Scoreboard(Config.SCOREBOARD_ROOT)
+        cls._main_storage = Data.storage(Config.STORAGE_ROOT)
 
     @staticmethod
     def _get_frame_context() -> tuple:
@@ -47,45 +42,59 @@ class BaseVar:
         path = frame.filename[len(str(ctx.directory)):]
         return (frame.lineno, path)
 
+    @defer
+    @staticmethod
+    def flush_variables_setup():
+        BoolSource._flush_on_load()
+        ByteSource._flush_on_load()
+        ShortSource._flush_on_load()
+        IntSource._flush_on_load()
+        LongSource._flush_on_load()
+        FloatSource._flush_on_load()
+        DoubleSource._flush_on_load()
+        StringSource._flush_on_load()
+        ListSource._flush_on_load()
+
 
 class VarScoreSource(ScoreSource, BaseVar):
     @classmethod
     def create(cls, is_static: bool):
         location_index = cls._evaluate_location_index(is_static)
-        return cls(f"${ctx.project_id}#{cls._VAR_TYPE}${location_index}", OBJECTIVE)
+        return cls(f"${ctx.project_id}#{cls._var_type}${location_index}", Config.SCOREBOARD_ROOT)
 
     @classmethod
     def _flush_on_load(cls):
-        mcfunc_path = generate_path('wicked_expressions/flush_variables')
+        mcfunc_path = f"{Config.ROOT_LOCAL}/runtime_var_flush_score"
 
         for index in range(cls._location_index+1):
             merge function_tag minecraft:load {"values": [mcfunc_path]}
             append function mcfunc_path:
-                scoreboard players reset f"${ctx.project_id}#{cls._VAR_TYPE}${index}" OBJECTIVE
+                scoreboard players reset f"${ctx.project_id}#{cls._var_type}${index}" Config.SCOREBOARD_ROOT
 
 class VarStorageSource(DataSource, BaseVar):
     @classmethod
     def create(cls, is_static: bool):
         location_index = cls._evaluate_location_index(is_static)
-        return cls('storage', STORAGE_TARGET)[ctx.project_id]['data'][cls._VAR_TYPE][location_index]
+        return cls('storage', Config.STORAGE_ROOT)[ctx.project_id]['data'][cls._var_type][location_index]
 
     @classmethod
     def _flush_on_load(cls):
-        mcfunc_path = generate_path('wicked_expressions/flush_variables')
+        mcfunc_path = f"{Config.ROOT_LOCAL}/runtime_var_flush_storage"
 
         if cls._location_index < 0:
             return 0
 
         fresh_slots = []
         for n in range(cls._location_index+1):
-            fresh_slots.append(cls._DEFAULT_SLOT_VALUE)
+            fresh_slots.append(cls._default_slot_value)
 
+        merge function_tag minecraft:load {"values": [mcfunc_path]}
         append function mcfunc_path:
-            nbt_path = f"{ctx.project_id}.data.{cls._VAR_TYPE}"
-            data modify storage STORAGE_TARGET nbt_path set value fresh_slots
+            nbt_path = f"{ctx.project_id}.data.{cls._var_type}"
+            data modify storage Config.STORAGE_ROOT nbt_path set value fresh_slots
 
 class BoolSource(VarScoreSource):
-    _VAR_TYPE = 'bool'
+    _var_type = 'bool'
 
     def _rebind(self, score, value):
         if not isinstance(value, ExpressionNode):
@@ -98,8 +107,8 @@ class BoolSource(VarScoreSource):
 
 class ByteSource(VarStorageSource):
     _default_nbt_type = 'byte'
-    _DEFAULT_SLOT_VALUE = nbtlib.Byte(0)
-    _VAR_TYPE = 'byte'
+    _default_slot_value = nbtlib.Byte(0)
+    _var_type = 'byte'
 
     def _rebind(self, source, value):
         if not isinstance(value, ExpressionNode):
@@ -108,8 +117,8 @@ class ByteSource(VarStorageSource):
 
 class ShortSource(VarStorageSource):
     _default_nbt_type = 'short'
-    _DEFAULT_SLOT_VALUE = nbtlib.Short(0)
-    _VAR_TYPE = 'short'
+    _default_slot_value = nbtlib.Short(0)
+    _var_type = 'short'
 
     def _rebind(self, source, value):
         if not isinstance(value, ExpressionNode):
@@ -117,12 +126,12 @@ class ShortSource(VarStorageSource):
         return super()._rebind(source, value)
 
 class IntSource(VarScoreSource):
-    _VAR_TYPE = 'int'
+    _var_type = 'int'
 
 class LongSource(VarStorageSource):
     _default_nbt_type = 'long'
-    _DEFAULT_SLOT_VALUE = nbtlib.Long(0)
-    _VAR_TYPE = 'long'
+    _default_slot_value = nbtlib.Long(0)
+    _var_type = 'long'
 
     def _rebind(self, source, value):
         if not isinstance(value, ExpressionNode):
@@ -135,8 +144,8 @@ class LongSource(VarStorageSource):
 
 class FloatSource(VarStorageSource):
     _default_nbt_type = 'float'
-    _DEFAULT_SLOT_VALUE = nbtlib.Float(0)
-    _VAR_TYPE = 'float'
+    _default_slot_value = nbtlib.Float(0)
+    _var_type = 'float'
 
     def _rebind(self, source, value):
         if not isinstance(value, ExpressionNode):
@@ -145,8 +154,8 @@ class FloatSource(VarStorageSource):
 
 class DoubleSource(VarStorageSource):
     _default_nbt_type = 'double'
-    _DEFAULT_SLOT_VALUE = nbtlib.Double(0)
-    _VAR_TYPE = 'double'
+    _default_slot_value = nbtlib.Double(0)
+    _var_type = 'double'
 
     def _rebind(self, source, value):
         if not isinstance(value, ExpressionNode):
@@ -155,8 +164,8 @@ class DoubleSource(VarStorageSource):
 
 class StringSource(VarStorageSource):
     _default_nbt_type = 'string'
-    _DEFAULT_SLOT_VALUE = nbtlib.String('')
-    _VAR_TYPE = 'string'
+    _default_slot_value = nbtlib.String('')
+    _var_type = 'string'
 
     def _rebind(self, source, value):
         if not isinstance(value, ExpressionNode):
@@ -165,26 +174,8 @@ class StringSource(VarStorageSource):
 
 class ListSource(VarStorageSource):
     _default_nbt_type = 'list'
-    _VAR_TYPE = 'list'
-    _DEFAULT_SLOT_VALUE = []
-
-@defer
-def setup():
-    # patchy fix, ensures `create_objectives` will run before flushing
-    mcfunc_path = generate_path('wicked_expressions/scoreboard/setup')
-    merge function_tag minecraft:load {"values": [mcfunc_path]}
-    function mcfunc_path:
-        help    # placeholder contents
-
-    BoolSource._flush_on_load()
-    ByteSource._flush_on_load()
-    ShortSource._flush_on_load()
-    IntSource._flush_on_load()
-    LongSource._flush_on_load()
-    FloatSource._flush_on_load()
-    DoubleSource._flush_on_load()
-    StringSource._flush_on_load()
-    ListSource._flush_on_load()
+    _var_type = 'list'
+    _default_slot_value = []
 
 def base64_encode(s: str) -> str:
     return base64.b64encode(s.encode()).decode()

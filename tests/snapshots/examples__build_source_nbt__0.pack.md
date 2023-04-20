@@ -21,12 +21,10 @@
 
 ```
 
-`@function test:wicked_expressions/scoreboard/setup`
+`@function test:reapermc/wicked_expressions/scoreboard_setup`
 
 ```mcfunction
-help # placeholder contents
-scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
-scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
+scoreboard objectives add reapermc.wicked_expressions dummy "reapermc.wicked_expressions"
 ```
 
 `@function test:paths`
@@ -78,7 +76,7 @@ say storage demo:temp config.colors.green.hex_code
 ```json
 {
   "values": [
-    "test:wicked_expressions/scoreboard/setup"
+    "test:reapermc/wicked_expressions/scoreboard_setup"
   ]
 }
 ```

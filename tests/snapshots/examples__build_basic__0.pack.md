@@ -29,16 +29,14 @@ scoreboard players set $z abc.main 2
 scoreboard players enable @a abc.settings
 ```
 
-`@function test:wicked_expressions/scoreboard/setup`
+`@function test:reapermc/wicked_expressions/scoreboard_setup`
 
 ```mcfunction
-help # placeholder contents
-scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
-scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
-scoreboard objectives add abc.main dummy {"text": "abc.main", "color": "aqua"}
-scoreboard objectives add obj.random dummy {"text": "obj.random", "color": "aqua"}
-scoreboard objectives add load.status dummy {"text": "load.status", "color": "aqua"}
-scoreboard objectives add abc.settings trigger {"text": "abc.settings", "color": "aqua"}
+scoreboard objectives add reapermc.wicked_expressions dummy "reapermc.wicked_expressions"
+scoreboard objectives add abc.main dummy "abc.main"
+scoreboard objectives add obj.random dummy "obj.random"
+scoreboard objectives add load.status dummy "load.status"
+scoreboard objectives add abc.settings trigger "abc.settings"
 ```
 
 ### minecraft
@@ -48,7 +46,7 @@ scoreboard objectives add abc.settings trigger {"text": "abc.settings", "color":
 ```json
 {
   "values": [
-    "test:wicked_expressions/scoreboard/setup"
+    "test:reapermc/wicked_expressions/scoreboard_setup"
   ]
 }
 ```

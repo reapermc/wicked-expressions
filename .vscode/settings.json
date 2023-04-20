@@ -3,7 +3,8 @@
         ".vscode",
         ".venv",
         ".pytest_cache",
-        "wicked_expressions/__pycache__"
+        "wicked_expressions/__pycache__",
+        ".github"
     ],
     "files.exclude": {
         "**/.git": true,
@@ -15,6 +16,7 @@
         ".vscode": true,
         ".venv": true,
         ".pytest_cache": true,
-        "wicked_expressions/__pycache__": true
+        "wicked_expressions/__pycache__": true,
+        ".github": true
     }
 }

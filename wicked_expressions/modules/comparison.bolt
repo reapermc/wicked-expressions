@@ -1,5 +1,7 @@
 from contextlib import contextmanager
+
 from ./utils import Rebindable, parse_holder
+from ./config import Config
 
 
 class ExpressionComparison(Rebindable):
@@ -23,8 +25,8 @@ class ExpressionComparison(Rebindable):
     def monkeypatch(cls, Scoreboard, Data, ScoreSource, DataSource):
         cls.ScoreSource = ScoreSource
         cls.DataSource = DataSource
-        cls.temp_scoreboard = Scoreboard('wicked_expressions')
-        cls.temp_storage = Data.storage('wicked_expressions:private')
+        cls.temp_scoreboard = Scoreboard(Config.SCOREBOARD_ROOT)
+        cls.temp_storage = Data.storage(Config.STORAGE_ROOT)
 
     @contextmanager
     def __branch__(self):
