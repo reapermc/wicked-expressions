@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.5.0 (2023-04-20)
+### Feature
+* Refactor ([`3d49ebd`](https://github.com/reapermc/wicked-expressions/commit/3d49ebdf08dd37b9645b7034ac313bc13675e4e7))
+
 ## v0.4.4 (2023-03-25)
 ### Fix
 * Incorrect scoreboard setup path ([`69cf75c`](https://github.com/reapermc/wicked-expressions/commit/69cf75c2f8f982ac32f88a96920a9578da5622b5))
