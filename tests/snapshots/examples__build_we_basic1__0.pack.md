@@ -61,9 +61,9 @@ execute if score $is_not_equal reapermc.wicked_expressions matches 1 run say fal
 `@function we_basic1:reapermc/wicked_expressions/scoreboard_setup`
 
 ```mcfunction
-scoreboard objectives add reapermc.wicked_expressions dummy "reapermc.wicked_expressions"
-scoreboard objectives add myobjectivename dummy "myobjectivename"
-scoreboard objectives add anotherone dummy "anotherone"
+scoreboard objectives add reapermc.wicked_expressions dummy
+scoreboard objectives add myobjectivename dummy
+scoreboard objectives add anotherone dummy
 ```
 
 `@function we_basic1:init_expressions`

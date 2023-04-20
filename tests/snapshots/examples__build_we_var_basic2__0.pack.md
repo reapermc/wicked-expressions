@@ -47,7 +47,7 @@ data modify storage reapermc:wicked_expressions we_var_basic2.data.list[0] appen
 `@function we_var_basic2:reapermc/wicked_expressions/scoreboard_setup`
 
 ```mcfunction
-scoreboard objectives add reapermc.wicked_expressions dummy "reapermc.wicked_expressions"
+scoreboard objectives add reapermc.wicked_expressions dummy
 ```
 
 `@function we_var_basic2:reapermc/wicked_expressions/runtime_var_flush_score`

@@ -24,8 +24,8 @@
 `@function test:reapermc/wicked_expressions/scoreboard_setup`
 
 ```mcfunction
-scoreboard objectives add reapermc.wicked_expressions dummy "reapermc.wicked_expressions"
-scoreboard objectives add abc.main dummy "abc.main"
+scoreboard objectives add reapermc.wicked_expressions dummy
+scoreboard objectives add abc.main dummy
 ```
 
 `@function test:operations`

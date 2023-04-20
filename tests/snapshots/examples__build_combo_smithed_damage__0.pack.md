@@ -42,8 +42,8 @@ scoreboard players operation dmg smithed.dmg *= $i5 bolt.expr.temp
 `@function test:reapermc/wicked_expressions/scoreboard_setup`
 
 ```mcfunction
-scoreboard objectives add reapermc.wicked_expressions dummy "reapermc.wicked_expressions"
-scoreboard objectives add smithed.dmg dummy "smithed.dmg"
+scoreboard objectives add reapermc.wicked_expressions dummy
+scoreboard objectives add smithed.dmg dummy
 ```
 
 `@function test:init_expressions`

@@ -40,7 +40,7 @@
 `@function we_var_basic:reapermc/wicked_expressions/scoreboard_setup`
 
 ```mcfunction
-scoreboard objectives add reapermc.wicked_expressions dummy "reapermc.wicked_expressions"
+scoreboard objectives add reapermc.wicked_expressions dummy
 ```
 
 `@function we_var_basic:reapermc/wicked_expressions/runtime_var_flush_score`

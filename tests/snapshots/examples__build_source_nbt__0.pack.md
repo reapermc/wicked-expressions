@@ -24,7 +24,7 @@
 `@function test:reapermc/wicked_expressions/scoreboard_setup`
 
 ```mcfunction
-scoreboard objectives add reapermc.wicked_expressions dummy "reapermc.wicked_expressions"
+scoreboard objectives add reapermc.wicked_expressions dummy
 ```
 
 `@function test:paths`

@@ -24,8 +24,8 @@ execute as @e[type=zombie] store result entity @s Health float 1 run scoreboard 
 `@function test:reapermc/wicked_expressions/scoreboard_setup`
 
 ```mcfunction
-scoreboard objectives add reapermc.wicked_expressions dummy "reapermc.wicked_expressions"
-scoreboard objectives add foo dummy "foo"
+scoreboard objectives add reapermc.wicked_expressions dummy
+scoreboard objectives add foo dummy
 ```
 
 ### minecraft

@@ -44,8 +44,8 @@ data modify storage reapermc:wicked_expressions we_var_short.data.short[0] set f
 `@function we_var_short:reapermc/wicked_expressions/scoreboard_setup`
 
 ```mcfunction
-scoreboard objectives add reapermc.wicked_expressions dummy "reapermc.wicked_expressions"
-scoreboard objectives add test dummy "test"
+scoreboard objectives add reapermc.wicked_expressions dummy
+scoreboard objectives add test dummy
 ```
 
 `@function we_var_short:reapermc/wicked_expressions/runtime_var_flush_storage`
