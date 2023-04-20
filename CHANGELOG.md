@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.4.4 (2023-03-25)
+### Fix
+* Incorrect scoreboard setup path ([`69cf75c`](https://github.com/reapermc/wicked-expressions/commit/69cf75c2f8f982ac32f88a96920a9578da5622b5))
+
+### Documentation
+* Updated documentation ([`0a64444`](https://github.com/reapermc/wicked-expressions/commit/0a644440583803b629ae0ef741e57509dac78e4d))
+
 ## v0.4.3 (2023-03-23)
 ### Fix
 * Change Bool var internal type ([`ef7d00c`](https://github.com/reapermc/wicked-expressions/commit/ef7d00c5153873cd5c15556cf351081fd2ec555d))
