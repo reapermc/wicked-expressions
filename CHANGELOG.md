@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.5.1 (2023-04-20)
+### Fix
+* Default Scoreboard display_name value ([`7cc7123`](https://github.com/reapermc/wicked-expressions/commit/7cc71237dad634bed400cbba44730f6088ad368e))
+
 ## v0.5.0 (2023-04-20)
 ### Feature
 * Refactor ([`3d49ebd`](https://github.com/reapermc/wicked-expressions/commit/3d49ebdf08dd37b9645b7034ac313bc13675e4e7))
