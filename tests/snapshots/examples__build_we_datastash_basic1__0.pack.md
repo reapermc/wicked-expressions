@@ -54,8 +54,8 @@ execute unless entity @s[type=marker] run function we_datastash_basic1:reapermc/
 `@function we_datastash_basic1:reapermc/wicked_expressions/scoreboard_setup`
 
 ```mcfunction
-scoreboard objectives add reapermc.wicked_expressions dummy "reapermc.wicked_expressions"
-scoreboard objectives add reapermc.wicked_expressions.datastash dummy "reapermc.wicked_expressions.datastash"
+scoreboard objectives add reapermc.wicked_expressions dummy
+scoreboard objectives add reapermc.wicked_expressions.datastash dummy
 ```
 
 `@function we_datastash_basic1:reapermc/wicked_expressions/datastash/cache/0_pmarker_find`

@@ -60,8 +60,8 @@ data modify storage demo bar set from storage bolt.expr:temp 2384k242hd495_10
 `@function test:reapermc/wicked_expressions/scoreboard_setup`
 
 ```mcfunction
-scoreboard objectives add reapermc.wicked_expressions dummy "reapermc.wicked_expressions"
-scoreboard objectives add obj dummy "obj"
+scoreboard objectives add reapermc.wicked_expressions dummy
+scoreboard objectives add obj dummy
 ```
 
 `@function test:init_expressions`

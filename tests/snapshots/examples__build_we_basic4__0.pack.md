@@ -40,6 +40,6 @@ execute if score $score_0 objective_0 matches 10 run say hello!
 `@function we_basic4:reapermc/wicked_expressions/scoreboard_setup`
 
 ```mcfunction
-scoreboard objectives add reapermc.wicked_expressions dummy "reapermc.wicked_expressions"
-scoreboard objectives add objective_0 dummy "objective_0"
+scoreboard objectives add reapermc.wicked_expressions dummy
+scoreboard objectives add objective_0 dummy
 ```

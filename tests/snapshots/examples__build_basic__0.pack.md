@@ -32,11 +32,11 @@ scoreboard players enable @a abc.settings
 `@function test:reapermc/wicked_expressions/scoreboard_setup`
 
 ```mcfunction
-scoreboard objectives add reapermc.wicked_expressions dummy "reapermc.wicked_expressions"
-scoreboard objectives add abc.main dummy "abc.main"
-scoreboard objectives add obj.random dummy "obj.random"
-scoreboard objectives add load.status dummy "load.status"
-scoreboard objectives add abc.settings trigger "abc.settings"
+scoreboard objectives add reapermc.wicked_expressions dummy
+scoreboard objectives add abc.main dummy
+scoreboard objectives add obj.random dummy
+scoreboard objectives add load.status dummy
+scoreboard objectives add abc.settings trigger
 ```
 
 ### minecraft
