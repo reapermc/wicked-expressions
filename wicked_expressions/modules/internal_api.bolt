@@ -31,7 +31,10 @@ class Scoreboard(be_api.Scoreboard):
 
         merge function_tag minecraft:load {"values": [setup_path]}
         append function setup_path:
-            scoreboard objectives add objective_id criteria display_name
+            if display_name is None:
+                scoreboard objectives add objective_id criteria
+            else:
+                scoreboard objectives add objective_id criteria display_name
 
 class Score(be_api.Score):
     def __getitem__(self, scoreholder: str | list[str]) -> sources.ScoreSource | list[sources.ScoreSource]:
