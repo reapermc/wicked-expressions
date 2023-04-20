@@ -18,13 +18,13 @@
 `@function demo:main`
 
 ```mcfunction
-scoreboard players operation $we_var_bool#bool$0 wicked_expressions = $test test
-execute store result score $we_var_bool#bool$0 wicked_expressions run data get storage test:test test 1
-scoreboard players set $we_var_bool#bool$0 wicked_expressions 1
-scoreboard players operation $temp wicked_expressions = $we_var_bool#bool$0 wicked_expressions
-execute if score $temp wicked_expressions matches 1 run say no
-scoreboard players operation $temp wicked_expressions = $we_var_bool#bool$0 wicked_expressions
-execute if score $temp wicked_expressions matches 0 run say yes
+scoreboard players operation $we_var_bool#bool$0 reapermc.wicked_expressions = $test test
+execute store result score $we_var_bool#bool$0 reapermc.wicked_expressions run data get storage test:test test 1
+scoreboard players set $we_var_bool#bool$0 reapermc.wicked_expressions 1
+scoreboard players operation $temp reapermc.wicked_expressions = $we_var_bool#bool$0 reapermc.wicked_expressions
+execute if score $temp reapermc.wicked_expressions matches 1 run say no
+scoreboard players operation $temp reapermc.wicked_expressions = $we_var_bool#bool$0 reapermc.wicked_expressions
+execute if score $temp reapermc.wicked_expressions matches 0 run say yes
 ```
 
 ### minecraft
@@ -34,25 +34,23 @@ execute if score $temp wicked_expressions matches 0 run say yes
 ```json
 {
   "values": [
-    "we_var_bool:wicked_expressions/scoreboard/setup",
-    "we_var_bool:wicked_expressions/flush_variables"
+    "we_var_bool:reapermc/wicked_expressions/scoreboard_setup",
+    "we_var_bool:reapermc/wicked_expressions/runtime_var_flush_score"
   ]
 }
 ```
 
 ### we_var_bool
 
-`@function we_var_bool:wicked_expressions/scoreboard/setup`
+`@function we_var_bool:reapermc/wicked_expressions/scoreboard_setup`
 
 ```mcfunction
-help # placeholder contents
-scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
-scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
-scoreboard objectives add test dummy {"text": "test", "color": "aqua"}
+scoreboard objectives add reapermc.wicked_expressions dummy "reapermc.wicked_expressions"
+scoreboard objectives add test dummy "test"
 ```
 
-`@function we_var_bool:wicked_expressions/flush_variables`
+`@function we_var_bool:reapermc/wicked_expressions/runtime_var_flush_score`
 
 ```mcfunction
-scoreboard players reset $we_var_bool#bool$0 wicked_expressions
+scoreboard players reset $we_var_bool#bool$0 reapermc.wicked_expressions
 ```

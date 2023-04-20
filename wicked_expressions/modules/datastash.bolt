@@ -3,15 +3,15 @@ import nbtlib
 import json
 
 from ./utils import Rebindable
+from ./config import Config
 
 
 class DataStash(Rebindable):
-    _MARKER_PLAYER_TAG = 'wicked_expressions.datastash.stash.player'
-    _MARKER_MOB_TAG = 'wicked_expressions.datastash.stash.mob'
-    _REGISTERED_TAG = 'wicked_expressions.datastash.registered'
-    _LOCAL_PATH = generate_path('wicked_expressions/datastash')
-    _GLOBAL_PATH = 'wicked_expressions:datastash'
-    _CACHE_INDEX = -1
+    _MARKER_PLAYER_TAG = f"{Config.TAG_ROOT}.datastash.stash.player"
+    _MARKER_MOB_TAG = f"{Config.TAG_ROOT}.datastash.stash.mob"
+    _REGISTERED_TAG = f"{Config.TAG_ROOT}.datastash.registered"
+    _GLOBAL_PATH = f"{Config.ROOT}/datastash"
+    _cache_index = -1
     _initialized = False
 
     def __init__(self, nbt_path: str):
@@ -19,6 +19,7 @@ class DataStash(Rebindable):
 
         if not DataStash._initialized:
             DataStash._initialized = True
+            self._init_scoreboard()
             self._garbage_collector()
             self._generate_unregister_mcfunc()
             # self._portal_fix()
@@ -27,7 +28,7 @@ class DataStash(Rebindable):
         return f"DataStash {self.nbt_path}"
 
     def get(self, index=None):
-        temp_data = self._Data.storage('wicked_expressions:private').datastash.temp
+        temp_data = self._Data.storage(Config.STORAGE_ROOT).datastash.temp
         with self._use_stash_selector():
             if index is None:
                 temp_data = self._this[self.nbt_path]
@@ -67,7 +68,7 @@ class DataStash(Rebindable):
 
     @contextmanager
     def _use_stash_selector(self):
-        cache_path = f"{self._LOCAL_PATH}/cache/{self._get_next_cache_index()}"
+        cache_path = f"{Config.ROOT_LOCAL}/datastash/cache/{self._get_next_cache_index()}"
 
         self._check_register_status()
 
@@ -90,8 +91,8 @@ class DataStash(Rebindable):
 
     @classmethod
     def _get_next_cache_index(cls):
-        cls._CACHE_INDEX += 1
-        return cls._CACHE_INDEX
+        cls._cache_index += 1
+        return cls._cache_index
 
     @classmethod
     def _check_register_status(cls):
@@ -191,5 +192,9 @@ class DataStash(Rebindable):
     @classmethod
     def monkeypatch(cls, Scoreboard, Data):
         cls._this = Data.entity('@s')
+        cls._Scoreboard = Scoreboard
         cls._Data = Data
-        cls._datastash_scb = Scoreboard('wicked_expressions.datastash')
+
+    @classmethod
+    def _init_scoreboard(cls):
+        cls._datastash_scb = cls._Scoreboard(f"{Config.SCOREBOARD_ROOT}.datastash")

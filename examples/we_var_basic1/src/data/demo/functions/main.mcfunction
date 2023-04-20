@@ -1,12 +1,6 @@
-from wicked_expressions:api import
-    Var,
-    StaticVar,
-    Byte,
-    Int,
-    Bool,
-    Float,
-    Double
+from wicked_expressions:api import Var, StaticVar, Byte, Int, Bool, Float, Double
 
+from wicked_expressions:config import Config
 
 
 x = Var(Byte)

@@ -24,14 +24,12 @@ execute store result score #value abc.temp run scoreboard players add #foo abc.t
 execute if score $435asd abc.main matches 123 run say hello
 ```
 
-`@function test:wicked_expressions/scoreboard/setup`
+`@function test:reapermc/wicked_expressions/scoreboard_setup`
 
 ```mcfunction
-help # placeholder contents
-scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
-scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
-scoreboard objectives add abc.main dummy {"text": "abc.main", "color": "aqua"}
-scoreboard objectives add abc.temp dummy {"text": "abc.temp", "color": "aqua"}
+scoreboard objectives add reapermc.wicked_expressions dummy "reapermc.wicked_expressions"
+scoreboard objectives add abc.main dummy "abc.main"
+scoreboard objectives add abc.temp dummy "abc.temp"
 ```
 
 `@function test:operations`
@@ -112,7 +110,7 @@ scoreboard players set $3 bolt.expr.const 3
 {
   "values": [
     "test:init_expressions",
-    "test:wicked_expressions/scoreboard/setup"
+    "test:reapermc/wicked_expressions/scoreboard_setup"
   ]
 }
 ```

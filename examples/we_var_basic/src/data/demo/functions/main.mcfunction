@@ -22,13 +22,8 @@ staticvar_test()
 print(x)
 print(y)
 
-
-
-
-
 a = Var(Double)
 b = Var(Double)
-
 
 def staticvar_test2():
     c = StaticVar(Double)

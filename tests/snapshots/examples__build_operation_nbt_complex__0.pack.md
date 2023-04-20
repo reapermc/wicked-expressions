@@ -25,13 +25,11 @@ data modify storage demo:prefix/temp items[2] set value {id: "iron_sword", Count
 data modify storage demo:prefix/temp foo set from storage demo:prefix/temp bar
 ```
 
-`@function test:wicked_expressions/scoreboard/setup`
+`@function test:reapermc/wicked_expressions/scoreboard_setup`
 
 ```mcfunction
-help # placeholder contents
-scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
-scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
-scoreboard objectives add abc.main dummy {"text": "abc.main", "color": "aqua"}
+scoreboard objectives add reapermc.wicked_expressions dummy "reapermc.wicked_expressions"
+scoreboard objectives add abc.main dummy "abc.main"
 ```
 
 ### minecraft
@@ -41,7 +39,7 @@ scoreboard objectives add abc.main dummy {"text": "abc.main", "color": "aqua"}
 ```json
 {
   "values": [
-    "test:wicked_expressions/scoreboard/setup"
+    "test:reapermc/wicked_expressions/scoreboard_setup"
   ]
 }
 ```

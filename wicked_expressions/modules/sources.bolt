@@ -3,11 +3,12 @@ import bolt_expressions.sources as sources
 import inspect
 import re
 
-from ./low_level import StoreRaw, GetRaw
+from ./raw_operations import StoreExpressionValue, GetExpressionValue
 from ./comparison import ExpressionComparison
 
-store_raw = StoreRaw()
-get_raw = GetRaw()
+
+store_expression_value = StoreExpressionValue()
+get_expression_value = GetExpressionValue()
 
 
 class ScoreSource(sources.ScoreSource):
@@ -46,11 +47,11 @@ class ScoreSource(sources.ScoreSource):
 
     @contextmanager
     def store(self, mode='result', type='int', scale=1):
-        with store_raw(self, mode, type, scale):
+        with store_expression_value(self, mode, type, scale):
             yield True
 
     def get(self, scale=None):
-        get_raw(self, scale)
+        return get_expression_value(self, scale)
 
 class DataSource(sources.DataSource):
     def __eq__(self, other):
@@ -88,15 +89,14 @@ class DataSource(sources.DataSource):
 
     @contextmanager
     def store(self, mode='result', type='int', scale=1):
-        with store_raw(self, mode, type, scale):
+        with store_expression_value(self, mode, type, scale):
             yield True
 
     def get(self, scale=None):
-        get_raw(self, scale)
-
+        return get_expression_value(self, scale)
 
 def is_comparison_case() -> bool:
-    """Determines whether a comparison dunder method call was intended to compare"""
+    """Determines whether a comparison dunder method call was intended to compare."""
 
     frame = inspect.getouterframes(inspect.currentframe(), 2)[2]
     output = re.compile(r"sources.|optimizer.").search(frame.filename) == None

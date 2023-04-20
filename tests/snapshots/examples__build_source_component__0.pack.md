@@ -30,13 +30,11 @@ tellraw @a [{"score": {"name": "$foo", "objective": "obj.temp"}}, {"score": {"na
 tellraw @a [{"score": {"name": "$value", "objective": "obj.temp"}}, {"nbt": "Items[0]", "block": "~ ~ ~"}, {"nbt": "message", "storage": "example:main", "interpret": true}]
 ```
 
-`@function test:wicked_expressions/scoreboard/setup`
+`@function test:reapermc/wicked_expressions/scoreboard_setup`
 
 ```mcfunction
-help # placeholder contents
-scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
-scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
-scoreboard objectives add obj.temp dummy {"text": "obj.temp", "color": "aqua"}
+scoreboard objectives add reapermc.wicked_expressions dummy "reapermc.wicked_expressions"
+scoreboard objectives add obj.temp dummy "obj.temp"
 ```
 
 ### minecraft
@@ -46,7 +44,7 @@ scoreboard objectives add obj.temp dummy {"text": "obj.temp", "color": "aqua"}
 ```json
 {
   "values": [
-    "test:wicked_expressions/scoreboard/setup"
+    "test:reapermc/wicked_expressions/scoreboard_setup"
   ]
 }
 ```

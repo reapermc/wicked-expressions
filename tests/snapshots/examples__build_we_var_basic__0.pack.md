@@ -28,27 +28,31 @@
 ```json
 {
   "values": [
-    "we_var_basic:wicked_expressions/scoreboard/setup",
-    "we_var_basic:wicked_expressions/flush_variables"
+    "we_var_basic:reapermc/wicked_expressions/scoreboard_setup",
+    "we_var_basic:reapermc/wicked_expressions/runtime_var_flush_score",
+    "we_var_basic:reapermc/wicked_expressions/runtime_var_flush_storage"
   ]
 }
 ```
 
 ### we_var_basic
 
-`@function we_var_basic:wicked_expressions/scoreboard/setup`
+`@function we_var_basic:reapermc/wicked_expressions/scoreboard_setup`
 
 ```mcfunction
-help # placeholder contents
-scoreboard objectives add wicked_expressions dummy {"text": "wicked_expressions", "color": "aqua"}
-scoreboard objectives add wicked_expressions.datastash dummy {"text": "wicked_expressions.datastash", "color": "aqua"}
+scoreboard objectives add reapermc.wicked_expressions dummy "reapermc.wicked_expressions"
 ```
 
-`@function we_var_basic:wicked_expressions/flush_variables`
+`@function we_var_basic:reapermc/wicked_expressions/runtime_var_flush_score`
 
 ```mcfunction
-scoreboard players reset $we_var_basic#int$0 wicked_expressions
-scoreboard players reset $we_var_basic#int$1 wicked_expressions
-scoreboard players reset $we_var_basic#int$2 wicked_expressions
-data modify storage wicked_expressions:private we_var_basic.data.double set value [0.0d, 0.0d, 0.0d]
+scoreboard players reset $we_var_basic#int$0 reapermc.wicked_expressions
+scoreboard players reset $we_var_basic#int$1 reapermc.wicked_expressions
+scoreboard players reset $we_var_basic#int$2 reapermc.wicked_expressions
+```
+
+`@function we_var_basic:reapermc/wicked_expressions/runtime_var_flush_storage`
+
+```mcfunction
+data modify storage reapermc:wicked_expressions we_var_basic.data.double set value [0.0d, 0.0d, 0.0d]
 ```

@@ -1,23 +1,23 @@
 from bolt_expressions.node import ExpressionNode
 from bolt_expressions import Expression
 
-import ./internal_api as internal_api
 from ./sources import ScoreSource, DataSource
 from ./comparison import ExpressionComparison
-from ./low_level import StoreRaw, GetRaw
+from ./raw_operations import StoreExpressionValue, GetExpressionValue
 from ./var import Var, StaticVar
-from ./nbtlib_tag import Bool, Byte, Short, Int, Long, Float, Double, String, List
+from ./nbtlib import Bool, Byte, Short, Int, Long, Float, Double, String, List
 from ./datastash import DataStash
+
+import ./internal_api as internal_api
 
 
 Scoreboard = ctx.inject(internal_api.Scoreboard)
 Data = ctx.inject(internal_api.Data)
 
-is_expression = internal_api.is_expression
 this = Data.entity('@s')
 
 
 ExpressionComparison.monkeypatch(Scoreboard, Data, ScoreSource, DataSource)
-StoreRaw.monkeypatch(ScoreSource, DataSource)
-GetRaw.monkeypatch(ScoreSource, DataSource)
+StoreExpressionValue.monkeypatch(ScoreSource, DataSource)
+GetExpressionValue.monkeypatch(ScoreSource, DataSource)
 DataStash.monkeypatch(Scoreboard, Data)
