@@ -20,7 +20,7 @@ pipeline:
     - mecha
 ```
 
-Once you've required `bolt` and `wicked-expressions`, you are able to import the python package's `api` module directly inside your bolt script.
+Once you've required `bolt` and `wicked_expressions`, you are able to import the package's `api` module directly inside your bolt script.
 
 ```py
 from wicked_expressions:api import Scoreboard
@@ -33,6 +33,6 @@ Now you're free to use the API. Use simple and complex expressions, compare expr
 
 ## Baseline tutorial
 
-The base behavior is very well documented in the [bolt-expressions](https://github.com/rx-modules/bolt-expressions) documentation. You can check it out [here](https://rx-modules.github.io/bolt-expressions/tutorial/).
+The basic behavior is very well documented in the [bolt-expressions](https://github.com/rx-modules/bolt-expressions) documentation. You can check it out [here](https://rx-modules.github.io/bolt-expressions/tutorial/).
 
 The rest of the documentation will solely focus on the differences and new features introduced by this library.

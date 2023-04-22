@@ -1,8 +1,8 @@
 # Checking if score/data exists
 
-Checking if an nbt value or scoreboard value exists in general requires some boilerplate code and the solutions aren't very intuitive in certain cases.
+Normally, checking if an nbt value or scoreboard value exists requires boilerplate code and the solutions aren't very intuitive.
 
-This feature's goal is to fix that.
+This feature attempts to fix that.
 
 ## Simple example
 

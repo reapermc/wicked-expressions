@@ -1,12 +1,12 @@
 # DataStash, aka per-entity data
 
-DataStash allows us to store custom, per-entity NBT. It supports all entities.
+DataStash allows you to store custom, per-entity NBT. It supports all entity types, including players.
 
 ## How it works
 
-We first construct a `DataStash` object using the `DataStash` class. It takes `nbt_path` in string form as it's only parameter.
+We first construct a `DataStash` object. It takes an `nbt_path` string as it's only parameter.
 
-A `DataStash` object has usable methods similar to `Data`. The main difference is that it targets the current `@s` selector.
+A `DataStash` object has usable methods similar to `Data`. The main difference is that it targets the current `@s` selector context.
 
 ```py
 from wicked_expressions:api import DataStash

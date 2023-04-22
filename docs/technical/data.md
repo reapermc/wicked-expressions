@@ -24,7 +24,7 @@ z = Data.block(position: str)
 
 Constructed objects can use comparison operators.
 
-Supports `not`, `else` and `elif`.
+Supports `if`, `not`, `elif` and `else`.
 
 For examples below:
 - `foo` - Constructed `Data` object
@@ -32,7 +32,7 @@ For examples below:
 
 <br>
 
-**` `**
+**`None`**
 ```py
 # equivalent to:
 #   if foo == 1:

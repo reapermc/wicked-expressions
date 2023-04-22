@@ -2,7 +2,7 @@
 
 Defining scoreboards is the same as the base library, with one small twist.
 
-Objectives are created automatically, triggered by `minecraft:load`. We don't need to worry about doing so manually.
+Objectives are created automatically, triggered by `minecraft:load`. No more `scoreboard objectives add ..` required!
 
 
 ## Code Example

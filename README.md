@@ -50,7 +50,7 @@ pipeline:
     - mecha
 ```
 
-Once you've required `bolt` and `wicked-expressions`, you are able to import the python package's `api` module directly inside your bolt scripts.
+Once you've required `bolt` and `wicked_expressions`, you are able to import the python package's `api` module directly inside your bolt scripts.
 
 ```py
 from wicked_expressions:api import Scoreboard, Data
