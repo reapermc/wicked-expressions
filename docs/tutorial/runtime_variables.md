@@ -1,20 +1,21 @@
 # Runtime variables
 
-Ever needed a temporary score, but had to waste time figuring out a name for it? Or worse had to make a whole new scoreboard objective?
-
-Runtime variables offer an easy solution to that!
+Quick and easy anonymous storage/score locations.
 
 
-## What are they?
+## Intro
 
 Runtime variables are an anonymous data storage tool. They are statically typed, flushed on `/reload` and lack names internally.
+
+Each runtime variable you define has to be typed. Under the hood all types are stored as `storage` format. The only exception is the `Int` type, which is stored as a `scoreboard` format instead.
+
 
 
 ## How to use them
 
-To define a runtime variable you first need to import them as well as the desired type.
+To define a runtime variable you first need to import the `Var` class as well as the desired type.
 
-After definition, their methods and usage are pretty much the same as `Data` or `Scoreboard`.
+After definition, their methods and usage are the same as those of `Data` or `Scoreboard`.
 
 ```py
 from wicked_expressions:api import Var, Int, String
@@ -23,11 +24,11 @@ from wicked_expressions:api import Var, Int, String
 x = Var(Int)
 y = Var(String)
 
-# setting the runtime variable to 10
+# example, setting the runtime variable
 x = 10
 y = 'test123'
 
-# we can do anything we want with it
+# well, we can do anything we want with it really
 tellraw @a x
 tellraw @a y
 ```

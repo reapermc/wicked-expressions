@@ -53,7 +53,7 @@ foo.prepend(value: Any)
 
 ### insert
 ```py
-.insert(index: int, value: Any)
+foo.insert(index: int, value: Any)
 ```
 > **`index`** - Index to insert into.<br>
 > **`value`** - Value to insert.

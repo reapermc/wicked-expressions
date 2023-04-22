@@ -1,14 +1,14 @@
 # Checking if a value is an expression
 
-We can easily determine if a given value is an expression or not during compiletime using the `is_expression()` function, which may be useful for developing various kinds of libraries.
+`isinstance` can be used for determining whether a value is an expression or a literal.
 
 
 ```py
-from wicked_expressions:api import Scoreboard, is_expression
+from wicked_expressions:api import Scoreboard, ExpressionNode
 
 x = Scoreboard('test')['$x']
-y = 'I am a string'
+y = 'I am just a literal string'
 
-print(is_expression(x))     # output: True
-print(is_expression(y))     # output: False
+print(isinstance(x, ExpressionNode))     # output: True
+print(isinstance(y, ExpressionNode))     # output: False
 ```

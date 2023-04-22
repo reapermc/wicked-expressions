@@ -10,5 +10,3 @@ as @e[type=zombie]:
 ## Remarks
 
 `this` is equal to a `Data.entity('@s')` constructed object.
-
-It's just easier to use and reduces boilerplate.

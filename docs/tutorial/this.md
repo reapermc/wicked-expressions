@@ -3,7 +3,7 @@
 Helps with reducing boilerplate when working with data modification and the `@s` selector.
 
 
-## The problem
+## The problem in question
 
 Let's say we want a function which sets the `Health` NBT of `@s` to `5`.
 
