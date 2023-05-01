@@ -21,14 +21,14 @@ tests-no-zope = ["cloudpickle", "cloudpickle", "hypothesis", "hypothesis", "mypy
 
 [[package]]
 name = "beet"
-version = "0.84.0"
+version = "0.86.0"
 description = "The Minecraft pack development kit"
 category = "main"
 optional = false
 python-versions = ">=3.10,<4.0"
 files = [
-    {file = "beet-0.84.0-py3-none-any.whl", hash = "sha256:3a4c9111936056d156aea5faaef650bc875f807a9e41d4a591bdd8f26bffe7b1"},
-    {file = "beet-0.84.0.tar.gz", hash = "sha256:633f171abcf392071d70cba15f0c9b435a7b9b56dabc248cd25bf967c9e8d288"},
+    {file = "beet-0.86.0-py3-none-any.whl", hash = "sha256:b75fe7303adff14b450d22f655b07abf1d4e3d6a85c82142115c3bacb1408b70"},
+    {file = "beet-0.86.0.tar.gz", hash = "sha256:aa3beb29f808c1b63151a066ecf06b1f2465dd1bdbdfdf6f598a5ed57dcaee7c"},
 ]
 
 [package.dependencies]
@@ -38,7 +38,7 @@ colorama = {version = "*", markers = "sys_platform == \"win32\""}
 Jinja2 = ">=3.1.2,<4.0.0"
 nbtlib = ">=1.12.1,<2.0.0"
 pathspec = ">=0.11.0,<0.12.0"
-pydantic = ">=1.10.2,<2.0.0"
+pydantic = ">=1.10.7,<2.0.0"
 PyYAML = ">=6.0,<7.0"
 toml = ">=0.10.2,<0.11.0"
 
