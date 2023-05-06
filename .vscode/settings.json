@@ -1,9 +1,9 @@
 {
     "hide-files.files": [
         ".vscode",
-        ".venv",
         ".pytest_cache",
         "wicked_expressions/__pycache__",
+        ".venv",
         ".github"
     ],
     "files.exclude": {
@@ -14,9 +14,9 @@
         "**/.DS_Store": true,
         "**/Thumbs.db": true,
         ".vscode": true,
-        ".venv": true,
         ".pytest_cache": true,
         "wicked_expressions/__pycache__": true,
+        ".venv": true,
         ".github": true
     }
 }

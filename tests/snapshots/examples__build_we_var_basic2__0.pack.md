@@ -35,22 +35,32 @@ data modify storage reapermc:wicked_expressions we_var_basic2.data.list[0] appen
 ```json
 {
   "values": [
-    "we_var_basic2:reapermc/wicked_expressions/scoreboard_setup",
-    "we_var_basic2:reapermc/wicked_expressions/runtime_var_flush_score",
-    "we_var_basic2:reapermc/wicked_expressions/runtime_var_flush_storage"
+    "we_var_basic2:reapermc/wicked_expressions/safe_load"
   ]
 }
 ```
 
 ### we_var_basic2
 
-`@function we_var_basic2:reapermc/wicked_expressions/scoreboard_setup`
+`@function we_var_basic2:reapermc/wicked_expressions/safe_load`
+
+```mcfunction
+function we_var_basic2:reapermc/wicked_expressions/safe_load/scoreboard_setup
+function we_var_basic2:reapermc/wicked_expressions/safe_load/flush_variable/int
+function we_var_basic2:reapermc/wicked_expressions/safe_load/flush_variable/string
+function we_var_basic2:reapermc/wicked_expressions/safe_load/flush_variable/float
+function we_var_basic2:reapermc/wicked_expressions/safe_load/flush_variable/long
+function we_var_basic2:reapermc/wicked_expressions/safe_load/flush_variable/double
+function we_var_basic2:reapermc/wicked_expressions/safe_load/flush_variable/list
+```
+
+`@function we_var_basic2:reapermc/wicked_expressions/safe_load/scoreboard_setup`
 
 ```mcfunction
 scoreboard objectives add reapermc.wicked_expressions dummy
 ```
 
-`@function we_var_basic2:reapermc/wicked_expressions/runtime_var_flush_score`
+`@function we_var_basic2:reapermc/wicked_expressions/safe_load/flush_variable/int`
 
 ```mcfunction
 scoreboard players reset $we_var_basic2#int$0 reapermc.wicked_expressions
@@ -58,12 +68,32 @@ scoreboard players reset $we_var_basic2#int$1 reapermc.wicked_expressions
 scoreboard players reset $we_var_basic2#int$2 reapermc.wicked_expressions
 ```
 
-`@function we_var_basic2:reapermc/wicked_expressions/runtime_var_flush_storage`
+`@function we_var_basic2:reapermc/wicked_expressions/safe_load/flush_variable/string`
 
 ```mcfunction
-data modify storage reapermc:wicked_expressions we_var_basic2.data.long set value [0L]
-data modify storage reapermc:wicked_expressions we_var_basic2.data.float set value [0.0f, 0.0f]
-data modify storage reapermc:wicked_expressions we_var_basic2.data.double set value [0.0d]
-data modify storage reapermc:wicked_expressions we_var_basic2.data.string set value [""]
-data modify storage reapermc:wicked_expressions we_var_basic2.data.list set value [[]]
+data modify storage reapermc:wicked_expressions we_var_basic2.data.string append value ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""]
+```
+
+`@function we_var_basic2:reapermc/wicked_expressions/safe_load/flush_variable/float`
+
+```mcfunction
+data modify storage reapermc:wicked_expressions we_var_basic2.data.float append value [0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f]
+```
+
+`@function we_var_basic2:reapermc/wicked_expressions/safe_load/flush_variable/long`
+
+```mcfunction
+data modify storage reapermc:wicked_expressions we_var_basic2.data.long append value [0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L, 0L]
+```
+
+`@function we_var_basic2:reapermc/wicked_expressions/safe_load/flush_variable/double`
+
+```mcfunction
+data modify storage reapermc:wicked_expressions we_var_basic2.data.double append value [0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d]
+```
+
+`@function we_var_basic2:reapermc/wicked_expressions/safe_load/flush_variable/list`
+
+```mcfunction
+data modify storage reapermc:wicked_expressions we_var_basic2.data.list append value [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []]
 ```

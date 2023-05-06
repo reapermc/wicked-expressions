@@ -51,14 +51,20 @@ execute if score $is_not_equal reapermc.wicked_expressions matches 1 run say fal
 {
   "values": [
     "we_basic1:init_expressions",
-    "we_basic1:reapermc/wicked_expressions/scoreboard_setup"
+    "we_basic1:reapermc/wicked_expressions/safe_load"
   ]
 }
 ```
 
 ### we_basic1
 
-`@function we_basic1:reapermc/wicked_expressions/scoreboard_setup`
+`@function we_basic1:reapermc/wicked_expressions/safe_load`
+
+```mcfunction
+function we_basic1:reapermc/wicked_expressions/safe_load/scoreboard_setup
+```
+
+`@function we_basic1:reapermc/wicked_expressions/safe_load/scoreboard_setup`
 
 ```mcfunction
 scoreboard objectives add reapermc.wicked_expressions dummy

@@ -25,7 +25,13 @@ data modify storage demo:prefix/temp items[2] set value {id: "iron_sword", Count
 data modify storage demo:prefix/temp foo set from storage demo:prefix/temp bar
 ```
 
-`@function test:reapermc/wicked_expressions/scoreboard_setup`
+`@function test:reapermc/wicked_expressions/safe_load`
+
+```mcfunction
+function test:reapermc/wicked_expressions/safe_load/scoreboard_setup
+```
+
+`@function test:reapermc/wicked_expressions/safe_load/scoreboard_setup`
 
 ```mcfunction
 scoreboard objectives add reapermc.wicked_expressions dummy
@@ -39,7 +45,7 @@ scoreboard objectives add abc.main dummy
 ```json
 {
   "values": [
-    "test:reapermc/wicked_expressions/scoreboard_setup"
+    "test:reapermc/wicked_expressions/safe_load"
   ]
 }
 ```

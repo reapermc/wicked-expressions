@@ -1,0 +1,25 @@
+from contextlib import contextmanager
+from ./config import Config
+
+
+_SAFE_LOAD_PATH = f"{Config.ROOT_LOCAL}/safe_load"
+_used_subpaths = set()
+
+
+@contextmanager
+def safe_load(subpath, append=False):
+    full_path = f"{_SAFE_LOAD_PATH}/{subpath}"
+
+    merge function_tag minecraft:load {"values": [_SAFE_LOAD_PATH]}
+
+    if subpath not in _used_subpaths:
+        _used_subpaths.add(subpath)
+        append function _SAFE_LOAD_PATH:
+            function full_path
+
+    if append:
+        append function full_path:
+            yield True
+    else:
+        function full_path:
+            yield True

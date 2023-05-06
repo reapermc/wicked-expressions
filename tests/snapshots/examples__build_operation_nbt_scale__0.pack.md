@@ -59,7 +59,13 @@ data modify storage demo list insert 3 value 0
 execute store result storage demo list[3] int 100 run scoreboard players get $i3 bolt.expr.temp
 ```
 
-`@function test:reapermc/wicked_expressions/scoreboard_setup`
+`@function test:reapermc/wicked_expressions/safe_load`
+
+```mcfunction
+function test:reapermc/wicked_expressions/safe_load/scoreboard_setup
+```
+
+`@function test:reapermc/wicked_expressions/safe_load/scoreboard_setup`
 
 ```mcfunction
 scoreboard objectives add reapermc.wicked_expressions dummy
@@ -81,7 +87,7 @@ scoreboard objectives add bolt.expr.temp dummy
 {
   "values": [
     "test:init_expressions",
-    "test:reapermc/wicked_expressions/scoreboard_setup"
+    "test:reapermc/wicked_expressions/safe_load"
   ]
 }
 ```

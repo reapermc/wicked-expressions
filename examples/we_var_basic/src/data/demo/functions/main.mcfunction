@@ -1,13 +1,7 @@
-from wicked_expressions:api import
-    Var,
-    StaticVar,
-    Double,
-    Int,
-    List,
-    Float
+from wicked_expressions:api import Var, StaticVar, Double, Int, List, Float, Scoreboard
 
 
-
+foo = Scoreboard('foo')
 x = Var(Int)
 y = Var(Int)
 
@@ -34,22 +28,3 @@ staticvar_test2()
 
 print(a)
 print(b)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -43,7 +43,7 @@ execute unless entity @s[type=marker] run function we_datastash_basic1:reapermc/
 ```json
 {
   "values": [
-    "we_datastash_basic1:reapermc/wicked_expressions/scoreboard_setup",
+    "we_datastash_basic1:reapermc/wicked_expressions/safe_load",
     "reapermc:wicked_expressions/datastash/garbage_collector"
   ]
 }
@@ -51,7 +51,13 @@ execute unless entity @s[type=marker] run function we_datastash_basic1:reapermc/
 
 ### we_datastash_basic1
 
-`@function we_datastash_basic1:reapermc/wicked_expressions/scoreboard_setup`
+`@function we_datastash_basic1:reapermc/wicked_expressions/safe_load`
+
+```mcfunction
+function we_datastash_basic1:reapermc/wicked_expressions/safe_load/scoreboard_setup
+```
+
+`@function we_datastash_basic1:reapermc/wicked_expressions/safe_load/scoreboard_setup`
 
 ```mcfunction
 scoreboard objectives add reapermc.wicked_expressions dummy

@@ -47,7 +47,13 @@ execute if score $test obj.temp matches 123 run say hello
 execute unless score $test obj.temp matches 123 if score $test1 obj.temp = $test2 obj.temp run say hello2
 ```
 
-`@function test:reapermc/wicked_expressions/scoreboard_setup`
+`@function test:reapermc/wicked_expressions/safe_load`
+
+```mcfunction
+function test:reapermc/wicked_expressions/safe_load/scoreboard_setup
+```
+
+`@function test:reapermc/wicked_expressions/safe_load/scoreboard_setup`
 
 ```mcfunction
 scoreboard objectives add reapermc.wicked_expressions dummy
@@ -69,7 +75,7 @@ scoreboard objectives add bolt.expr.temp dummy
 {
   "values": [
     "test:init_expressions",
-    "test:reapermc/wicked_expressions/scoreboard_setup"
+    "test:reapermc/wicked_expressions/safe_load"
   ]
 }
 ```
