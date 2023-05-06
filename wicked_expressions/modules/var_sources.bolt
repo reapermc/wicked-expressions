@@ -6,6 +6,7 @@ import nbtlib
 from ./sources import ScoreSource, DataSource
 from ./utils import logger, defer
 from ./config import Config
+from ./safe_load import safe_load
 
 
 class BaseVar:
@@ -42,56 +43,40 @@ class BaseVar:
         path = frame.filename[len(str(ctx.directory)):]
         return (frame.lineno, path)
 
-    @defer
-    @staticmethod
-    def flush_variables_setup():
-        BoolSource._flush_on_load()
-        ByteSource._flush_on_load()
-        ShortSource._flush_on_load()
-        IntSource._flush_on_load()
-        LongSource._flush_on_load()
-        FloatSource._flush_on_load()
-        DoubleSource._flush_on_load()
-        StringSource._flush_on_load()
-        ListSource._flush_on_load()
-
-
 class VarScoreSource(ScoreSource, BaseVar):
     @classmethod
     def create(cls, is_static: bool):
         location_index = cls._evaluate_location_index(is_static)
-        return cls(f"${ctx.project_id}#{cls._var_type}${location_index}", Config.SCOREBOARD_ROOT)
+        full_location = f"${ctx.project_id}#{cls._var_type}${location_index}"
+        
+        cls._setup_flushing(full_location)
+        return cls(full_location, Config.SCOREBOARD_ROOT)
 
     @classmethod
-    def _flush_on_load(cls):
-        mcfunc_path = f"{Config.ROOT_LOCAL}/runtime_var_flush_score"
-
-        for index in range(cls._location_index+1):
-            merge function_tag minecraft:load {"values": [mcfunc_path]}
-            append function mcfunc_path:
-                scoreboard players reset f"${ctx.project_id}#{cls._var_type}${index}" Config.SCOREBOARD_ROOT
+    def _setup_flushing(cls, full_location):
+        with safe_load(f"flush_variable/{cls._var_type}", append=True):
+            scoreboard players reset full_location Config.SCOREBOARD_ROOT
 
 class VarStorageSource(DataSource, BaseVar):
     @classmethod
     def create(cls, is_static: bool):
         location_index = cls._evaluate_location_index(is_static)
+        cls._setup_flushing(location_index)
         return cls('storage', Config.STORAGE_ROOT)[ctx.project_id]['data'][cls._var_type][location_index]
 
     @classmethod
-    def _flush_on_load(cls):
-        mcfunc_path = f"{Config.ROOT_LOCAL}/runtime_var_flush_storage"
+    def _setup_flushing(cls, location_index):
+        slot_block_size = 64
 
-        if cls._location_index < 0:
-            return 0
+        if not location_index % slot_block_size:
+            slot_block = []
+            full_location = f"{ctx.project_id}.data.{cls._var_type}"
 
-        fresh_slots = []
-        for n in range(cls._location_index+1):
-            fresh_slots.append(cls._default_slot_value)
+            for n in range(slot_block_size):
+                slot_block.append(cls._default_slot_value)
 
-        merge function_tag minecraft:load {"values": [mcfunc_path]}
-        append function mcfunc_path:
-            nbt_path = f"{ctx.project_id}.data.{cls._var_type}"
-            data modify storage Config.STORAGE_ROOT nbt_path set value fresh_slots
+            with safe_load(f"flush_variable/{cls._var_type}", append=True):
+                data modify storage Config.STORAGE_ROOT full_location append value slot_block
 
 class BoolSource(VarScoreSource):
     _var_type = 'bool'

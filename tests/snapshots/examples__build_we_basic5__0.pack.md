@@ -31,14 +31,20 @@ execute unless data storage test:storage_0 data_0 run say False
 ```json
 {
   "values": [
-    "we_basic5:reapermc/wicked_expressions/scoreboard_setup"
+    "we_basic5:reapermc/wicked_expressions/safe_load"
   ]
 }
 ```
 
 ### we_basic5
 
-`@function we_basic5:reapermc/wicked_expressions/scoreboard_setup`
+`@function we_basic5:reapermc/wicked_expressions/safe_load`
+
+```mcfunction
+function we_basic5:reapermc/wicked_expressions/safe_load/scoreboard_setup
+```
+
+`@function we_basic5:reapermc/wicked_expressions/safe_load/scoreboard_setup`
 
 ```mcfunction
 scoreboard objectives add reapermc.wicked_expressions dummy

@@ -45,14 +45,20 @@ execute if score $is_not_equal reapermc.wicked_expressions matches 0 run say dat
 ```json
 {
   "values": [
-    "we_advanced1:reapermc/wicked_expressions/scoreboard_setup"
+    "we_advanced1:reapermc/wicked_expressions/safe_load"
   ]
 }
 ```
 
 ### we_advanced1
 
-`@function we_advanced1:reapermc/wicked_expressions/scoreboard_setup`
+`@function we_advanced1:reapermc/wicked_expressions/safe_load`
+
+```mcfunction
+function we_advanced1:reapermc/wicked_expressions/safe_load/scoreboard_setup
+```
+
+`@function we_advanced1:reapermc/wicked_expressions/safe_load/scoreboard_setup`
 
 ```mcfunction
 scoreboard objectives add reapermc.wicked_expressions dummy

@@ -3,6 +3,7 @@ import bolt_expressions.node as be_node
 import bolt_expressions.api as be_api
 
 from ./config import Config
+from ./safe_load import safe_load
 import ./sources as sources
 
 
@@ -21,13 +22,10 @@ class Scoreboard(be_api.Scoreboard):
         return Score(self, name)
 
     def create_objective(self, objective_id: str, criteria: str, display_name: str | dict):
-        setup_path = f"{Config.ROOT_LOCAL}/scoreboard_setup"
-
         if isinstance(display_name, str):
             display_name = display_name
 
-        merge function_tag minecraft:load {"values": [setup_path]}
-        append function setup_path:
+        with safe_load('scoreboard_setup', append=True):
             if display_name is None:
                 scoreboard objectives add objective_id criteria
             else:

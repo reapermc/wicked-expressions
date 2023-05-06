@@ -21,7 +21,13 @@
 execute as @e[type=zombie] store result entity @s Health float 1 run scoreboard players get $x foo
 ```
 
-`@function test:reapermc/wicked_expressions/scoreboard_setup`
+`@function test:reapermc/wicked_expressions/safe_load`
+
+```mcfunction
+function test:reapermc/wicked_expressions/safe_load/scoreboard_setup
+```
+
+`@function test:reapermc/wicked_expressions/safe_load/scoreboard_setup`
 
 ```mcfunction
 scoreboard objectives add reapermc.wicked_expressions dummy
@@ -35,7 +41,7 @@ scoreboard objectives add foo dummy
 ```json
 {
   "values": [
-    "test:reapermc/wicked_expressions/scoreboard_setup"
+    "test:reapermc/wicked_expressions/safe_load"
   ]
 }
 ```

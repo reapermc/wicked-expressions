@@ -30,14 +30,20 @@ execute if score $score_0 objective_0 matches 10 run say hello!
 ```json
 {
   "values": [
-    "we_basic4:reapermc/wicked_expressions/scoreboard_setup"
+    "we_basic4:reapermc/wicked_expressions/safe_load"
   ]
 }
 ```
 
 ### we_basic4
 
-`@function we_basic4:reapermc/wicked_expressions/scoreboard_setup`
+`@function we_basic4:reapermc/wicked_expressions/safe_load`
+
+```mcfunction
+function we_basic4:reapermc/wicked_expressions/safe_load/scoreboard_setup
+```
+
+`@function we_basic4:reapermc/wicked_expressions/safe_load/scoreboard_setup`
 
 ```mcfunction
 scoreboard objectives add reapermc.wicked_expressions dummy

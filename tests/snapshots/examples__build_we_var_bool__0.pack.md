@@ -34,22 +34,28 @@ execute if score $temp reapermc.wicked_expressions matches 0 run say yes
 ```json
 {
   "values": [
-    "we_var_bool:reapermc/wicked_expressions/scoreboard_setup",
-    "we_var_bool:reapermc/wicked_expressions/runtime_var_flush_score"
+    "we_var_bool:reapermc/wicked_expressions/safe_load"
   ]
 }
 ```
 
 ### we_var_bool
 
-`@function we_var_bool:reapermc/wicked_expressions/scoreboard_setup`
+`@function we_var_bool:reapermc/wicked_expressions/safe_load`
+
+```mcfunction
+function we_var_bool:reapermc/wicked_expressions/safe_load/scoreboard_setup
+function we_var_bool:reapermc/wicked_expressions/safe_load/flush_variable/bool
+```
+
+`@function we_var_bool:reapermc/wicked_expressions/safe_load/scoreboard_setup`
 
 ```mcfunction
 scoreboard objectives add reapermc.wicked_expressions dummy
 scoreboard objectives add test dummy
 ```
 
-`@function we_var_bool:reapermc/wicked_expressions/runtime_var_flush_score`
+`@function we_var_bool:reapermc/wicked_expressions/safe_load/flush_variable/bool`
 
 ```mcfunction
 scoreboard players reset $we_var_bool#bool$0 reapermc.wicked_expressions

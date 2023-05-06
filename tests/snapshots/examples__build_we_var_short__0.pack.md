@@ -33,24 +33,36 @@ data modify storage reapermc:wicked_expressions we_var_short.data.short[0] set f
 ```json
 {
   "values": [
-    "we_var_short:reapermc/wicked_expressions/scoreboard_setup",
-    "we_var_short:reapermc/wicked_expressions/runtime_var_flush_storage"
+    "we_var_short:reapermc/wicked_expressions/safe_load"
   ]
 }
 ```
 
 ### we_var_short
 
-`@function we_var_short:reapermc/wicked_expressions/scoreboard_setup`
+`@function we_var_short:reapermc/wicked_expressions/safe_load`
+
+```mcfunction
+function we_var_short:reapermc/wicked_expressions/safe_load/scoreboard_setup
+function we_var_short:reapermc/wicked_expressions/safe_load/flush_variable/byte
+function we_var_short:reapermc/wicked_expressions/safe_load/flush_variable/short
+```
+
+`@function we_var_short:reapermc/wicked_expressions/safe_load/scoreboard_setup`
 
 ```mcfunction
 scoreboard objectives add reapermc.wicked_expressions dummy
 scoreboard objectives add test dummy
 ```
 
-`@function we_var_short:reapermc/wicked_expressions/runtime_var_flush_storage`
+`@function we_var_short:reapermc/wicked_expressions/safe_load/flush_variable/byte`
 
 ```mcfunction
-data modify storage reapermc:wicked_expressions we_var_short.data.byte set value [0b]
-data modify storage reapermc:wicked_expressions we_var_short.data.short set value [0s]
+data modify storage reapermc:wicked_expressions we_var_short.data.byte append value [0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b]
+```
+
+`@function we_var_short:reapermc/wicked_expressions/safe_load/flush_variable/short`
+
+```mcfunction
+data modify storage reapermc:wicked_expressions we_var_short.data.short append value [0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s]
 ```

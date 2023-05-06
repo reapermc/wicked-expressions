@@ -102,12 +102,3 @@ def is_comparison_case() -> bool:
     output = re.compile(r"sources.|optimizer.").search(frame.filename) == None
     # print([' ', '+'][output], frame.filename)
     return output
-
-
-
-
-
-
-
-
-
