@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v0.5.3 (2023-05-06)
+### Fix
+* Wrong load order and style ([`d15c0ae`](https://github.com/reapermc/wicked-expressions/commit/d15c0ae5140f0fe01c761683695a0d30f7e191cf))
+
+### Documentation
+* Update docs ([`ee474f3`](https://github.com/reapermc/wicked-expressions/commit/ee474f3d8a01509f7cb8e49406e0d97b2778f554))
+
 ## v0.5.2 (2023-04-20)
 ### Fix
 * Default Scoreboard display_name value ([`0df9bfb`](https://github.com/reapermc/wicked-expressions/commit/0df9bfbe1f60b24496610d33ca16d89d2dcd0eb9))
