@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.6.0 (2023-05-15)
+### Feature
+* Add Rebindable class ([`194b17c`](https://github.com/reapermc/wicked-expressions/commit/194b17c12ed3727207051af62ef150a92d90f159))
+
 ## v0.5.3 (2023-05-06)
 ### Fix
 * Wrong load order and style ([`d15c0ae`](https://github.com/reapermc/wicked-expressions/commit/d15c0ae5140f0fe01c761683695a0d30f7e191cf))
