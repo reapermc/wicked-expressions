@@ -82,14 +82,14 @@ css = ["tinycss2 (>=1.1.0,<1.2)"]
 
 [[package]]
 name = "bolt"
-version = "0.33.2"
+version = "0.35.0"
 description = "Supercharge Minecraft commands with Python"
 category = "main"
 optional = false
 python-versions = ">=3.10,<4.0"
 files = [
-    {file = "bolt-0.33.2-py3-none-any.whl", hash = "sha256:6bf119c70d927eaaa3e9a525f986367cb29c2356020b01e586d982fa6dc036fb"},
-    {file = "bolt-0.33.2.tar.gz", hash = "sha256:13e28b54ebf581254535a3406fbb075219b1d8a9886330b392c40788c0822cfb"},
+    {file = "bolt-0.35.0-py3-none-any.whl", hash = "sha256:dc2a711da873170d050ef0500e124b34dc9bc3768fe405821203d5928f750510"},
+    {file = "bolt-0.35.0.tar.gz", hash = "sha256:075f0aa346ac3a6fe93635941b4d420db86f4b166d28d9a72791a1e21b9e87b8"},
 ]
 
 [package.dependencies]
