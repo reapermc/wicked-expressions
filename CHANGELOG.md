@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.6.1 (2023-05-25)
+### Fix
+* Remove datastash, throws weird errors ([`f7a195b`](https://github.com/reapermc/wicked-expressions/commit/f7a195b95cb165a21859fba5b57718e9cff45165))
+
 ## v0.6.0 (2023-05-15)
 ### Feature
 * Add Rebindable class ([`194b17c`](https://github.com/reapermc/wicked-expressions/commit/194b17c12ed3727207051af62ef150a92d90f159))
