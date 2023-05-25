@@ -16,3 +16,5 @@ dist/
 
 examples/template
 examples/docs_test
+
+*.bak

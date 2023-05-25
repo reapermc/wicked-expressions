@@ -6,7 +6,7 @@ from ./comparison import ExpressionComparison
 from ./raw_operations import StoreExpressionValue, GetExpressionValue
 from ./var import Var, StaticVar
 from ./nbtlib import Bool, Byte, Short, Int, Long, Float, Double, String, List
-from ./datastash import DataStash
+# from ./datastash import DataStash
 from ./rebindable import Rebindable
 
 import ./internal_api as internal_api
@@ -21,4 +21,4 @@ this = Data.entity('@s')
 ExpressionComparison.monkeypatch(Scoreboard, Data, ScoreSource, DataSource)
 StoreExpressionValue.monkeypatch(ScoreSource, DataSource)
 GetExpressionValue.monkeypatch(ScoreSource, DataSource)
-DataStash.monkeypatch(Scoreboard, Data)
+# DataStash.monkeypatch(Scoreboard, Data)
