@@ -43,18 +43,11 @@ data modify storage reapermc:wicked_expressions we_var_basic1.data.float[0] set 
 `@function we_var_basic1:reapermc/wicked_expressions/safe_load`
 
 ```mcfunction
-function we_var_basic1:reapermc/wicked_expressions/safe_load/scoreboard_setup
 function we_var_basic1:reapermc/wicked_expressions/safe_load/flush_variable/byte
 function we_var_basic1:reapermc/wicked_expressions/safe_load/flush_variable/bool
 function we_var_basic1:reapermc/wicked_expressions/safe_load/flush_variable/float
 function we_var_basic1:reapermc/wicked_expressions/safe_load/flush_variable/double
 function we_var_basic1:reapermc/wicked_expressions/safe_load/flush_variable/int
-```
-
-`@function we_var_basic1:reapermc/wicked_expressions/safe_load/scoreboard_setup`
-
-```mcfunction
-scoreboard objectives add reapermc.wicked_expressions dummy
 ```
 
 `@function we_var_basic1:reapermc/wicked_expressions/safe_load/flush_variable/byte`

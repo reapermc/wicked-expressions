@@ -68,7 +68,6 @@ function test:reapermc/wicked_expressions/safe_load/scoreboard_setup
 `@function test:reapermc/wicked_expressions/safe_load/scoreboard_setup`
 
 ```mcfunction
-scoreboard objectives add reapermc.wicked_expressions dummy
 scoreboard objectives add obj dummy
 ```
 

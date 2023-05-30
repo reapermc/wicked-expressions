@@ -46,7 +46,6 @@ function we_var_basic:reapermc/wicked_expressions/safe_load/flush_variable/doubl
 `@function we_var_basic:reapermc/wicked_expressions/safe_load/scoreboard_setup`
 
 ```mcfunction
-scoreboard objectives add reapermc.wicked_expressions dummy
 scoreboard objectives add foo dummy
 ```
 

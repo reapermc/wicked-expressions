@@ -45,19 +45,12 @@ data modify storage reapermc:wicked_expressions we_var_basic2.data.list[0] appen
 `@function we_var_basic2:reapermc/wicked_expressions/safe_load`
 
 ```mcfunction
-function we_var_basic2:reapermc/wicked_expressions/safe_load/scoreboard_setup
 function we_var_basic2:reapermc/wicked_expressions/safe_load/flush_variable/int
 function we_var_basic2:reapermc/wicked_expressions/safe_load/flush_variable/string
 function we_var_basic2:reapermc/wicked_expressions/safe_load/flush_variable/float
 function we_var_basic2:reapermc/wicked_expressions/safe_load/flush_variable/long
 function we_var_basic2:reapermc/wicked_expressions/safe_load/flush_variable/double
 function we_var_basic2:reapermc/wicked_expressions/safe_load/flush_variable/list
-```
-
-`@function we_var_basic2:reapermc/wicked_expressions/safe_load/scoreboard_setup`
-
-```mcfunction
-scoreboard objectives add reapermc.wicked_expressions dummy
 ```
 
 `@function we_var_basic2:reapermc/wicked_expressions/safe_load/flush_variable/int`

@@ -19,8 +19,8 @@
 
 ```mcfunction
 scoreboard players operation $score_0 objective_0 = $test objective_0
-execute if score $score_0 objective_0 matches 5 run say hello!
-execute if score $score_0 objective_0 matches 10 run say hello!
+execute if score $score_0 objective_0 matches 5 if score foo tmp matches 10 run say hello!
+execute if score $score_0 objective_0 matches 10 if score foo tmp matches 10 run say hello!
 ```
 
 ### minecraft
@@ -46,6 +46,6 @@ function we_basic4:reapermc/wicked_expressions/safe_load/scoreboard_setup
 `@function we_basic4:reapermc/wicked_expressions/safe_load/scoreboard_setup`
 
 ```mcfunction
-scoreboard objectives add reapermc.wicked_expressions dummy
 scoreboard objectives add objective_0 dummy
+scoreboard objectives add reapermc.wicked_expressions dummy
 ```

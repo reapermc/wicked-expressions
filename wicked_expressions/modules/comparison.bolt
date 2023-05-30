@@ -1,10 +1,17 @@
 from contextlib import contextmanager
+from bolt_expressions import ExpressionNode
+from bolt import Runtime
 
 from ./utils import Rebindable, parse_holder
 from ./config import Config
 
 
+runtime = ctx.inject(Runtime)
+
+
 class ExpressionComparison(Rebindable):
+    last_bool_check = None
+    incr_index = 0
     _INVERTED_OPERATOR = {
         '==': '!=',
         '!=': '==',
@@ -20,73 +27,107 @@ class ExpressionComparison(Rebindable):
         self.arg_1 = arg_1
         self.initialized = initialized
         self.check_exists = check_exists
+        self.temp_scoreboard = self.Scoreboard(Config.SCOREBOARD_ROOT)
+        self.temp_storage = self.Data.storage(Config.STORAGE_ROOT)
 
     @classmethod
     def monkeypatch(cls, Scoreboard, Data, ScoreSource, DataSource):
+        cls.Scoreboard = Scoreboard
+        cls.Data = Data
         cls.ScoreSource = ScoreSource
         cls.DataSource = DataSource
-        cls.temp_scoreboard = Scoreboard(Config.SCOREBOARD_ROOT)
-        cls.temp_storage = Data.storage(Config.STORAGE_ROOT)
+
+    @classmethod
+    def incr(cls):
+        tmp = cls.incr_index
+        cls.incr_index += 1
+        return tmp
+
+    @contextmanager
+    def autonest(self):
+        nest_path = ~/nested_{self.incr()}
+
+        with runtime.scope() as commands:
+            yield True
+        if not commands:
+            return
+        if score foo tmp matches 10:
+            if len(commands) == 1:
+                runtime.commands.append(commands[0])
+            else:
+                execute function nest_path:
+                    runtime.commands.extend(commands)
 
     @contextmanager
     def __branch__(self):
         score_count = 0
-        
+
         if isinstance(self.arg_0, self.ScoreSource):
             score_count += 1
         if isinstance(self.arg_1, self.ScoreSource):
             score_count += 1
         
+        if not isinstance(self.arg_1, ExpressionNode) and self.arg_1 in (True, False):
+            self.arg_1 = int(self.arg_1)
+
         # exists check
         if self.check_exists:
             if isinstance(self.arg_0, self.ScoreSource):
                 with self.compare_score_to_score(self.arg_0, self.arg_0):
-                    yield True
+                    with self.autonest():
+                        yield True
             elif isinstance(self.arg_0, self.DataSource):
                 with self.check_data_exists(self.arg_0):
-                    yield True
-        
+                    with self.autonest():
+                        yield True
+
         # pseudo bool check
         # Any :: None
         elif self.arg_1 is None:
             with self.check_boolean(self.arg_0):
-                yield True
-        
+                with self.autonest():
+                    yield True
+
         # ScoreSource :: ScoreSource
         elif score_count == 2:
             with self.compare_score_to_score(self.arg_0, self.arg_1):
-                yield True
+                with self.autonest():
+                    yield True
         
         # ScoreSource :: Any || Any :: ScoreSource
         elif score_count == 1:
             # Any = DataSource
             if isinstance(self.arg_0, self.DataSource) or isinstance(self.arg_1, self.DataSource):
                 with self.compare_any_to_any(self.arg_0, self.arg_1):
-                    yield True
+                    with self.autonest():
+                        yield True
             # Any = ScoreSource
             else:
                 with self.compare_score_to_constant(self.arg_0, self.arg_1):
-                    yield True
+                    with self.autonest():
+                        yield True
     
         # DataSource :: DataSource
         elif score_count == 0:
             if self.operator in ('==', '!='):
                 with self.compare_data_to_data(self.arg_0, self.arg_1):
-                    yield True
+                    with self.autonest():
+                        yield True
             else:
                 with self.compare_any_to_any(self.arg_0, self.arg_1):
-                    yield True
+                    with self.autonest():
+                        yield True
 
         self.initialized = True
 
     def __not__(self):
-        return ExpressionComparison(self.arg_0, self._INVERTED_OPERATOR[self.operator], self.arg_1, initialized=self.initialized, check_exists=self.check_exists)
+        return self.__class__(self.arg_0, self._INVERTED_OPERATOR[self.operator], self.arg_1, initialized=self.initialized, check_exists=self.check_exists)
 
     @contextmanager
     def check_boolean(self, arg_0):
         temp = self.temp_scoreboard['$temp']
 
-        if not self.initialized:
+        if self.last_bool_check != str(arg_0):       # hacky fix since initializing doesnt work here
             temp = arg_0
 
         if self.operator == '==':
@@ -95,6 +136,13 @@ class ExpressionComparison(Rebindable):
         elif self.operator == '!=':
             if score temp.holder temp.obj matches 0:
                 yield True
+
+        # self.last_bool_check = str(arg_0)
+        self._set_last_bool_check(str(arg_0))
+
+    @classmethod
+    def _set_last_bool_check(cls, value):
+        cls.last_bool_check = value
 
     @contextmanager
     def compare_score_to_constant(self, arg_0, arg_1):

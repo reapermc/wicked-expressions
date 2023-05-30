@@ -51,7 +51,6 @@ function test:reapermc/wicked_expressions/safe_load/scoreboard_setup
 `@function test:reapermc/wicked_expressions/safe_load/scoreboard_setup`
 
 ```mcfunction
-scoreboard objectives add reapermc.wicked_expressions dummy
 scoreboard objectives add abc.main dummy
 ```
 
@@ -98,8 +97,8 @@ scoreboard players set $0 bolt.expr.const 0
 {
   "values": [
     "test:init_expressions",
-    "test:reapermc/wicked_expressions/safe_load",
-    "test:load"
+    "test:load",
+    "test:reapermc/wicked_expressions/safe_load"
   ]
 }
 ```
