@@ -21,7 +21,7 @@
 execute if score #value abc.temp matches 100.. run scoreboard players set #value abc.temp 0
 execute if score #value abc.temp matches 100.. run scoreboard players set #value abc.temp 0
 execute store result score #value abc.temp run scoreboard players add #foo abc.temp 1
-execute if score $435asd abc.main matches 123 run say hello
+execute if score $435asd abc.main matches 123 if score foo tmp matches 10 run say hello
 ```
 
 `@function test:reapermc/wicked_expressions/safe_load`
@@ -33,9 +33,9 @@ function test:reapermc/wicked_expressions/safe_load/scoreboard_setup
 `@function test:reapermc/wicked_expressions/safe_load/scoreboard_setup`
 
 ```mcfunction
-scoreboard objectives add reapermc.wicked_expressions dummy
 scoreboard objectives add abc.main dummy
 scoreboard objectives add abc.temp dummy
+scoreboard objectives add reapermc.wicked_expressions dummy
 ```
 
 `@function test:operations`

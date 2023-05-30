@@ -43,16 +43,9 @@ data modify storage reapermc:wicked_expressions we_var_short.data.short[0] set f
 `@function we_var_short:reapermc/wicked_expressions/safe_load`
 
 ```mcfunction
-function we_var_short:reapermc/wicked_expressions/safe_load/scoreboard_setup
 function we_var_short:reapermc/wicked_expressions/safe_load/flush_variable/byte
 function we_var_short:reapermc/wicked_expressions/safe_load/flush_variable/short
-```
-
-`@function we_var_short:reapermc/wicked_expressions/safe_load/scoreboard_setup`
-
-```mcfunction
-scoreboard objectives add reapermc.wicked_expressions dummy
-scoreboard objectives add test dummy
+function we_var_short:reapermc/wicked_expressions/safe_load/scoreboard_setup
 ```
 
 `@function we_var_short:reapermc/wicked_expressions/safe_load/flush_variable/byte`
@@ -65,4 +58,10 @@ data modify storage reapermc:wicked_expressions we_var_short.data.byte append va
 
 ```mcfunction
 data modify storage reapermc:wicked_expressions we_var_short.data.short append value [0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s, 0s]
+```
+
+`@function we_var_short:reapermc/wicked_expressions/safe_load/scoreboard_setup`
+
+```mcfunction
+scoreboard objectives add test dummy
 ```

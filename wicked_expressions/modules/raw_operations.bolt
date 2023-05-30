@@ -1,11 +1,12 @@
 from contextlib import contextmanager
+import bolt_expressions.sources as sources
 from ./utils import Rebindable, parse_holder
 
 
 class StoreExpressionValue(Rebindable):
     @contextmanager
     def __call__(self, expression, mode='result', type='int', scale=1):
-        if isinstance(expression, self.ScoreSource):
+        if isinstance(expression, sources.ScoreSource):
             holder = parse_holder(expression.holder)
 
             if mode == 'result':
@@ -15,7 +16,7 @@ class StoreExpressionValue(Rebindable):
                 store success score holder expression.obj:
                     yield True
 
-        elif isinstance(expression, self.DataSource):
+        elif isinstance(expression, sources.DataSource):
             if expression._type == 'storage':
                 if mode == 'result':
                     if type == 'byte':
@@ -136,17 +137,12 @@ class StoreExpressionValue(Rebindable):
                         store success block expression._target expression._path short scale:
                             yield True
 
-    @classmethod
-    def monkeypatch(cls, ScoreSource, DataSource):
-        cls.ScoreSource = ScoreSource
-        cls.DataSource = DataSource
-
 class GetExpressionValue(Rebindable):
     def __call__(self, expression, scale=1):
-        if isinstance(expression, self.ScoreSource):
+        if isinstance(expression, sources.ScoreSource):
             holder = parse_holder(expression.holder)
             scoreboard players get holder expression.obj
-        elif isinstance(expression, self.DataSource):
+        elif isinstance(expression, sources.DataSource):
             if expression._type == 'storage':
                 if scale is None:
                     data get storage expression._target expression._path

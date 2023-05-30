@@ -19,6 +19,4 @@ this = Data.entity('@s')
 
 
 ExpressionComparison.monkeypatch(Scoreboard, Data, ScoreSource, DataSource)
-StoreExpressionValue.monkeypatch(ScoreSource, DataSource)
-GetExpressionValue.monkeypatch(ScoreSource, DataSource)
 # DataStash.monkeypatch(Scoreboard, Data)
