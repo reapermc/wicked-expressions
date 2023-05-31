@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "wicked_expressions"
-version = "0.6.3"
+version = "0.6.4"
 description = "Extension of bolt-expressions written in Bolt."
 authors = ["Yeti <arcticyeti1@gmail.com>"]
 license = "MIT"
