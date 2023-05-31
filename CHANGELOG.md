@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v0.6.3 (2023-05-31)
+### Fix
+
+* Oops uneccessary copy pasted score check ([`803173e`](https://github.com/reapermc/wicked-expressions/commit/803173e1e15c0c99586f4a7c20d9c0cc6f15dc9e))
+* Oops uneccessary copy pasted score check ([`3a3df42`](https://github.com/reapermc/wicked-expressions/commit/3a3df4205ab79fb5b1fd90028880c13d748e4618))
+
 ## v0.6.2 (2023-05-30)
 ### Fix
 * General fixes ([`832bc73`](https://github.com/reapermc/wicked-expressions/commit/832bc73268e7521bfc60b9055e7af43c054bef10))
