@@ -18,10 +18,10 @@
 `@function demo:main`
 
 ```mcfunction
-execute if score $score_0 objective_0 = $score_0 objective_0 if score foo tmp matches 10 run say True
-execute unless score $score_0 objective_0 = $score_0 objective_0 if score foo tmp matches 10 run say False
-execute if data storage test:storage_0 data_0 if score foo tmp matches 10 run say True
-execute unless data storage test:storage_0 data_0 if score foo tmp matches 10 run say False
+execute if score $score_0 objective_0 = $score_0 objective_0 run say True
+execute unless score $score_0 objective_0 = $score_0 objective_0 run say False
+execute if data storage test:storage_0 data_0 run say True
+execute unless data storage test:storage_0 data_0 run say False
 ```
 
 ### minecraft

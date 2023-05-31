@@ -21,12 +21,12 @@
 scoreboard players set $score_0 test_objective 123
 data modify storage my_library:internal data_0 set value 30
 scoreboard players operation $temp reapermc.wicked_expressions = $score_0 test_objective
-execute if score $temp reapermc.wicked_expressions matches 1 if score foo tmp matches 10 run say score_0 is 1
-execute if score $temp reapermc.wicked_expressions matches 0 if score foo tmp matches 10 run say score_0 is 0
+execute if score $temp reapermc.wicked_expressions matches 1 run say score_0 is 1
+execute if score $temp reapermc.wicked_expressions matches 0 run say score_0 is 0
 execute store result score $arg_0 reapermc.wicked_expressions run data get storage my_library:internal data_0 1
 scoreboard players operation $arg_1 reapermc.wicked_expressions = $score_0 test_objective
-execute if score $arg_0 reapermc.wicked_expressions > $arg_1 reapermc.wicked_expressions if score foo tmp matches 10 run say data_0 is bigger than 30
-execute if score $arg_0 reapermc.wicked_expressions <= $arg_1 reapermc.wicked_expressions if score foo tmp matches 10 run function demo:main/nested_3
+execute if score $arg_0 reapermc.wicked_expressions > $arg_1 reapermc.wicked_expressions run say data_0 is bigger than 30
+execute if score $arg_0 reapermc.wicked_expressions <= $arg_1 reapermc.wicked_expressions run function demo:main/nested_3
 ```
 
 `@function demo:main/nested_3`
@@ -34,7 +34,7 @@ execute if score $arg_0 reapermc.wicked_expressions <= $arg_1 reapermc.wicked_ex
 ```mcfunction
 data modify storage reapermc:wicked_expressions temp set from storage my_library:internal data_0
 execute store success score $is_not_equal reapermc.wicked_expressions store result storage reapermc:wicked_expressions temp int 1 run scoreboard players get $score_0 test_objective
-execute if score $is_not_equal reapermc.wicked_expressions matches 0 if score foo tmp matches 10 run say data_0 is equal to score_0
+execute if score $is_not_equal reapermc.wicked_expressions matches 0 run say data_0 is equal to score_0
 ```
 
 ### minecraft

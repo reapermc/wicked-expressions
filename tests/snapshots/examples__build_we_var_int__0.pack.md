@@ -18,8 +18,8 @@
 `@function demo:main`
 
 ```mcfunction
-execute unless score $we_var_int#int$0 reapermc.wicked_expressions matches 10 if score foo tmp matches 10 run say TRUE
-execute if score $we_var_int#int$0 reapermc.wicked_expressions matches 10 if score foo tmp matches 10 run say FALSE
+execute unless score $we_var_int#int$0 reapermc.wicked_expressions matches 10 run say TRUE
+execute if score $we_var_int#int$0 reapermc.wicked_expressions matches 10 run say FALSE
 ```
 
 ### minecraft

@@ -40,13 +40,13 @@ say hello2
 `@function foo:a`
 
 ```mcfunction
-execute if score $we_comparison_autonest#int$0 reapermc.wicked_expressions matches 69 if score foo tmp matches 10 run function foo:a/nested_0
+execute if score $we_comparison_autonest#int$0 reapermc.wicked_expressions matches 69 run function foo:a/nested_0
 ```
 
 `@function foo:b`
 
 ```mcfunction
-execute if score $we_comparison_autonest#int$0 reapermc.wicked_expressions matches 69 if score foo tmp matches 10 run say autonesting test
+execute if score $we_comparison_autonest#int$0 reapermc.wicked_expressions matches 69 run say autonesting test
 ```
 
 ### minecraft

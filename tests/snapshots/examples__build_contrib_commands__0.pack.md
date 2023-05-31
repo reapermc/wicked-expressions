@@ -43,8 +43,8 @@ execute store result score $i1 bolt.expr.temp run data get storage example:main 
 scoreboard players operation $i0 bolt.expr.temp += $i1 bolt.expr.temp
 execute store result storage example:main value int 1 run scoreboard players get $i0 bolt.expr.temp
 help
-execute if score $test obj.temp matches 123 if score foo tmp matches 10 run say hello
-execute unless score $test obj.temp matches 123 if score foo tmp matches 10 if score $test1 obj.temp = $test2 obj.temp if score foo tmp matches 10 run say hello2
+execute if score $test obj.temp matches 123 run say hello
+execute unless score $test obj.temp matches 123 if score $test1 obj.temp = $test2 obj.temp run say hello2
 ```
 
 `@function test:reapermc/wicked_expressions/safe_load`

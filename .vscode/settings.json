@@ -4,7 +4,8 @@
         ".pytest_cache",
         "wicked_expressions/__pycache__",
         ".venv",
-        ".github"
+        ".github",
+        "tests/__pycache__"
     ],
     "files.exclude": {
         "**/.git": true,
@@ -17,6 +18,7 @@
         ".pytest_cache": true,
         "wicked_expressions/__pycache__": true,
         ".venv": true,
-        ".github": true
+        ".github": true,
+        "tests/__pycache__": true
     }
 }
