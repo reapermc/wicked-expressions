@@ -19,9 +19,9 @@
 
 ```mcfunction
 scoreboard players operation $temp reapermc.wicked_expressions = $we_var_bool2#bool$0 reapermc.wicked_expressions
-execute if score $temp reapermc.wicked_expressions matches 1 if score foo tmp matches 10 run say hellooooooooo
-execute if score $temp reapermc.wicked_expressions matches 0 if score foo tmp matches 10 run say no
-execute if score $temp reapermc.wicked_expressions matches 1 if score foo tmp matches 10 run say hallloooooooooooooooooooo
+execute if score $temp reapermc.wicked_expressions matches 1 run say hellooooooooo
+execute if score $temp reapermc.wicked_expressions matches 0 run say no
+execute if score $temp reapermc.wicked_expressions matches 1 run say hallloooooooooooooooooooo
 ```
 
 ### minecraft

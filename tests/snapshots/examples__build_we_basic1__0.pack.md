@@ -24,22 +24,22 @@ scoreboard players operation $testplayer anotherone = $foo myobjectivename
 scoreboard players operation $testplayer anotherone *= $1000 bolt.expr.const
 scoreboard players set $testplayer anotherone 1234
 scoreboard players operation $testplayer anotherone /= $345 bolt.expr.const
-execute unless score $testplayer anotherone matches 69 if score foo tmp matches 10 run say true
-execute if score $testplayer anotherone matches 69 if score foo tmp matches 10 run say false
+execute unless score $testplayer anotherone matches 69 run say true
+execute if score $testplayer anotherone matches 69 run say false
 scoreboard players operation $temp reapermc.wicked_expressions = $testplayer anotherone
-execute if score $temp reapermc.wicked_expressions matches 1 if score foo tmp matches 10 run say exists
-execute if score $temp reapermc.wicked_expressions matches 0 if score foo tmp matches 10 run say doesnt exist
+execute if score $temp reapermc.wicked_expressions matches 1 run say exists
+execute if score $temp reapermc.wicked_expressions matches 0 run say doesnt exist
 data modify storage test:test somenbtpath set value 1234
 execute store result score $i0 bolt.expr.temp run data get storage test:test somenbtpath 1
 scoreboard players add $i0 bolt.expr.temp 10
 execute store result storage test:test somenbtpath int 1 run scoreboard players get $i0 bolt.expr.temp
 execute store result score $temp reapermc.wicked_expressions run data get storage test:test somenbtpath 1
-execute if score $temp reapermc.wicked_expressions matches 0 if score foo tmp matches 10 run say doesnt exist
-execute if score $temp reapermc.wicked_expressions matches 1 if score foo tmp matches 10 run say exists
+execute if score $temp reapermc.wicked_expressions matches 0 run say doesnt exist
+execute if score $temp reapermc.wicked_expressions matches 1 run say exists
 data modify storage reapermc:wicked_expressions temp set from storage test:test somenbtpath
 execute store success score $is_not_equal reapermc.wicked_expressions run data modify storage reapermc:wicked_expressions temp set value 69
-execute if score $is_not_equal reapermc.wicked_expressions matches 0 if score foo tmp matches 10 run say true
-execute if score $is_not_equal reapermc.wicked_expressions matches 1 if score foo tmp matches 10 run say false
+execute if score $is_not_equal reapermc.wicked_expressions matches 0 run say true
+execute if score $is_not_equal reapermc.wicked_expressions matches 1 run say false
 ```
 
 ### minecraft

@@ -31,7 +31,7 @@ execute store result score $score_0 objective_0 run data get entity @s nbt_path
 
 ```mcfunction
 execute store result score $temp reapermc.wicked_expressions run data get storage test:storage_0 data_0 1
-execute if score $temp reapermc.wicked_expressions matches 1 if score foo tmp matches 10 run say hello
+execute if score $temp reapermc.wicked_expressions matches 1 run say hello
 ```
 
 ### minecraft
