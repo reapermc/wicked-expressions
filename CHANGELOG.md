@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v0.6.4 (2023-05-31)
+### Fix
+
+* Flushing StorageVarSource is completely broken ([`e344479`](https://github.com/reapermc/wicked-expressions/commit/e3444790388f4b8dc10e1a0bb609a6869747e2a9))
+
 ## v0.6.3 (2023-05-31)
 ### Fix
 
