@@ -51,12 +51,11 @@ class ExpressionComparison(Rebindable):
             yield True
         if not commands:
             return
-        if score foo tmp matches 10:
-            if len(commands) == 1:
-                runtime.commands.append(commands[0])
-            else:
-                execute function nest_path:
-                    runtime.commands.extend(commands)
+        if len(commands) == 1:
+            runtime.commands.append(commands[0])
+        else:
+            execute function nest_path:
+                runtime.commands.extend(commands)
 
     @contextmanager
     def __branch__(self):
