@@ -58,25 +58,51 @@ class VarScoreSource(ScoreSource, BaseVar):
             scoreboard players reset full_location Config.SCOREBOARD_ROOT
 
 class VarStorageSource(DataSource, BaseVar):
+    memory_block_size = 64
+
     @classmethod
     def create(cls, is_static: bool):
         location_index = cls._evaluate_location_index(is_static)
-        cls._setup_flushing(location_index)
-        return cls('storage', Config.STORAGE_ROOT)[ctx.project_id]['data'][cls._var_type][location_index]
+        minor, major = cls.calculate_minor_major_index(location_index)
+
+        cls._setup_flushing(minor, major)
+        return cls('storage', Config.STORAGE_ROOT)[ctx.project_id]['data'][cls._var_type][major][minor]
 
     @classmethod
-    def _setup_flushing(cls, location_index):
-        slot_block_size = 64
+    def calculate_minor_major_index(cls, location_index):
+        minor = location_index % cls.memory_block_size
+        major = location_index // cls.memory_block_size
+        return (minor, major)
 
-        if not location_index % slot_block_size:
-            slot_block = []
+    @classmethod
+    def _setup_flushing(cls, minor, major):
+
+        if minor == 0:
+            new_block = []
             full_location = f"{ctx.project_id}.data.{cls._var_type}"
 
-            for n in range(slot_block_size):
-                slot_block.append(cls._default_slot_value)
+            if major == 0:
+                # fully reset on initial run
+                with safe_load(f"flush_variable/{cls._var_type}", append=True):
+                    data remove storage Config.STORAGE_ROOT full_location
+
+            # append new memory block
+            for n in range(cls.memory_block_size):
+                new_block.append(cls._default_slot_value)
 
             with safe_load(f"flush_variable/{cls._var_type}", append=True):
-                data modify storage Config.STORAGE_ROOT full_location append value slot_block
+                data modify storage Config.STORAGE_ROOT full_location append value new_block
+
+
+        # if not location_index % slot_block_size:
+            # slot_block = []
+    #         full_location = f"{ctx.project_id}.data.{cls._var_type}"
+
+    #         for n in range(slot_block_size):
+    #             slot_block.append(cls._default_slot_value)
+
+    #         with safe_load(f"flush_variable/{cls._var_type}", append=True):
+    #             data modify storage Config.STORAGE_ROOT full_location append value slot_block
 
 class BoolSource(VarScoreSource):
     _var_type = 'bool'

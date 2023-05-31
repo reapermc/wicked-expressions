@@ -18,12 +18,12 @@
 `@function demo:main`
 
 ```mcfunction
-data modify storage reapermc:wicked_expressions we_var_basic1.data.float[0] set value 46.0f
-data modify storage reapermc:wicked_expressions we_var_basic1.data.float[0] set value 1.2353456f
-data modify storage reapermc:wicked_expressions we_var_basic1.data.double[0] set value 5.4357543d
-data modify storage reapermc:wicked_expressions we_var_basic1.data.double[0] set value 3.0d
-data modify storage reapermc:wicked_expressions we_var_basic1.data.double[0] set from storage reapermc:wicked_expressions we_var_basic1.data.float[0]
-data modify storage reapermc:wicked_expressions we_var_basic1.data.float[0] set from storage reapermc:wicked_expressions we_var_basic1.data.double[0]
+data modify storage reapermc:wicked_expressions we_var_basic1.data.float[0][0] set value 46.0f
+data modify storage reapermc:wicked_expressions we_var_basic1.data.float[0][0] set value 1.2353456f
+data modify storage reapermc:wicked_expressions we_var_basic1.data.double[0][0] set value 5.4357543d
+data modify storage reapermc:wicked_expressions we_var_basic1.data.double[0][0] set value 3.0d
+data modify storage reapermc:wicked_expressions we_var_basic1.data.double[0][0] set from storage reapermc:wicked_expressions we_var_basic1.data.float[0][0]
+data modify storage reapermc:wicked_expressions we_var_basic1.data.float[0][0] set from storage reapermc:wicked_expressions we_var_basic1.data.double[0][0]
 ```
 
 ### minecraft
@@ -53,6 +53,7 @@ function we_var_basic1:reapermc/wicked_expressions/safe_load/flush_variable/int
 `@function we_var_basic1:reapermc/wicked_expressions/safe_load/flush_variable/byte`
 
 ```mcfunction
+data remove storage reapermc:wicked_expressions we_var_basic1.data.byte
 data modify storage reapermc:wicked_expressions we_var_basic1.data.byte append value [0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b]
 ```
 
@@ -66,12 +67,14 @@ scoreboard players reset $we_var_basic1#bool$1 reapermc.wicked_expressions
 `@function we_var_basic1:reapermc/wicked_expressions/safe_load/flush_variable/float`
 
 ```mcfunction
+data remove storage reapermc:wicked_expressions we_var_basic1.data.float
 data modify storage reapermc:wicked_expressions we_var_basic1.data.float append value [0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f]
 ```
 
 `@function we_var_basic1:reapermc/wicked_expressions/safe_load/flush_variable/double`
 
 ```mcfunction
+data remove storage reapermc:wicked_expressions we_var_basic1.data.double
 data modify storage reapermc:wicked_expressions we_var_basic1.data.double append value [0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d]
 ```
 
