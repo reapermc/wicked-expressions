@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.6.2 (2023-05-30)
+### Fix
+* General fixes ([`832bc73`](https://github.com/reapermc/wicked-expressions/commit/832bc73268e7521bfc60b9055e7af43c054bef10))
+
 ## v0.6.1 (2023-05-25)
 ### Fix
 * Remove datastash, throws weird errors ([`f7a195b`](https://github.com/reapermc/wicked-expressions/commit/f7a195b95cb165a21859fba5b57718e9cff45165))
