@@ -1,5 +1,7 @@
 import nbtlib as nbtlib
 
+class Any:
+    ...
 
 class Bool(nbtlib.Byte):
     ...

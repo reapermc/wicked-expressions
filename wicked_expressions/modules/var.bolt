@@ -1,12 +1,14 @@
 import ./var_sources as sources
-from ./nbtlib import Bool, Byte, Short, Int, Long, Float, Double, String, List
+from ./nbtlib import Bool, Byte, Short, Int, Long, Float, Double, String, List, Any
 
 
 class Var:
     is_static = False
 
     def __new__(self, type_annotation):
-        if type_annotation == Bool: 
+        if type_annotation == Any:
+            return sources.AnySource.create(is_static=self.is_static)
+        elif type_annotation == Bool: 
             return sources.BoolSource.create(is_static=self.is_static)
         elif type_annotation == Byte:
             return sources.ByteSource.create(is_static=self.is_static)
