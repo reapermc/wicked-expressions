@@ -104,6 +104,11 @@ class VarStorageSource(DataSource, BaseVar):
     #         with safe_load(f"flush_variable/{cls._var_type}", append=True):
     #             data modify storage Config.STORAGE_ROOT full_location append value slot_block
 
+
+class AnySource(VarStorageSource):
+    _var_type = 'any'
+    _default_slot_value = {}
+
 class BoolSource(VarScoreSource):
     _var_type = 'bool'
 
