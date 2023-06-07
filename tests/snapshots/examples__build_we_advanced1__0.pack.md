@@ -22,6 +22,7 @@ scoreboard players set $score_0 test_objective 123
 data modify storage my_library:internal data_0 set value 30
 scoreboard players operation $temp reapermc.wicked_expressions = $score_0 test_objective
 execute if score $temp reapermc.wicked_expressions matches 1 run say score_0 is 1
+scoreboard players operation $temp reapermc.wicked_expressions = $score_0 test_objective
 execute if score $temp reapermc.wicked_expressions matches 0 run say score_0 is 0
 execute store result score $arg_0 reapermc.wicked_expressions run data get storage my_library:internal data_0 1
 scoreboard players operation $arg_1 reapermc.wicked_expressions = $score_0 test_objective
