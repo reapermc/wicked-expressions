@@ -10,7 +10,6 @@ runtime = ctx.inject(Runtime)
 
 
 class ExpressionComparison(Rebindable):
-    last_bool_check = None
     incr_index = 0
     _INVERTED_OPERATOR = {
         '==': '!=',
@@ -126,8 +125,7 @@ class ExpressionComparison(Rebindable):
     def check_boolean(self, arg_0):
         temp = self.temp_scoreboard['$temp']
 
-        if self.last_bool_check != str(arg_0):       # hacky fix since initializing doesnt work here
-            temp = arg_0
+        temp = arg_0
 
         if self.operator == '==':
             if score temp.holder temp.obj matches 1:
@@ -135,13 +133,6 @@ class ExpressionComparison(Rebindable):
         elif self.operator == '!=':
             if score temp.holder temp.obj matches 0:
                 yield True
-
-        # self.last_bool_check = str(arg_0)
-        self._set_last_bool_check(str(arg_0))
-
-    @classmethod
-    def _set_last_bool_check(cls, value):
-        cls.last_bool_check = value
 
     @contextmanager
     def compare_score_to_constant(self, arg_0, arg_1):
