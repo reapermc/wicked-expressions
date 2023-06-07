@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v0.7.1 (2023-06-07)
+### Fix
+
+* Bool runtime variable comparison sometimes fails ([`1965122`](https://github.com/reapermc/wicked-expressions/commit/196512209c4ca03f70dbf2f002c553e89402c8de))
+* Bool runtime variable comparison sometimes fails ([`92e1c75`](https://github.com/reapermc/wicked-expressions/commit/92e1c7558bc3007416e0071be636f92a119d792c))
+
 ## v0.7.0 (2023-06-06)
 ### Feature
 
