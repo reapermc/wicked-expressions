@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v0.7.0 (2023-06-06)
+### Feature
+
+* Add Any type for runtime variables ([`7cc4062`](https://github.com/reapermc/wicked-expressions/commit/7cc40622424788a1ed558869902bc59ea42c37b4))
+
 ## v0.6.4 (2023-05-31)
 ### Fix
 
