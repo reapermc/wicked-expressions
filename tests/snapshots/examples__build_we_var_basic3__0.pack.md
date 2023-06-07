@@ -26,6 +26,7 @@
 ```mcfunction
 scoreboard players operation $temp reapermc.wicked_expressions = $we_var_basic3#bool$0 reapermc.wicked_expressions
 execute if score $temp reapermc.wicked_expressions matches 1 run say TRUE
+scoreboard players operation $temp reapermc.wicked_expressions = $we_var_basic3#bool$0 reapermc.wicked_expressions
 execute if score $temp reapermc.wicked_expressions matches 0 run say FALSE
 ```
 
@@ -46,7 +47,9 @@ execute unless score $we_var_basic3#bool$0 reapermc.wicked_expressions matches 1
 `@function demo:inv_a`
 
 ```mcfunction
+scoreboard players operation $temp reapermc.wicked_expressions = $we_var_basic3#bool$0 reapermc.wicked_expressions
 execute if score $temp reapermc.wicked_expressions matches 0 run say TRUE
+scoreboard players operation $temp reapermc.wicked_expressions = $we_var_basic3#bool$0 reapermc.wicked_expressions
 execute if score $temp reapermc.wicked_expressions matches 1 run say FALSE
 ```
 

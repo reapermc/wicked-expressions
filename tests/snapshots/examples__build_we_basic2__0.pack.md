@@ -26,9 +26,11 @@
 ```mcfunction
 scoreboard players operation $temp reapermc.wicked_expressions = $score_0 objective_0
 execute if score $temp reapermc.wicked_expressions matches 1 run say true
+scoreboard players operation $temp reapermc.wicked_expressions = $score_0 objective_0
 execute if score $temp reapermc.wicked_expressions matches 0 run say false
 scoreboard players operation $temp reapermc.wicked_expressions = $holder objective_0
 execute if score $temp reapermc.wicked_expressions matches 0 run say true
+scoreboard players operation $temp reapermc.wicked_expressions = $holder objective_0
 execute if score $temp reapermc.wicked_expressions matches 1 run say false
 ```
 
@@ -37,9 +39,11 @@ execute if score $temp reapermc.wicked_expressions matches 1 run say false
 ```mcfunction
 execute store result score $temp reapermc.wicked_expressions run data get storage test:storage_0 data_0 1
 execute if score $temp reapermc.wicked_expressions matches 1 run say true
+execute store result score $temp reapermc.wicked_expressions run data get storage test:storage_0 data_0 1
 execute if score $temp reapermc.wicked_expressions matches 0 run say false
 execute store result score $temp reapermc.wicked_expressions run data get storage test:storage_0 nbt_path 1
 execute if score $temp reapermc.wicked_expressions matches 0 run say true
+execute store result score $temp reapermc.wicked_expressions run data get storage test:storage_0 nbt_path 1
 execute if score $temp reapermc.wicked_expressions matches 1 run say false
 ```
 

@@ -20,7 +20,9 @@
 ```mcfunction
 scoreboard players operation $temp reapermc.wicked_expressions = $we_var_bool2#bool$0 reapermc.wicked_expressions
 execute if score $temp reapermc.wicked_expressions matches 1 run say hellooooooooo
+scoreboard players operation $temp reapermc.wicked_expressions = $we_var_bool2#bool$0 reapermc.wicked_expressions
 execute if score $temp reapermc.wicked_expressions matches 0 run say no
+scoreboard players operation $temp reapermc.wicked_expressions = $we_var_bool2#bool$0 reapermc.wicked_expressions
 execute if score $temp reapermc.wicked_expressions matches 1 run say hallloooooooooooooooooooo
 ```
 

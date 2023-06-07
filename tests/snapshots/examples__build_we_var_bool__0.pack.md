@@ -23,6 +23,7 @@ execute store result score $we_var_bool#bool$0 reapermc.wicked_expressions run d
 scoreboard players set $we_var_bool#bool$0 reapermc.wicked_expressions 1
 scoreboard players operation $temp reapermc.wicked_expressions = $we_var_bool#bool$0 reapermc.wicked_expressions
 execute if score $temp reapermc.wicked_expressions matches 1 run say no
+scoreboard players operation $temp reapermc.wicked_expressions = $we_var_bool#bool$0 reapermc.wicked_expressions
 execute if score $temp reapermc.wicked_expressions matches 0 run say yes
 ```
 
