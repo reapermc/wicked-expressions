@@ -38,9 +38,9 @@ If instead we used `Var`, we'd be generating a new variable location each time w
 | class name   | internal type | storage / objective          | nbt path / score holder                    |
 | :-           | :-             | :-                           | :-                                         |
 | `Bool`       | `scoreboard`     | `reapermc.wicked_expressions`         | `${project_id}#bool${var_index}`           |
+| `Int`        | `scoreboard`     | `reapermc.wicked_expressions`         | `${project_id}#int${var_index}`            |
 | `Byte`       | `storage`        | `reapermc:wicked_expressions` | `{project_id}.data.byte[{var_index}]`      |
 | `Short`      | `storage`        | `reapermc:wicked_expressions` | `{project_id}.data.short[{var_index}]`     |
-| `Int`        | `scoreboard`     | `reapermc.wicked_expressions`         | `${project_id}#int${var_index}`            |
 | `Long`       | `storage`        | `reapermc:wicked_expressions` | `{project_id}.data.long[{var_index}]`      |
 | `Float`      | `storage`        | `reapermc:wicked_expressions` | `{project_id}.data.float[{var_index}]`     |
 | `Double`     | `storage`        | `reapermc:wicked_expressions` | `{project_id}.data.double[{var_index}]`    |

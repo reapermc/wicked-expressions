@@ -7,8 +7,7 @@ Quick and easy anonymous storage/score locations.
 
 Runtime variables are an anonymous data storage tool. They are statically typed, flushed on `/reload` and lack names internally.
 
-Each runtime variable you define has to be typed. Under the hood all types are stored as `storage` format. The only exception is the `Int` type, which is stored as a `scoreboard` format instead.
-
+Each runtime variable you define has to be typed. Under the hood all types are stored as `storage` format. The only exceptions to this rule are types `Int` and `Bool`, which are stored as a `scoreboard` format instead.
 
 
 ## How to use them

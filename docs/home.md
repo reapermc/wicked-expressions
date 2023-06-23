@@ -1,23 +1,21 @@
 # Documentation
 
-## Tutorial
+### Tutorial
+- [Installation](./tutorial/installation.md)
+- [Basic tutorial](./tutorial/basic_tutorial.md)
 
-- [Getting started](./tutorial/getting_started.md)
-- [Scoreboard](./tutorial/scoreboard.md)
-- [The `this` expression](./tutorial/this.md)
-- [Checking if a score/data exists](./tutorial/if_exists.md)
-- [Comparing expressions](./tutorial/comparing_expressions.md)
-- [Low level operations](./tutorial/low_level_operations.md)
-- [Checking if a value is an expression](./tutorial/check_is_expression.md)
-- [Runtime variables](./tutorial/runtime_variables.md)
-- [Per-entity data with DataStash](./tutorial/datastash.md)
+### Technical quirks
+- [Scoreboard](./technical_quirks/scoreboard.md)
 
+### New features
+- [this](./new_features/this.md)
+- [Checking if score/data exists](./new_features/if_exists.md)
+- [Comparing expressions](./new_features/comparing_expressions.md)
+- [Low level operations](./new_features/low_level_operations.md)
+- [Runtime variables](./new_features/runtime_variables.md)
 
-## Technical details
-
-- [Scoreboard](./technical/scoreboard.md)
-- [Data](./technical/data.md)
-- [DataStash](./technical/datastash.md)
-- [this](./technical/this.md)
-- [runtime variables](./technical/runtime_variables.md)
- 
+# Detailed information
+- [Scoreboard](./detailed/scoreboard.md)
+- [Data](./detailed/data.md)
+- [this](./detailed/this.md)
+- [runtime variables](./detailed/runtime_variables.md)
