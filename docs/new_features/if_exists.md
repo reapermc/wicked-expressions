@@ -35,3 +35,5 @@ execute unless data storage bar data.y run tellraw @s "y value does not exist"
 ```
 
 </p></details>
+
+> NOTE: `not`, `elif` and `else` are all supported.

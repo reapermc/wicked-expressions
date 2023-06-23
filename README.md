@@ -40,7 +40,8 @@ pip install wicked_expressions
 
 ## Getting started
 
-This package is designed to be used within any `bolt` script (either a `.mcfunction` or `bolt` file) inside a `bolt` enabled project.
+The library is designed to be used within any `bolt` script (either a `.mcfunction` or `bolt` file) inside a `bolt` enabled project.
+
 ```yaml
 require:
     - bolt
@@ -50,17 +51,20 @@ pipeline:
     - mecha
 ```
 
-Once you've required `bolt` and `wicked_expressions`, you are able to import the python package's `api` module directly inside your bolt scripts.
+Once you've required `bolt` and `wicked_expressions`, you are able to import the package's `api` module directly inside your bolt script.
+
+Most of the imports come from the `wicked_expressions:api` module as shown below.
 
 ```py
-from wicked_expressions:api import Scoreboard, Data
+from wicked_expressions:api import Scoreboard
 ```
 
-Now you're free to use the API objects. Create simple and complex expressions, compare storages with scores, scores with scores, check if scores exist and more.
+Now you're free to use the API. Use simple and complex expressions, compare expressions and have access to many more features of the library!
+
 
 ## Documentation
 
-Check the docs out [here](./docs/home.md).
+Docs available [here](./docs/home.md).
 
 ## Features
 
