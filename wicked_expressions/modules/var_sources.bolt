@@ -193,5 +193,10 @@ class ListSource(VarStorageSource):
     _var_type = 'list'
     _default_slot_value = []
 
+class IntArraySource(VarStorageSource):
+    _default_nbt_type = 'int_array'
+    _var_type = 'int_array'
+    _default_slot_value = nbtlib.IntArray([])
+
 def base64_encode(s: str) -> str:
     return base64.b64encode(s.encode()).decode()

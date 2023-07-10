@@ -5,7 +5,7 @@ from ./sources import ScoreSource, DataSource
 from ./comparison import ExpressionComparison
 from ./raw_operations import StoreExpressionValue, GetExpressionValue
 from ./var import Var, StaticVar
-from ./nbtlib import Any, Bool, Byte, Short, Int, Long, Float, Double, String, List
+from ./nbtlib import Any, Bool, Byte, Short, Int, Long, Float, Double, String, List, IntArray
 # from ./datastash import DataStash
 from ./rebindable import Rebindable
 

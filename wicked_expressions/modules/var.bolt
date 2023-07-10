@@ -1,5 +1,5 @@
 import ./var_sources as sources
-from ./nbtlib import Bool, Byte, Short, Int, Long, Float, Double, String, List, Any
+from ./nbtlib import Bool, Byte, Short, Int, Long, Float, Double, String, List, Any, IntArray
 
 
 class Var:
@@ -26,6 +26,8 @@ class Var:
             return sources.StringSource.create(is_static=self.is_static)
         elif type_annotation == List:
             return sources.ListSource.create(is_static=self.is_static)
+        elif type_annotation == IntArray:
+            return sources.IntArraySource.create(is_static=self.is_static)
 
 class StaticVar(Var):
     is_static = True
