@@ -29,3 +29,6 @@ class String(nbtlib.String):
 
 class List(nbtlib.List):
     ...
+
+class IntArray(nbtlib.IntArray):
+    ...
