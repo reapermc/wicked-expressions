@@ -2,6 +2,16 @@
 
 <!--next-version-placeholder-->
 
+## v0.8.0 (2023-07-10)
+### Feature
+
+* Add IntArray source to runtime variables ([`e8d27fa`](https://github.com/reapermc/wicked-expressions/commit/e8d27fa58e09eda880745f1988daf877c3dc607b))
+
+### Documentation
+
+* Update docs ([`53999e6`](https://github.com/reapermc/wicked-expressions/commit/53999e63eafdaf20e6e28c0525beb94b680b14a7))
+* Update docs ([`cd6d0c2`](https://github.com/reapermc/wicked-expressions/commit/cd6d0c217a24fd91f21e2a41827d246dbd89e257))
+
 ## v0.7.1 (2023-06-07)
 ### Fix
 
