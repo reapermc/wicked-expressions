@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v0.8.1 (2023-07-12)
+### Fix
+
+* Update dependencies ([`5ed4631`](https://github.com/reapermc/wicked-expressions/commit/5ed46314ac4506ce618ff1905c07ff1e5ec3260d))
+
 ## v0.8.0 (2023-07-10)
 ### Feature
 
