@@ -189,7 +189,7 @@ class StringSource(VarStorageSource):
         return super()._rebind(source, value)
 
 class ListSource(VarStorageSource):
-    _default_nbt_type = 'list'
+    _default_nbt_type = 'int'   # has to be 'int', else it bricks itself
     _var_type = 'list'
     _default_slot_value = []
 
