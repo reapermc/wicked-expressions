@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v0.8.2 (2023-07-29)
+### Fix
+
+* Overriding index of ListSource with ExpressionNode doesnt work ([`9657496`](https://github.com/reapermc/wicked-expressions/commit/9657496f73ae4d2cac07fda5f699b03f08ae6bf6))
+
 ## v0.8.1 (2023-07-12)
 ### Fix
 
