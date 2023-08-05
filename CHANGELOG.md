@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v0.8.3 (2023-08-05)
+### Fix
+
+* Comparing data to data fails ([`1fd483f`](https://github.com/reapermc/wicked-expressions/commit/1fd483feebd1e2917b842236946846be54f56b6b))
+
 ## v0.8.2 (2023-07-29)
 ### Fix
 
