@@ -33,6 +33,7 @@ execute if score $arg_0 reapermc.wicked_expressions <= $arg_1 reapermc.wicked_ex
 `@function demo:main/nested_3`
 
 ```mcfunction
+data modify storage reapermc:wicked_expressions temp set value -6666666
 data modify storage reapermc:wicked_expressions temp set from storage my_library:internal data_0
 execute store success score $is_not_equal reapermc.wicked_expressions store result storage reapermc:wicked_expressions temp int 1 run scoreboard players get $score_0 test_objective
 execute if score $is_not_equal reapermc.wicked_expressions matches 0 run say data_0 is equal to score_0

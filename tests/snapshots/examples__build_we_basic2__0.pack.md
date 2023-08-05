@@ -64,6 +64,7 @@ execute unless score $score_0 objective_0 = $score_0 objective_0 run say false
 `@function demo:eq_score_data`
 
 ```mcfunction
+data modify storage reapermc:wicked_expressions temp set value -6666666
 execute store result storage reapermc:wicked_expressions temp int 1 run scoreboard players get $score_0 objective_0
 execute store success score $is_not_equal reapermc.wicked_expressions run data modify storage reapermc:wicked_expressions temp set from storage test:storage_0 data_0
 execute if score $is_not_equal reapermc.wicked_expressions matches 0 run say true
@@ -73,6 +74,7 @@ execute if score $is_not_equal reapermc.wicked_expressions matches 1 run say fal
 `@function demo:eq_data_any`
 
 ```mcfunction
+data modify storage reapermc:wicked_expressions temp set value -6666666
 data modify storage reapermc:wicked_expressions temp set from storage test:storage_0 data_0
 execute store success score $is_not_equal reapermc.wicked_expressions run data modify storage reapermc:wicked_expressions temp set value 0.5f
 execute if score $is_not_equal reapermc.wicked_expressions matches 0 run say true
@@ -82,6 +84,7 @@ execute if score $is_not_equal reapermc.wicked_expressions matches 1 run say fal
 `@function demo:eq_data_score`
 
 ```mcfunction
+data modify storage reapermc:wicked_expressions temp set value -6666666
 data modify storage reapermc:wicked_expressions temp set from storage test:storage_0 data_0
 execute store success score $is_not_equal reapermc.wicked_expressions store result storage reapermc:wicked_expressions temp int 1 run scoreboard players get $score_0 objective_0
 execute if score $is_not_equal reapermc.wicked_expressions matches 0 run say true
@@ -91,6 +94,7 @@ execute if score $is_not_equal reapermc.wicked_expressions matches 1 run say fal
 `@function demo:eq_data_data`
 
 ```mcfunction
+data modify storage reapermc:wicked_expressions temp set value -6666666
 data modify storage reapermc:wicked_expressions temp set from storage test:storage_0 data_0
 execute store success score $is_not_equal reapermc.wicked_expressions run data modify storage reapermc:wicked_expressions temp set from storage test:storage_0 data_0
 execute if score $is_not_equal reapermc.wicked_expressions matches 0 run say true
@@ -114,6 +118,7 @@ execute if score $score_0 objective_0 = $score_0 objective_0 run say false
 `@function demo:ne_score_data`
 
 ```mcfunction
+data modify storage reapermc:wicked_expressions temp set value -6666666
 execute store result storage reapermc:wicked_expressions temp int 1 run scoreboard players get $score_0 objective_0
 execute store success score $is_not_equal reapermc.wicked_expressions run data modify storage reapermc:wicked_expressions temp set from storage test:storage_0 data_0
 execute if score $is_not_equal reapermc.wicked_expressions matches 1 run say true
@@ -123,6 +128,7 @@ execute if score $is_not_equal reapermc.wicked_expressions matches 0 run say fal
 `@function demo:ne_data_any`
 
 ```mcfunction
+data modify storage reapermc:wicked_expressions temp set value -6666666
 data modify storage reapermc:wicked_expressions temp set from storage test:storage_0 data_0
 execute store success score $is_not_equal reapermc.wicked_expressions run data modify storage reapermc:wicked_expressions temp set value 0.5f
 execute if score $is_not_equal reapermc.wicked_expressions matches 1 run say true
@@ -132,6 +138,7 @@ execute if score $is_not_equal reapermc.wicked_expressions matches 0 run say fal
 `@function demo:ne_data_score`
 
 ```mcfunction
+data modify storage reapermc:wicked_expressions temp set value -6666666
 data modify storage reapermc:wicked_expressions temp set from storage test:storage_0 data_0
 execute store success score $is_not_equal reapermc.wicked_expressions store result storage reapermc:wicked_expressions temp int 1 run scoreboard players get $score_0 objective_0
 execute if score $is_not_equal reapermc.wicked_expressions matches 1 run say true
@@ -141,6 +148,7 @@ execute if score $is_not_equal reapermc.wicked_expressions matches 0 run say fal
 `@function demo:ne_data_data`
 
 ```mcfunction
+data modify storage reapermc:wicked_expressions temp set value -6666666
 data modify storage reapermc:wicked_expressions temp set from storage test:storage_0 data_0
 execute store success score $is_not_equal reapermc.wicked_expressions run data modify storage reapermc:wicked_expressions temp set from storage test:storage_0 data_0
 execute if score $is_not_equal reapermc.wicked_expressions matches 1 run say true
