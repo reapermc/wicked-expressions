@@ -216,6 +216,7 @@ class ExpressionComparison(Rebindable):
         tmp = self.temp_storage['temp']
 
         if not self.initialized:
+            tmp = -6666666
             tmp = arg_0
 
             # attempt override

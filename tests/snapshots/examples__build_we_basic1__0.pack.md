@@ -38,6 +38,7 @@ execute store result score $temp reapermc.wicked_expressions run data get storag
 execute if score $temp reapermc.wicked_expressions matches 0 run say doesnt exist
 execute store result score $temp reapermc.wicked_expressions run data get storage test:test somenbtpath 1
 execute if score $temp reapermc.wicked_expressions matches 1 run say exists
+data modify storage reapermc:wicked_expressions temp set value -6666666
 data modify storage reapermc:wicked_expressions temp set from storage test:test somenbtpath
 execute store success score $is_not_equal reapermc.wicked_expressions run data modify storage reapermc:wicked_expressions temp set value 69
 execute if score $is_not_equal reapermc.wicked_expressions matches 0 run say true
