@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v0.8.4 (2023-08-11)
+### Fix
+
+* Main objective doesnt always create itself ([`1db2efd`](https://github.com/reapermc/wicked-expressions/commit/1db2efd6a0ce6ba27286b96e4072ad860ba4501d))
+
 ## v0.8.3 (2023-08-05)
 ### Fix
 
