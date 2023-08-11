@@ -8,6 +8,7 @@ from ./var import Var, StaticVar
 from ./nbtlib import Any, Bool, Byte, Short, Int, Long, Float, Double, String, List, IntArray
 # from ./datastash import DataStash
 from ./rebindable import Rebindable
+from ./config import Config
 
 import ./internal_api as internal_api
 
@@ -17,6 +18,8 @@ Data = ctx.inject(internal_api.Data)
 
 this = Data.entity('@s')
 
+# this sets up the objective *just in case* it's not been created yet
+Scoreboard(Config.SCOREBOARD_ROOT)
 
 ExpressionComparison.monkeypatch(Scoreboard, Data, ScoreSource, DataSource)
 # DataStash.monkeypatch(Scoreboard, Data)

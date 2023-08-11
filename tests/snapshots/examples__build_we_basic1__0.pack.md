@@ -69,9 +69,9 @@ function we_basic1:reapermc/wicked_expressions/safe_load/scoreboard_setup
 `@function we_basic1:reapermc/wicked_expressions/safe_load/scoreboard_setup`
 
 ```mcfunction
+scoreboard objectives add reapermc.wicked_expressions dummy
 scoreboard objectives add myobjectivename dummy
 scoreboard objectives add anotherone dummy
-scoreboard objectives add reapermc.wicked_expressions dummy
 ```
 
 `@function we_basic1:init_expressions`

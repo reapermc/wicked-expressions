@@ -369,15 +369,15 @@ execute if score $arg_0 reapermc.wicked_expressions < $arg_1 reapermc.wicked_exp
 
 ### we_basic2
 
+`@function we_basic2:reapermc/wicked_expressions/safe_load`
+
+```mcfunction
+function we_basic2:reapermc/wicked_expressions/safe_load/scoreboard_setup
+```
+
 `@function we_basic2:reapermc/wicked_expressions/safe_load/scoreboard_setup`
 
 ```mcfunction
 scoreboard objectives add reapermc.wicked_expressions dummy
 scoreboard objectives add objective_0 dummy
-```
-
-`@function we_basic2:reapermc/wicked_expressions/safe_load`
-
-```mcfunction
-function we_basic2:reapermc/wicked_expressions/safe_load/scoreboard_setup
 ```

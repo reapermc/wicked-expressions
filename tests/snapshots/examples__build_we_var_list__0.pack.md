@@ -42,8 +42,15 @@ tellraw @a {"nbt": "we_var_list.data.list[0][0]", "storage": "reapermc:wicked_ex
 `@function we_var_list:reapermc/wicked_expressions/safe_load`
 
 ```mcfunction
+function we_var_list:reapermc/wicked_expressions/safe_load/scoreboard_setup
 function we_var_list:reapermc/wicked_expressions/safe_load/flush_variable/list
 function we_var_list:reapermc/wicked_expressions/safe_load/flush_variable/int
+```
+
+`@function we_var_list:reapermc/wicked_expressions/safe_load/scoreboard_setup`
+
+```mcfunction
+scoreboard objectives add reapermc.wicked_expressions dummy
 ```
 
 `@function we_var_list:reapermc/wicked_expressions/safe_load/flush_variable/list`
