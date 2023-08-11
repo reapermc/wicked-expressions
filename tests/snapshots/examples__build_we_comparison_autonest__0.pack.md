@@ -21,34 +21,6 @@
 execute as @e run function foo:xyz
 ```
 
-### foo
-
-`@function foo:a/nested_0`
-
-```mcfunction
-say autonesting
-say test
-```
-
-`@function foo:xyz`
-
-```mcfunction
-say hello
-say hello2
-```
-
-`@function foo:a`
-
-```mcfunction
-execute if score $we_comparison_autonest#int$0 reapermc.wicked_expressions matches 69 run function foo:a/nested_0
-```
-
-`@function foo:b`
-
-```mcfunction
-execute if score $we_comparison_autonest#int$0 reapermc.wicked_expressions matches 69 run say autonesting test
-```
-
 ### minecraft
 
 `@function_tag minecraft:load`
@@ -80,4 +52,32 @@ scoreboard objectives add reapermc.wicked_expressions dummy
 
 ```mcfunction
 scoreboard players reset $we_comparison_autonest#int$0 reapermc.wicked_expressions
+```
+
+### foo
+
+`@function foo:a/nested_0`
+
+```mcfunction
+say autonesting
+say test
+```
+
+`@function foo:xyz`
+
+```mcfunction
+say hello
+say hello2
+```
+
+`@function foo:a`
+
+```mcfunction
+execute if score $we_comparison_autonest#int$0 reapermc.wicked_expressions matches 69 run function foo:a/nested_0
+```
+
+`@function foo:b`
+
+```mcfunction
+execute if score $we_comparison_autonest#int$0 reapermc.wicked_expressions matches 69 run say autonesting test
 ```

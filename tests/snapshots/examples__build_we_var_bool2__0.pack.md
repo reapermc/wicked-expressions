@@ -43,18 +43,18 @@ execute if score $temp reapermc.wicked_expressions matches 1 run say hallloooooo
 `@function we_var_bool2:reapermc/wicked_expressions/safe_load`
 
 ```mcfunction
-function we_var_bool2:reapermc/wicked_expressions/safe_load/flush_variable/bool
 function we_var_bool2:reapermc/wicked_expressions/safe_load/scoreboard_setup
-```
-
-`@function we_var_bool2:reapermc/wicked_expressions/safe_load/flush_variable/bool`
-
-```mcfunction
-scoreboard players reset $we_var_bool2#bool$0 reapermc.wicked_expressions
+function we_var_bool2:reapermc/wicked_expressions/safe_load/flush_variable/bool
 ```
 
 `@function we_var_bool2:reapermc/wicked_expressions/safe_load/scoreboard_setup`
 
 ```mcfunction
 scoreboard objectives add reapermc.wicked_expressions dummy
+```
+
+`@function we_var_bool2:reapermc/wicked_expressions/safe_load/flush_variable/bool`
+
+```mcfunction
+scoreboard players reset $we_var_bool2#bool$0 reapermc.wicked_expressions
 ```

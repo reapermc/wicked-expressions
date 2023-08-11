@@ -38,7 +38,14 @@ data modify storage reapermc:wicked_expressions we_var_any.data.any[0][0] set va
 `@function we_var_any:reapermc/wicked_expressions/safe_load`
 
 ```mcfunction
+function we_var_any:reapermc/wicked_expressions/safe_load/scoreboard_setup
 function we_var_any:reapermc/wicked_expressions/safe_load/flush_variable/any
+```
+
+`@function we_var_any:reapermc/wicked_expressions/safe_load/scoreboard_setup`
+
+```mcfunction
+scoreboard objectives add reapermc.wicked_expressions dummy
 ```
 
 `@function we_var_any:reapermc/wicked_expressions/safe_load/flush_variable/any`

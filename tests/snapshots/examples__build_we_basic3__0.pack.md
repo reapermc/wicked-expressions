@@ -48,15 +48,15 @@ execute if score $temp reapermc.wicked_expressions matches 1 run say hello
 
 ### we_basic3
 
+`@function we_basic3:reapermc/wicked_expressions/safe_load`
+
+```mcfunction
+function we_basic3:reapermc/wicked_expressions/safe_load/scoreboard_setup
+```
+
 `@function we_basic3:reapermc/wicked_expressions/safe_load/scoreboard_setup`
 
 ```mcfunction
 scoreboard objectives add reapermc.wicked_expressions dummy
 scoreboard objectives add objective_0 dummy
-```
-
-`@function we_basic3:reapermc/wicked_expressions/safe_load`
-
-```mcfunction
-function we_basic3:reapermc/wicked_expressions/safe_load/scoreboard_setup
 ```

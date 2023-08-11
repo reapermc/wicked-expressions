@@ -51,8 +51,8 @@ function we_var_bool:reapermc/wicked_expressions/safe_load/flush_variable/bool
 `@function we_var_bool:reapermc/wicked_expressions/safe_load/scoreboard_setup`
 
 ```mcfunction
-scoreboard objectives add test dummy
 scoreboard objectives add reapermc.wicked_expressions dummy
+scoreboard objectives add test dummy
 ```
 
 `@function we_var_bool:reapermc/wicked_expressions/safe_load/flush_variable/bool`

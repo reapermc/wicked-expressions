@@ -39,7 +39,14 @@ tellraw @a {"nbt": "we_var_int_array.data.int_array[0][0]", "storage": "reapermc
 `@function we_var_int_array:reapermc/wicked_expressions/safe_load`
 
 ```mcfunction
+function we_var_int_array:reapermc/wicked_expressions/safe_load/scoreboard_setup
 function we_var_int_array:reapermc/wicked_expressions/safe_load/flush_variable/int_array
+```
+
+`@function we_var_int_array:reapermc/wicked_expressions/safe_load/scoreboard_setup`
+
+```mcfunction
+scoreboard objectives add reapermc.wicked_expressions dummy
 ```
 
 `@function we_var_int_array:reapermc/wicked_expressions/safe_load/flush_variable/int_array`

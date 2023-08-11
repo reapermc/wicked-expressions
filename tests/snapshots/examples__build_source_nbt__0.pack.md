@@ -21,6 +21,18 @@
 
 ```
 
+`@function test:reapermc/wicked_expressions/safe_load`
+
+```mcfunction
+function test:reapermc/wicked_expressions/safe_load/scoreboard_setup
+```
+
+`@function test:reapermc/wicked_expressions/safe_load/scoreboard_setup`
+
+```mcfunction
+scoreboard objectives add reapermc.wicked_expressions dummy
+```
+
 `@function test:paths`
 
 ```mcfunction
@@ -61,4 +73,16 @@ say storage demo:temp config.colors.yellow.hex_code
 say storage demo:temp config.colors.blue.hex_code
 say storage demo:temp config.colors.red.hex_code
 say storage demo:temp config.colors.green.hex_code
+```
+
+### minecraft
+
+`@function_tag minecraft:load`
+
+```json
+{
+  "values": [
+    "test:reapermc/wicked_expressions/safe_load"
+  ]
+}
 ```
