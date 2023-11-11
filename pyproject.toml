@@ -49,7 +49,7 @@ profile = "black"
 branch = "main"
 version_variable = "wicked_expressions/__init__.py:__version__"
 version_toml = "pyproject.toml:tool.poetry.version"
-major_on_zero = true
+major_on_zero = false
 upload_to_repository = true
 build_command = "poetry build"
 
