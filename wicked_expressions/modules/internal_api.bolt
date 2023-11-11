@@ -99,7 +99,6 @@ class Data(be_api.Data):
         else:
             v = value
 
-        # self._expr.set(casted_source, v*1)
         if nbt_type in ['float', 'double']:
             v *= 1      # this somehow makes float & double casting more precise
 
