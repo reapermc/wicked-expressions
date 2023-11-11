@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v1.0.2 (2023-11-11)
+### Fix
+
+* Var sources can't be imported from api module ([`58d4f37`](https://github.com/reapermc/wicked-expressions/commit/58d4f37d48b7af25e6601a5dd0932df88d5a610f))
+
 ## v1.0.1 (2023-11-11)
 ### Fix
 
