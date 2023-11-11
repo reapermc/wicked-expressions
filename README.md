@@ -13,23 +13,23 @@ This is an extension of the [bolt-expressions](https://github.com/rx-modules/bol
 
 
 ```py
-from wicked_expressions:api import Scoreboard, Data
+from wicked_expressions:api import Scoreboard, Var, Float
 
-score_0 = Scoreboard('test_objective')['$score_0']
-data_0 = Data.storage('my_library:internal')['data_0']
+foo = Scoreboard('demo')['$foo']
+bar = Var(Float, 3.14159)
 
-score_0 = 123
+foo = 123
 data_0 = 30
 
-if score_0:
-    tellraw @a "score_0 == 1"
+if foo == 1:
+    tellraw @a "foo == 1"
 else:
-    tellraw @a "score_0 != 1"
+    tellraw @a "foo != 1"
 
-if data_0 > score_0:
-    tellraw @a "data_0 is bigger than 30"
-elif data_0 == score_0:
-    tellraw @a "data_0 is equal to score_0"
+if bar == 3.14159:
+    tellraw @a "yes :3"
+else:
+    tellraw @a "no :<"
 ```
 
 ## Installation
