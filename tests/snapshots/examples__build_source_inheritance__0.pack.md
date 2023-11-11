@@ -30,17 +30,31 @@ execute unless data storage example:main {a: 0} run say It's 0!
 execute if data storage example:main {a: 0} run say It's not 0...
 ```
 
-`@function test:reapermc/wicked_expressions/safe_load`
+`@function test:reapermc/wicked_expressions/loader/prio_0`
 
 ```mcfunction
-function test:reapermc/wicked_expressions/safe_load/scoreboard_setup
+help --- DO_NOT_DELETE ---
+scoreboard objectives add obj.temp dummy
 ```
 
-`@function test:reapermc/wicked_expressions/safe_load/scoreboard_setup`
+`@function test:reapermc/wicked_expressions/loader/prio_1`
 
 ```mcfunction
-scoreboard objectives add reapermc.wicked_expressions dummy
-scoreboard objectives add obj.temp dummy
+help --- DO_NOT_DELETE ---
+```
+
+`@function test:reapermc/wicked_expressions/loader/prio_2`
+
+```mcfunction
+help --- DO_NOT_DELETE ---
+```
+
+`@function test:reapermc/wicked_expressions/loader`
+
+```mcfunction
+function test:reapermc/wicked_expressions/loader/prio_0
+function test:reapermc/wicked_expressions/loader/prio_1
+function test:reapermc/wicked_expressions/loader/prio_2
 ```
 
 `@function test:init_expressions`
@@ -58,7 +72,7 @@ scoreboard objectives add bolt.expr.temp dummy
 {
   "values": [
     "test:init_expressions",
-    "test:reapermc/wicked_expressions/safe_load"
+    "test:reapermc/wicked_expressions/loader"
   ]
 }
 ```

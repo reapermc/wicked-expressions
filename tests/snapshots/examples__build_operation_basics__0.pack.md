@@ -21,21 +21,37 @@
 execute if score #value abc.temp matches 100.. run scoreboard players set #value abc.temp 0
 execute if score #value abc.temp matches 100.. run scoreboard players set #value abc.temp 0
 execute store result score #value abc.temp run scoreboard players add #foo abc.temp 1
-execute if score $435asd abc.main matches 123 run say hello
+execute store success score $binop.wicked_expressions_basics.0 reapermc.wicked_expressions if score $435asd abc.main matches 123
+execute if score $binop.wicked_expressions_basics.0 reapermc.wicked_expressions matches 1 run say hello
 ```
 
-`@function test:reapermc/wicked_expressions/safe_load`
+`@function test:reapermc/wicked_expressions/loader/prio_0`
 
 ```mcfunction
-function test:reapermc/wicked_expressions/safe_load/scoreboard_setup
-```
-
-`@function test:reapermc/wicked_expressions/safe_load/scoreboard_setup`
-
-```mcfunction
-scoreboard objectives add reapermc.wicked_expressions dummy
+help --- DO_NOT_DELETE ---
 scoreboard objectives add abc.main dummy
 scoreboard objectives add abc.temp dummy
+scoreboard objectives add reapermc.wicked_expressions dummy
+```
+
+`@function test:reapermc/wicked_expressions/loader/prio_1`
+
+```mcfunction
+help --- DO_NOT_DELETE ---
+```
+
+`@function test:reapermc/wicked_expressions/loader/prio_2`
+
+```mcfunction
+help --- DO_NOT_DELETE ---
+```
+
+`@function test:reapermc/wicked_expressions/loader`
+
+```mcfunction
+function test:reapermc/wicked_expressions/loader/prio_0
+function test:reapermc/wicked_expressions/loader/prio_1
+function test:reapermc/wicked_expressions/loader/prio_2
 ```
 
 `@function test:operations`
@@ -116,7 +132,7 @@ scoreboard players set $3 bolt.expr.const 3
 {
   "values": [
     "test:init_expressions",
-    "test:reapermc/wicked_expressions/safe_load"
+    "test:reapermc/wicked_expressions/loader"
   ]
 }
 ```

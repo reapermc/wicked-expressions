@@ -1,202 +1,313 @@
 from bolt_expressions.node import ExpressionNode
-import base64
+import bolt_expressions.operations as be_oper
 import inspect
-import nbtlib
-
+from dataclasses import dataclass, field
+from typing import Any, ClassVar
 from ./sources import ScoreSource, DataSource
-from ./utils import logger, defer
 from ./config import Config
-from ./safe_load import safe_load
+from ./loader import load
+from ./loader_components import RootLibraryScoreboard, ResetScore, VarSetDefaultValue, VarStorageSetupMemory
+from ./utils import logger
+from ./var_validation import validate_var_type
+from ./var_types import TypeAnnotation, Byte, Short, Int, Long, Float, Double,
+                        String, List, Compound, ByteArray, IntArray, LongArray
 
+class VarSource:
+    _var_type: str = ''
+    _location_index: int = 0
+    _static_cache: dict[tuple] = {}
 
-class BaseVar:
-    _var_type = ''
-    _location_index = -1
-    _static_cache = {}
+    def __add__(self, other):
+        validate_var_type(value=other, expected_source=self.__class__)
+        return super().__add__(other)
+    
+    def __sub__(self, other):
+        validate_var_type(value=other, expected_source=self.__class__)
+        return super().__sub__(other)
+
+    def __mul__(self, other):
+        validate_var_type(value=other, expected_source=self.__class__, _ignore_literal_check=True)
+        return super().__mul__(other)
+
+    def __truediv__(self, other):
+        validate_var_type(value=other, expected_source=self.__class__, _ignore_literal_check=True)
+        return super().__truediv__(other)
+    
+    def __mod__(self, other):
+        validate_var_type(value=other, expected_source=self.__class__)
+        return super().__mod__(other)
 
     @classmethod
-    def _evaluate_location_index(cls, is_static: bool) -> int:
+    def _provide_cast_method(cls, cast):
+        # monkeypatcherino
+        cls._cast = cast
+
+    def cast(self, type: TypeAnnotation, scale: int | float | None = None):
+        return self._cast(self, type, is_static=False, scale=scale)
+
+    def static_cast(self, type: TypeAnnotation, scale: int | float | None = None):
+        return self._cast(self, type, is_static=True, scale=scale)
+
+    @classmethod
+    def _eval_location_index(cls, is_static: bool, _static_level_offset: int = 0) -> int:
         if not is_static:
-            cls._location_index += 1
-            return cls._location_index
+            return cls._next_location_index()
 
-        frame_context = cls._get_frame_context()
-        cache_key = base64_encode(f"{frame_context[0]}#{frame_context[1]}")
+        cache_key = cls._get_frame_context(offset=_static_level_offset)
+        retrieved_location_index = cls._static_cache.get(cache_key)
 
-        retrieved_index = cls._static_cache.get(cache_key)
+        # key exists -> retrieve location index
+        if retrieved_location_index != None:
+            return retrieved_location_index
 
-        if retrieved_index == None:
-            cls._location_index += 1
-            cls._static_cache[cache_key] = cls._location_index
-            return cls._location_index
-
-        return retrieved_index
+        # key does not exist -> create new location index
+        location_index = cls._next_location_index()
+        cls._static_cache[cache_key] = location_index
+        return location_index
 
     @classmethod
-    def _monkeypatch(cls, Scoreboard, Data):
-        cls._main_scoreboard = Scoreboard(Config.SCOREBOARD_ROOT)
-        cls._main_storage = Data.storage(Config.STORAGE_ROOT)
+    def _next_location_index(cls) -> int:
+        index = cls._location_index
+        cls._location_index += 1
+        return index
 
     @staticmethod
-    def _get_frame_context() -> tuple:
-        frame = inspect.getouterframes(inspect.currentframe(), 2)[4]
+    def _get_frame_context(offset: int = 0) -> tuple:
+        frame = inspect.getouterframes(inspect.currentframe(), 2)[4+offset]
         path = frame.filename[len(str(ctx.directory)):]
+        # print(frame.lineno, path)
         return (frame.lineno, path)
 
-class VarScoreSource(ScoreSource, BaseVar):
     @classmethod
-    def create(cls, is_static: bool):
-        location_index = cls._evaluate_location_index(is_static)
+    def _unsupported_operation_error(cls, value):
+        logger.error(f"Invalid direct operation between value types '{cls.__name__}' and '{type(value).__name__}'\n\n\n")
+        exit()
+
+    @classmethod
+    def _unsupported_literal_type(cls, value):
+        logger.error(f"Variable type '{cls.__name__}' received invalid literal of type '{type(value)}'")
+        exit()
+
+    @classmethod
+    def _unsupported_assignment_error(cls, value):
+        logger.error(f"Invalid assignment attempt of value type '{type(value)}' to a '{cls.__name__}' variable type\n\n\n")
+        exit()
+
+    @classmethod
+    def _implicit_cast_error(cls, value):
+        logger.error(f"Invalid implicit cast attempt of value type '{value.__class__.__name__}' to a '{cls.__name__}' variable type. Use '.cast()' or '.static_cast()' instead\n\n\n")
+        exit()
+
+class VarScoreSource(VarSource, ScoreSource):
+    @classmethod
+    def create(cls, is_static: bool, value: Any | None = None, _static_level_offset: int = 0):
+        location_index = cls._eval_location_index(is_static, _static_level_offset)
         full_location = f"${ctx.project_id}#{cls._var_type}${location_index}"
-        
-        cls._setup_flushing(full_location)
-        return cls(full_location, Config.SCOREBOARD_ROOT)
+
+        source = cls(full_location, Config.SCOREBOARD_ROOT)
+
+        # initialization
+        load(RootLibraryScoreboard())
+        load(ResetScore(
+            player_name=full_location, 
+            objective=Config.SCOREBOARD_ROOT
+        ))
+
+        # value assignment
+        if value != None:
+            source.__rebind__(value)
+
+        return source
+
+class VarStorageSource(VarSource, DataSource):
+    _MEM_BLOCK_SIZE = 32
 
     @classmethod
-    def _setup_flushing(cls, full_location):
-        with safe_load(f"flush_variable/{cls._var_type}", append=True):
-            scoreboard players reset full_location Config.SCOREBOARD_ROOT
+    def create(cls, is_static: bool, value: Any | None = None, _static_level_offset: int = 0):
+        var_type = cls._var_type
+        location_index = cls._eval_location_index(is_static, _static_level_offset)
+        minor, major = cls._get_minor_major_index(location_index)
+        # print(f"{var_type} | loc: {location_index} | {major}.{minor}")
 
-class VarStorageSource(DataSource, BaseVar):
-    memory_block_size = 64
+        source = cls('storage', Config.STORAGE_ROOT)['data'][ctx.project_id]['var'][var_type][major][minor]
+
+        # setup 2D memory list
+        load(VarStorageSetupMemory(
+            var_type=var_type,
+            minor=minor,
+            major=major,
+            block_size=cls._MEM_BLOCK_SIZE,
+            default_slot_value=cls._default_slot_value
+        ))
+
+        # value assignment
+        if value != None:
+            source.__rebind__(value)
+
+        return source
 
     @classmethod
-    def create(cls, is_static: bool):
-        location_index = cls._evaluate_location_index(is_static)
-        minor, major = cls.calculate_minor_major_index(location_index)
-
-        cls._setup_flushing(minor, major)
-        return cls('storage', Config.STORAGE_ROOT)[ctx.project_id]['data'][cls._var_type][major][minor]
-
-    @classmethod
-    def calculate_minor_major_index(cls, location_index):
-        minor = location_index % cls.memory_block_size
-        major = location_index // cls.memory_block_size
+    def _get_minor_major_index(cls, location_index: int) -> tuple:
+        minor = location_index % cls._MEM_BLOCK_SIZE
+        major = location_index // cls._MEM_BLOCK_SIZE
         return (minor, major)
 
-    @classmethod
-    def _setup_flushing(cls, minor, major):
-
-        if minor == 0:
-            new_block = []
-            full_location = f"{ctx.project_id}.data.{cls._var_type}"
-
-            if major == 0:
-                # fully reset on initial run
-                with safe_load(f"flush_variable/{cls._var_type}", append=True):
-                    data remove storage Config.STORAGE_ROOT full_location
-
-            # append new memory block
-            for n in range(cls.memory_block_size):
-                new_block.append(cls._default_slot_value)
-
-            with safe_load(f"flush_variable/{cls._var_type}", append=True):
-                data modify storage Config.STORAGE_ROOT full_location append value new_block
-
-
-        # if not location_index % slot_block_size:
-            # slot_block = []
-    #         full_location = f"{ctx.project_id}.data.{cls._var_type}"
-
-    #         for n in range(slot_block_size):
-    #             slot_block.append(cls._default_slot_value)
-
-    #         with safe_load(f"flush_variable/{cls._var_type}", append=True):
-    #             data modify storage Config.STORAGE_ROOT full_location append value slot_block
-
-
-class AnySource(VarStorageSource):
-    _var_type = 'any'
-    _default_slot_value = {}
-
 class BoolSource(VarScoreSource):
-    _var_type = 'bool'
+    _var_type: str = 'bool'
+    _nbt_type: str | None = None
+    _scale: float = 1
 
-    def _rebind(self, score, value):
-        if not isinstance(value, ExpressionNode):
-            value = int(value)
-            
-            if value not in (0, 1):
-                return logger.error(f"Invalid assignment attempt of value {value} to a Bool variable.")
+    _valid_literal_types: ClassVar[tuple] = (bool)
 
-        return super()._rebind(score, value)
+    def _rebind(self, source, value, unsafe_cast=False):
+        if not unsafe_cast:
+            validate_var_type(value, source.__class__)
+        if isinstance(value, ExpressionNode):
+            return super()._rebind(source, value)
+        return super()._rebind(source, int(value))
+
+class qIntSource(VarScoreSource):
+    _var_type: str = 'int'
+    _nbt_type: str | None = None
+    _scale: float = 1
+
+    _valid_literal_types: ClassVar[tuple] = (int)
+
+    def _rebind(self, source, value, unsafe_cast=False):
+        if not unsafe_cast:
+            validate_var_type(value, source.__class__)
+        return super()._rebind(source, value)
 
 class ByteSource(VarStorageSource):
-    _default_nbt_type = 'byte'
-    _default_slot_value = nbtlib.Byte(0)
-    _var_type = 'byte'
+    _var_type: str = 'byte'
+    _nbt_type: str | None = None
+    _scale: float = 1
 
-    def _rebind(self, source, value):
+    _valid_literal_types: ClassVar[tuple] = (int)
+    _default_nbt_type: ClassVar[str] = 'byte'
+    _default_slot_value: ClassVar[Any] = Byte(0)
+
+    def _rebind(self, source, value, unsafe_cast=False):
+        if not unsafe_cast:
+            validate_var_type(value, source.__class__)
         if not isinstance(value, ExpressionNode):
-            value = nbtlib.Byte(value)
+            return super()._rebind(source, Byte(value))
         return super()._rebind(source, value)
 
 class ShortSource(VarStorageSource):
-    _default_nbt_type = 'short'
-    _default_slot_value = nbtlib.Short(0)
-    _var_type = 'short'
+    _var_type: str = 'short'
+    _nbt_type: str | None = None
+    _scale: float = 1
 
-    def _rebind(self, source, value):
+    _valid_literal_types: ClassVar[tuple] = (int)
+    _default_nbt_type: ClassVar[str] = 'short'
+    _default_slot_value: ClassVar[Any] = Short(0)
+
+    def _rebind(self, source, value, unsafe_cast=False):
+        if not unsafe_cast:
+            validate_var_type(value, source.__class__)
         if not isinstance(value, ExpressionNode):
-            value = nbtlib.Short(value)
+            return super()._rebind(source, Short(value))
         return super()._rebind(source, value)
 
-class IntSource(VarScoreSource):
-    _var_type = 'int'
+class IntSource(VarStorageSource):
+    _var_type: str = 'int'
+    _nbt_type: str | None = None
+    _scale: float = 1
+
+    _valid_literal_types: ClassVar[tuple] = (int)
+    _default_slot_value: ClassVar[Any] = Int(0)
+    _default_nbt_type: ClassVar[str] = 'int'
+
+    def _rebind(self, source, value, unsafe_cast=False):
+        if not unsafe_cast:
+            validate_var_type(value, source.__class__)
+        if not isinstance(value, ExpressionNode):
+            return super()._rebind(source, Int(value))
+        return super()._rebind(source, value)
 
 class LongSource(VarStorageSource):
-    _default_nbt_type = 'long'
-    _default_slot_value = nbtlib.Long(0)
-    _var_type = 'long'
+    _var_type: str = 'long'
+    _nbt_type: str | None = None
+    _scale: float = 1
 
-    def _rebind(self, source, value):
+    _valid_literal_types: ClassVar[tuple] = (int)
+    _default_nbt_type: ClassVar[str] = 'long'
+    _default_slot_value: ClassVar[Any] = Long(0)
+
+    def _rebind(self, source, value, unsafe_cast=False):
+        if not unsafe_cast:
+            validate_var_type(value, source.__class__)
         if not isinstance(value, ExpressionNode):
-            value = nbtlib.Long(value)
+            return super()._rebind(source, Long(value))
         return super()._rebind(source, value)
 
-# float <-> double
-# 0.000000953674316
-# 1048576
-
 class FloatSource(VarStorageSource):
-    _default_nbt_type = 'float'
-    _default_slot_value = nbtlib.Float(0)
-    _var_type = 'float'
+    _var_type: str = 'float'
+    _nbt_type: str | None = None
+    _scale: float = 1
 
-    def _rebind(self, source, value):
+    _valid_literal_types: ClassVar[tuple] = (float)
+    _default_slot_value: ClassVar[Any] = Float(0)
+    _default_nbt_type: ClassVar[str] = 'float'
+    _default_floating_point_type: ClassVar[str] = 'float'
+
+    def _rebind(self, source, value, unsafe_cast=False):
+        if not unsafe_cast:
+            validate_var_type(value, source.__class__)
         if not isinstance(value, ExpressionNode):
-            value = nbtlib.Float(value)
+            return super()._rebind(source, Float(value))
         return super()._rebind(source, value)
 
 class DoubleSource(VarStorageSource):
-    _default_nbt_type = 'double'
-    _default_slot_value = nbtlib.Double(0)
-    _var_type = 'double'
+    _var_type: str = 'double'
+    _nbt_type: str | None = None
+    _scale: float = 1
 
-    def _rebind(self, source, value):
+    _valid_literal_types: ClassVar[tuple] = (float)
+    _default_slot_value: ClassVar[Any] = Double(0)
+    _default_nbt_type: ClassVar[str] = 'double'
+    _default_floating_point_type: ClassVar[str] = 'double'
+
+    def _rebind(self, source, value, unsafe_cast=False):
+        if not unsafe_cast:
+            validate_var_type(value, source.__class__)
         if not isinstance(value, ExpressionNode):
-            value = nbtlib.Double(value)
+            return super()._rebind(source, Double(value))
         return super()._rebind(source, value)
 
 class StringSource(VarStorageSource):
-    _default_nbt_type = 'string'
-    _default_slot_value = nbtlib.String('')
-    _var_type = 'string'
+    _var_type: str = 'string'
+    _nbt_type: str | None = None
 
-    def _rebind(self, source, value):
-        if not isinstance(value, ExpressionNode):
-            value = nbtlib.String(value)
-        return super()._rebind(source, value)
+    _default_slot_value: ClassVar[Any] = String('')
 
 class ListSource(VarStorageSource):
-    _default_nbt_type = 'int'   # has to be 'int', else it bricks itself
-    _var_type = 'list'
-    _default_slot_value = []
+    _var_type: str = 'list'
+    _nbt_type: str | None = None
+
+    _default_slot_value: ClassVar[Any] = List()
+
+class CompoundSource(VarStorageSource):
+    _var_type: str = 'compound'
+    _nbt_type: str | None = None
+
+    _default_slot_value: ClassVar[Any] = Compound()
+
+class ByteArraySource(VarStorageSource):
+    _var_type: str = 'byte_array'
+    _nbt_type: str | None = None
+
+    _default_slot_value: ClassVar[Any] = ByteArray()
 
 class IntArraySource(VarStorageSource):
-    _default_nbt_type = 'int_array'
-    _var_type = 'int_array'
-    _default_slot_value = nbtlib.IntArray([])
+    _var_type: str = 'int_array'
+    _nbt_type: str | None = None
 
-def base64_encode(s: str) -> str:
-    return base64.b64encode(s.encode()).decode()
+    _default_slot_value: ClassVar[Any] = IntArray()
+
+class LongArraySource(VarStorageSource):
+    _var_type: str = 'long_array'
+    _nbt_type: str | None = None
+
+    _default_slot_value: ClassVar[Any] = LongArray()

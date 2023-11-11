@@ -1,0 +1,158 @@
+from contextlib import contextmanager
+import bolt_expressions.sources as sources
+from ./utils import parse_holder
+
+@contextmanager
+def store_expression_value(expression, mode='result', type='int', scale=1):
+    if isinstance(expression, sources.ScoreSource):
+        holder = parse_holder(expression.holder)
+
+        if mode == 'result':
+            store result score holder expression.obj:
+                yield True
+        elif mode == 'success':
+            store success score holder expression.obj:
+                yield True
+
+    elif isinstance(expression, sources.DataSource):
+        if expression._type == 'storage':
+            if mode == 'result':
+                if type == 'byte':
+                    store result storage expression._target expression._path byte scale:
+                        yield True
+                elif type == 'double':
+                    store result storage expression._target expression._path double scale:
+                        yield True
+                elif type == 'float':
+                    store result storage expression._target expression._path float scale:
+                        yield True
+                elif type == 'int':
+                    store result storage expression._target expression._path int scale:
+                        yield True
+                elif type == 'long':
+                    store result storage expression._target expression._path long scale:
+                        yield True
+                elif type == 'short':
+                    store result storage expression._target expression._path short scale:
+                        yield True
+            elif mode == 'success':
+                if type == 'byte':
+                    store success storage expression._target expression._path byte scale:
+                        yield True
+                elif type == 'double':
+                    store success storage expression._target expression._path double scale:
+                        yield True
+                elif type == 'float':
+                    store success storage expression._target expression._path float scale:
+                        yield True
+                elif type == 'int':
+                    store success storage expression._target expression._path int scale:
+                        yield True
+                elif type == 'long':
+                    store success storage expression._target expression._path long scale:
+                        yield True
+                elif type == 'short':
+                    store success storage expression._target expression._path short scale:
+                        yield True
+        elif expression._type == 'entity':
+            holder = parse_holder(expression._target)
+
+            if mode == 'result':
+                if type == 'byte':
+                    store result entity holder expression._path byte scale:
+                        yield True
+                elif type == 'double':
+                    store result entity holder expression._path double scale:
+                        yield True
+                elif type == 'float':
+                    store result entity holder expression._path float scale:
+                        yield True
+                elif type == 'int':
+                    store result entity holder expression._path int scale:
+                        yield True
+                elif type == 'long':
+                    store result entity holder expression._path long scale:
+                        yield True
+                elif type == 'short':
+                    store result entity holder expression._path short scale:
+                        yield True
+            elif mode == 'success':
+                if type == 'byte':
+                    store success entity holder expression._path byte scale:
+                        yield True
+                elif type == 'double':
+                    store success entity holder expression._path double scale:
+                        yield True
+                elif type == 'float':
+                    store success entity holder expression._path float scale:
+                        yield True
+                elif type == 'int':
+                    store success entity holder expression._path int scale:
+                        yield True
+                elif type == 'long':
+                    store success entity holder expression._path long scale:
+                        yield True
+                elif type == 'short':
+                    store success entity holder expression._path short scale:
+                        yield True
+        elif expression._type == 'block':
+            if mode == 'result':
+                if type == 'byte':
+                    store result block expression._target expression._path byte scale:
+                        yield True
+                elif type == 'double':
+                    store result block expression._target expression._path double scale:
+                        yield True
+                elif type == 'float':
+                    store result block expression._target expression._path float scale:
+                        yield True
+                elif type == 'int':
+                    store result block expression._target expression._path int scale:
+                        yield True
+                elif type == 'long':
+                    store result block expression._target expression._path long scale:
+                        yield True
+                elif type == 'short':
+                    store result block expression._target expression._path short scale:
+                        yield True
+            elif mode == 'success':
+                if type == 'byte':
+                    store success block expression._target expression._path byte scale:
+                        yield True
+                elif type == 'double':
+                    store success block expression._target expression._path double scale:
+                        yield True
+                elif type == 'float':
+                    store success block expression._target expression._path float scale:
+                        yield True
+                elif type == 'int':
+                    store success block expression._target expression._path int scale:
+                        yield True
+                elif type == 'long':
+                    store success block expression._target expression._path long scale:
+                        yield True
+                elif type == 'short':
+                    store success block expression._target expression._path short scale:
+                        yield True
+
+def get_expression_value(expression, scale=1):
+    if isinstance(expression, sources.ScoreSource):
+        holder = parse_holder(expression.holder)
+        scoreboard players get holder expression.obj
+    elif isinstance(expression, sources.DataSource):
+        if expression._type == 'storage':
+            if scale is None:
+                data get storage expression._target expression._path
+            else:
+                data get storage expression._target expression._path scale
+        elif expression._type == 'entity':
+            holder = parse_holder(expression._target)
+            if scale is None:
+                data get entity holder expression._path
+            else:
+                data get entity holder expression._path scale
+        elif expression._type == 'block':
+            if scale is None:
+                data get block expression._target expression._path
+            else:
+                data get block expression._target expression._path scale

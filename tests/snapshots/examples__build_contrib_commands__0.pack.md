@@ -43,21 +43,44 @@ execute store result score $i1 bolt.expr.temp run data get storage example:main 
 scoreboard players operation $i0 bolt.expr.temp += $i1 bolt.expr.temp
 execute store result storage example:main value int 1 run scoreboard players get $i0 bolt.expr.temp
 help
-execute if score $test obj.temp matches 123 run say hello
-execute unless score $test obj.temp matches 123 if score $test1 obj.temp = $test2 obj.temp run say hello2
+execute store success score $binop.wicked_expressions_commands.0 reapermc.wicked_expressions if score $test obj.temp matches 123
+execute if score $binop.wicked_expressions_commands.0 reapermc.wicked_expressions matches 1 run say hello
+execute if score $binop.wicked_expressions_commands.0 reapermc.wicked_expressions matches 0 run function test:main/nested_execute_0
 ```
 
-`@function test:reapermc/wicked_expressions/safe_load`
+`@function test:reapermc/wicked_expressions/loader/prio_0`
 
 ```mcfunction
-function test:reapermc/wicked_expressions/safe_load/scoreboard_setup
-```
-
-`@function test:reapermc/wicked_expressions/safe_load/scoreboard_setup`
-
-```mcfunction
-scoreboard objectives add reapermc.wicked_expressions dummy
+help --- DO_NOT_DELETE ---
 scoreboard objectives add obj.temp dummy
+scoreboard objectives add reapermc.wicked_expressions dummy
+```
+
+`@function test:reapermc/wicked_expressions/loader/prio_1`
+
+```mcfunction
+help --- DO_NOT_DELETE ---
+```
+
+`@function test:reapermc/wicked_expressions/loader/prio_2`
+
+```mcfunction
+help --- DO_NOT_DELETE ---
+```
+
+`@function test:main/nested_execute_0`
+
+```mcfunction
+execute store success score $binop.wicked_expressions_commands.1 reapermc.wicked_expressions if score $test1 obj.temp = $test2 obj.temp
+execute if score $binop.wicked_expressions_commands.1 reapermc.wicked_expressions matches 1 run say hello2
+```
+
+`@function test:reapermc/wicked_expressions/loader`
+
+```mcfunction
+function test:reapermc/wicked_expressions/loader/prio_0
+function test:reapermc/wicked_expressions/loader/prio_1
+function test:reapermc/wicked_expressions/loader/prio_2
 ```
 
 `@function test:init_expressions`
@@ -75,7 +98,7 @@ scoreboard objectives add bolt.expr.temp dummy
 {
   "values": [
     "test:init_expressions",
-    "test:reapermc/wicked_expressions/safe_load"
+    "test:reapermc/wicked_expressions/loader"
   ]
 }
 ```

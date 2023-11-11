@@ -1,0 +1,38 @@
+from typing import Type
+from ./config import Config
+from ./loader_components import LoaderComponent
+
+MAX_PRIORITY_LEVEL = 2
+LOADER_PATH = f"{Config.LOCAL_DIR}/loader"
+
+def load(component: LoaderComponent) -> bool:
+    if not load.call_hub_deployed:
+        load.call_hub_deployed = True
+        _deploy_call_hub(LOADER_PATH)
+
+    if component in load.loaded_components:
+        # print('SKIP |', component)
+        return False
+
+    load.loaded_components.append(component)
+    # print('LOAD |', component)
+
+    append function f"{LOADER_PATH}/prio_{component.priority}":
+        component.deploy()
+
+    return True
+
+load.call_hub_deployed = False
+load.loaded_components = []
+
+def _deploy_call_hub(loader_path):
+    merge function_tag minecraft:load {"values": [loader_path]}
+
+    # setup priority call order
+    function loader_path:
+        for priority_level in range(MAX_PRIORITY_LEVEL+1):
+            execute function f"{loader_path}/prio_{priority_level}":
+                # filler contents
+                # so mcfunc doesn't get clapped by
+                # remove-empty-files plugins
+                help --- DO_NOT_DELETE ---

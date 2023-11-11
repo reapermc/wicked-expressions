@@ -26,17 +26,31 @@ scoreboard players operation $i1 bolt.expr.temp *= $2 bolt.expr.const
 scoreboard players operation my_var abc.main += $i1 bolt.expr.temp
 ```
 
-`@function test:reapermc/wicked_expressions/safe_load`
+`@function test:reapermc/wicked_expressions/loader/prio_0`
 
 ```mcfunction
-function test:reapermc/wicked_expressions/safe_load/scoreboard_setup
+help --- DO_NOT_DELETE ---
+scoreboard objectives add abc.main dummy
 ```
 
-`@function test:reapermc/wicked_expressions/safe_load/scoreboard_setup`
+`@function test:reapermc/wicked_expressions/loader/prio_1`
 
 ```mcfunction
-scoreboard objectives add reapermc.wicked_expressions dummy
-scoreboard objectives add abc.main dummy
+help --- DO_NOT_DELETE ---
+```
+
+`@function test:reapermc/wicked_expressions/loader/prio_2`
+
+```mcfunction
+help --- DO_NOT_DELETE ---
+```
+
+`@function test:reapermc/wicked_expressions/loader`
+
+```mcfunction
+function test:reapermc/wicked_expressions/loader/prio_0
+function test:reapermc/wicked_expressions/loader/prio_1
+function test:reapermc/wicked_expressions/loader/prio_2
 ```
 
 `@function test:init_expressions`
@@ -60,7 +74,7 @@ scoreboard players set $2 bolt.expr.const 2
 {
   "values": [
     "test:init_expressions",
-    "test:reapermc/wicked_expressions/safe_load"
+    "test:reapermc/wicked_expressions/loader"
   ]
 }
 ```
