@@ -6,6 +6,7 @@ from ./config import Config
 from ./utils import raw, logger
 from ./loader import load
 from ./loader_components import RootLibraryScoreboard
+from ./var_types import Float
 
 @dataclass
 class UniqueScoreRegister:
@@ -86,9 +87,10 @@ class BinaryOperation:
                               outcome=self.outcome, inverted=not self.inverted)
 
     @classmethod
-    def provide_sources(cls, score_source, data_source):
+    def provide_sources(cls, score_source, data_source, var_source):
         cls.ScoreSource = score_source
         cls.DataSource = data_source
+        cls.VarSource = var_source
 
     @classmethod
     def _move_data_to_storage(cls, in_data, out_stge):
@@ -260,7 +262,10 @@ class DataEQ(BinaryOperation):
             if isinstance(self.right, self.DataSource):
                 self._move_data_to_storage(self.right, reg_b)
             else:
-                data modify storage reg_b._target reg_b._path set value self.right
+                if isinstance(self.left, self.VarSource) and self.left._var_type == 'float':
+                    data modify storage reg_b._target reg_b._path set value Float(self.right)
+                else:
+                    data modify storage reg_b._target reg_b._path set value self.right
 
             store result score override.holder override.obj:
                 data modify storage reg_a._target reg_a._path set from storage reg_b._target reg_b._path
@@ -294,7 +299,10 @@ class DataNE(BinaryOperation):
             if isinstance(self.right, self.DataSource):
                 self._move_data_to_storage(self.right, reg_b)
             else:
-                data modify storage reg_b._target reg_b._path set value self.right
+                if isinstance(self.left, self.VarSource) and self.left._var_type == 'float':
+                    data modify storage reg_b._target reg_b._path set value Float(self.right)
+                else:
+                    data modify storage reg_b._target reg_b._path set value self.right
 
             store result score override.holder override.obj:
                 data modify storage reg_a._target reg_a._path set from storage reg_b._target reg_b._path

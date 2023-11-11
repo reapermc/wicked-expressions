@@ -37,16 +37,15 @@ class VarSource:
         validate_var_type(value=other, expected_source=self.__class__)
         return super().__mod__(other)
 
-    @classmethod
-    def _provide_cast_method(cls, cast):
-        # monkeypatcherino
-        cls._cast = cast
-
     def cast(self, type: TypeAnnotation, scale: int | float | None = None):
         return self._cast(self, type, is_static=False, scale=scale)
 
     def static_cast(self, type: TypeAnnotation, scale: int | float | None = None):
         return self._cast(self, type, is_static=True, scale=scale)
+
+    @classmethod
+    def _provide_cast_method(cls, cast):
+        cls._cast = cast
 
     @classmethod
     def _eval_location_index(cls, is_static: bool, _static_level_offset: int = 0) -> int:
