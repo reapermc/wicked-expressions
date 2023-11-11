@@ -2,6 +2,11 @@
 
 <!--next-version-placeholder-->
 
+## v1.0.1 (2023-11-11)
+### Fix
+
+* Float value comparison does not work correctly ([`bccbc8e`](https://github.com/reapermc/wicked-expressions/commit/bccbc8ee973d7c707dd43bb36e418d9981104dad))
+
 ## v1.0.0 (2023-11-11)
 ### Feature
 
