@@ -2,11 +2,13 @@ from bolt_expressions.node import ExpressionNode
 from bolt_expressions import Expression
 from ./sources import ScoreSource, DataSource
 from ./var import Var, StaticVar
-from ./var_sources import VarSource
 from ./comparison import BinaryOperation
 import ./internal_api as internal_api
 from ./var_types import Bool, qInt, Byte, Short, Int, Long, Float, Double, String, List,
                         Compound, ByteArray, IntArray, LongArray
+from ./var_sources import VarSource, BoolSource, qIntSource, ByteSource, ShortSource, IntSource,
+                          LongSource, FloatSource, DoubleSource, StringSource, ListSource,
+                          CompoundSource, ByteArraySource, IntArraySource, LongArraySource
 
 Scoreboard = ctx.inject(internal_api.Scoreboard)
 Data = ctx.inject(internal_api.Data)
