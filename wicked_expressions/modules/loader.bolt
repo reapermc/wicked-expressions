@@ -32,7 +32,7 @@ def _deploy_call_hub(loader_path):
     function loader_path:
         for priority_level in range(MAX_PRIORITY_LEVEL+1):
             execute function f"{loader_path}/prio_{priority_level}":
-                # filler contents
-                # so mcfunc doesn't get clapped by
+                # filler contents, so mcfunc
+                # doesn't get clapped by
                 # remove-empty-files plugins
                 help --- DO_NOT_DELETE ---
