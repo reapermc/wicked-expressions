@@ -7,8 +7,6 @@
 
 ## Introduction
 
-**Minecraft version: `1.20.1`**
-
 This is an extension of the [bolt-expressions](https://github.com/rx-modules/bolt-expressions) package. I highly recommend getting accustom to the original before using this one. This package is meant to build upon it by adding more functionality.
 
 
