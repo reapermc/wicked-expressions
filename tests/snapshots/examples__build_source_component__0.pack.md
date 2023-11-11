@@ -30,17 +30,31 @@ tellraw @a [{"score": {"name": "$foo", "objective": "obj.temp"}}, {"score": {"na
 tellraw @a [{"score": {"name": "$value", "objective": "obj.temp"}}, {"nbt": "Items[0]", "block": "~ ~ ~"}, {"nbt": "message", "storage": "example:main", "interpret": true}]
 ```
 
-`@function test:reapermc/wicked_expressions/safe_load`
+`@function test:reapermc/wicked_expressions/loader/prio_0`
 
 ```mcfunction
-function test:reapermc/wicked_expressions/safe_load/scoreboard_setup
+help --- DO_NOT_DELETE ---
+scoreboard objectives add obj.temp dummy
 ```
 
-`@function test:reapermc/wicked_expressions/safe_load/scoreboard_setup`
+`@function test:reapermc/wicked_expressions/loader/prio_1`
 
 ```mcfunction
-scoreboard objectives add reapermc.wicked_expressions dummy
-scoreboard objectives add obj.temp dummy
+help --- DO_NOT_DELETE ---
+```
+
+`@function test:reapermc/wicked_expressions/loader/prio_2`
+
+```mcfunction
+help --- DO_NOT_DELETE ---
+```
+
+`@function test:reapermc/wicked_expressions/loader`
+
+```mcfunction
+function test:reapermc/wicked_expressions/loader/prio_0
+function test:reapermc/wicked_expressions/loader/prio_1
+function test:reapermc/wicked_expressions/loader/prio_2
 ```
 
 ### minecraft
@@ -50,7 +64,7 @@ scoreboard objectives add obj.temp dummy
 ```json
 {
   "values": [
-    "test:reapermc/wicked_expressions/safe_load"
+    "test:reapermc/wicked_expressions/loader"
   ]
 }
 ```

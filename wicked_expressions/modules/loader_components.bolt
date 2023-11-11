@@ -1,0 +1,108 @@
+from bolt_expressions.sources import ScoreSource, DataSource
+from bolt_expressions.node import ExpressionNode
+from dataclasses import dataclass
+from typing import ClassVar, Any
+from ./config import Config
+from ./utils import logger
+
+@dataclass
+class LoaderComponent:
+    priority: int = 10
+
+    def deploy(self):
+        """Override this in method inherited components."""
+
+        logger.error('Base loader component can not be loaded.')
+        exit()
+
+@dataclass(unsafe_hash=True)
+class RootLibraryScoreboard(LoaderComponent):
+    priority: ClassVar[int] = 0
+
+    def deploy(self):
+        scoreboard objectives add Config.SCOREBOARD_ROOT dummy
+
+@dataclass(unsafe_hash=True)
+class CustomScoreboard(LoaderComponent):
+    name: str
+    criteria: str
+    display_name: str | dict
+
+    priority: ClassVar[int] = 0
+
+    def deploy(self):
+        if not self.criteria:
+            self.criteria = 'dummy'
+        
+        if not self.display_name:
+            scoreboard objectives add self.name self.criteria
+        else:
+            scoreboard objectives add self.name self.criteria self.display_name
+
+@dataclass(unsafe_hash=True)
+class ResetScore(LoaderComponent):
+    player_name: str
+    objective: str
+
+    priority: ClassVar[int] = 1
+
+    def deploy(self):
+        scoreboard players reset self.player_name self.objective
+
+@dataclass(unsafe_hash=True)
+class SetScore(LoaderComponent):
+    player_name: str
+    objective: str
+    value: int | ExpressionNode
+
+    priority: ClassVar[int] = 1
+
+    def deploy(self):
+        if isinstance(self.value, ScoreSource):
+            scoreboard players operation self.player_name self.objective = value.holder value.obj
+        elif isinstance(self.value, DataSource):
+            store result score self.player_name self.objective:
+                if self.value._type == 'storage':
+                    data get storage self.value._target self.value._path
+                elif self.value._type == 'entity':
+                    data get entity self.value._target self.value._path
+                elif self.value._type == 'block':
+                    data get block self.value._target self.value._path
+        else:
+            scoreboard players set self.player_name self.objective self.value
+
+@dataclass(unsafe_hash=True)
+class VarStorageSetupMemory(LoaderComponent):
+    var_type: str
+    minor: int
+    major: int
+    block_size: int
+    default_slot_value: Any
+
+    priority: ClassVar[int] = 1
+    
+    def deploy(self):
+        if self.minor != 0:
+            return
+        
+        nbt_type_path = f"data.{ctx.project_id}.var.{self.var_type}"
+        mem_block = []
+        
+        if self.major == 0:
+            data remove storage Config.STORAGE_ROOT nbt_type_path
+
+        # build mem block
+        for slot in range(self.block_size):
+            mem_block.append(self.default_slot_value)
+
+        data modify storage Config.STORAGE_ROOT nbt_type_path append value mem_block
+
+@dataclass(unsafe_hash=True)
+class VarSetDefaultValue(LoaderComponent):
+    source: ExpressionNode
+    value: Any
+
+    priority: ClassVar[int] = 1
+
+    def deploy(self):
+        self.source.__rebind__(self.value)

@@ -1,35 +1,37 @@
-from typing import Any
-import bolt_expressions.node as be_node
 import bolt_expressions.api as be_api
-
-from ./config import Config
-from ./safe_load import safe_load
+from bolt_expressions.node import ExpressionNode
+from bolt_expressions.literals import literal_types
+from ./loader import load
+from ./loader_components import CustomScoreboard
 import ./sources as sources
-
+from ./config import Config
+from ./var_types import TypeAnnotation, Bool, qInt, Byte, Short, Int, Long,
+                        Float, Double, String, List, Compound, ByteArray, IntArray, LongArray
+from ./var import Var, StaticVar
+from ./var_sources import VarStorageSource, VarScoreSource
+from dataclasses import replace
+import inspect
 
 class Scoreboard(be_api.Scoreboard):
-    def objective(self, name: str, criteria: str = 'dummy', prefixed=True, display_name=None):
-        if prefixed:
-            name = self._expr.opts.objective_prefix + name
-
-        if criteria == None:
-            criteria = 'dummy'
-
+    def objective(self,
+                  name: str,
+                  criteria: str,
+                  display_name: str | dict | None = None,
+                  prefixed: bool = True
+                ):
         if name not in self.added_objectives:
             self.added_objectives.add(name)
-            self.create_objective(name, criteria, display_name)
+            load(CustomScoreboard(name, criteria, display_name))
 
         return Score(self, name)
 
-    def create_objective(self, objective_id: str, criteria: str, display_name: str | dict):
-        if isinstance(display_name, str):
-            display_name = display_name
-
-        with safe_load('scoreboard_setup', append=True):
-            if display_name is None:
-                scoreboard objectives add objective_id criteria
-            else:
-                scoreboard objectives add objective_id criteria display_name
+    def __call__(self,
+                 objective: str,
+                 criteria: str = None,
+                 display_name: str | dict | None = None,
+                 prefixed: bool = True
+                ):
+        return self.objective(objective, criteria, display_name, prefixed)
 
 class Score(be_api.Score):
     def __getitem__(self, scoreholder: str | list[str]) -> sources.ScoreSource | list[sources.ScoreSource]:
@@ -42,11 +44,95 @@ class Score(be_api.Score):
         return score_sources
 
 class Data(be_api.Data):
+    # _static_cast_cache: dict[tuple] = {}
+    # _cast_location_index: int = 0
+    _cast_type_map: dict[TypeAnnotation, str] = {
+        'bool': Bool,
+        'qint': qInt,
+        'byte': Byte,
+        'short': Short,
+        'int': Int,
+        'long': Long,
+        'float': Float,
+        'double': Double,
+    }
+
     def storage(self, resource_location: str):
-        return sources.DataSource.create("storage", resource_location)
+        return sources.DataSource.create('storage', resource_location)
 
     def entity(self, entity: str):
-        return sources.DataSource.create("entity", entity)
+        return sources.DataSource.create('entity', entity)
 
     def block(self, position: str):
-        return sources.DataSource.create("block", position)
+        return sources.DataSource.create('block', position)
+
+    def cast(self, value, type: str | TypeAnnotation, scale: int | float | None = None):
+        return self._cast(value, type, is_static=False, scale=scale)
+
+    def static_cast(self, value, type: str | TypeAnnotation, scale: int | float | None = None):
+        return self._cast(value, type, is_static=True, scale=scale)
+
+    def _cast(self, value, _type, is_static, scale: int | float | None = None):
+        if _type in self._cast_type_map:
+            type = self._cast_type_map[_type]
+        else:
+            type = _type
+
+        if is_static:
+            # offsets to the cast call itself
+            source = StaticVar(type, _static_level_offset=2)
+        else:
+            source = Var(type)
+
+        # get string representation of type
+        for key, val in self._cast_type_map.items():
+            if val == type:
+                nbt_type = key
+
+        if isinstance(self, VarStorageSource):
+            casted_source = replace(source, _nbt_type=nbt_type)
+        else:
+            casted_source = source
+
+        if scale != None:
+            v = value * float(scale)
+        else:
+            v = value
+
+        # self._expr.set(casted_source, v*1)
+        if nbt_type in ['float', 'double']:
+            v *= 1      # this somehow makes float & double casting more precise
+
+        casted_source._rebind(casted_source, v, unsafe_cast=True)
+
+        if isinstance(self, VarScoreSource):
+            return replace(casted_source, _nbt_type=None)
+        return casted_source
+
+    # @classmethod
+    # def _eval_cast_location_index(cls, is_static: bool) -> int:
+    #     if not is_static:
+    #         return cls._next_cast_location_index()
+
+    #     cache_key = cls._get_frame_context()
+    #     retrieved_location_index = cls._static_cast_cache.get(cache_key)
+
+    #     if retrieved_location_index != None:
+    #         return retrieved_location_index
+
+    #     location_index = cls._next_static_cast_location_index()
+    #     cls._static_cast_cache[cache_key] = location_index
+    #     return location_index
+
+    # @classmethod
+    # def _next_cast_location_index(cls) -> int:
+    #     index = cls._cast_location_index
+    #     cls._cast_location_index += 1
+    #     return index
+
+    # @staticmethod
+    # def _get_frame_context() -> tuple:
+    #     frame = inspect.getouterframes(inspect.currentframe(), 2)[3]
+    #     path = frame.filename[len(str(ctx.directory)):]
+    #     # print(frame.lineno, path)
+    #     return (frame.lineno, path)

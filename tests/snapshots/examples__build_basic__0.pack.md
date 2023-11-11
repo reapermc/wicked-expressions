@@ -29,20 +29,34 @@ scoreboard players set $z abc.main 2
 scoreboard players enable @a abc.settings
 ```
 
-`@function test:reapermc/wicked_expressions/safe_load`
+`@function test:reapermc/wicked_expressions/loader/prio_0`
 
 ```mcfunction
-function test:reapermc/wicked_expressions/safe_load/scoreboard_setup
-```
-
-`@function test:reapermc/wicked_expressions/safe_load/scoreboard_setup`
-
-```mcfunction
-scoreboard objectives add reapermc.wicked_expressions dummy
+help --- DO_NOT_DELETE ---
 scoreboard objectives add abc.main dummy
 scoreboard objectives add obj.random dummy
 scoreboard objectives add load.status dummy
 scoreboard objectives add abc.settings trigger
+```
+
+`@function test:reapermc/wicked_expressions/loader/prio_1`
+
+```mcfunction
+help --- DO_NOT_DELETE ---
+```
+
+`@function test:reapermc/wicked_expressions/loader/prio_2`
+
+```mcfunction
+help --- DO_NOT_DELETE ---
+```
+
+`@function test:reapermc/wicked_expressions/loader`
+
+```mcfunction
+function test:reapermc/wicked_expressions/loader/prio_0
+function test:reapermc/wicked_expressions/loader/prio_1
+function test:reapermc/wicked_expressions/loader/prio_2
 ```
 
 ### minecraft
@@ -52,7 +66,7 @@ scoreboard objectives add abc.settings trigger
 ```json
 {
   "values": [
-    "test:reapermc/wicked_expressions/safe_load"
+    "test:reapermc/wicked_expressions/loader"
   ]
 }
 ```

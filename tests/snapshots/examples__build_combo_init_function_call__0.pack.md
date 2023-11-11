@@ -42,17 +42,23 @@ scoreboard players add $i0 bolt.expr.temp 50
 scoreboard players operation @s abc.main %= $i0 bolt.expr.temp
 ```
 
-`@function test:reapermc/wicked_expressions/safe_load`
+`@function test:reapermc/wicked_expressions/loader/prio_0`
 
 ```mcfunction
-function test:reapermc/wicked_expressions/safe_load/scoreboard_setup
+help --- DO_NOT_DELETE ---
+scoreboard objectives add abc.main dummy
 ```
 
-`@function test:reapermc/wicked_expressions/safe_load/scoreboard_setup`
+`@function test:reapermc/wicked_expressions/loader/prio_1`
 
 ```mcfunction
-scoreboard objectives add reapermc.wicked_expressions dummy
-scoreboard objectives add abc.main dummy
+help --- DO_NOT_DELETE ---
+```
+
+`@function test:reapermc/wicked_expressions/loader/prio_2`
+
+```mcfunction
+help --- DO_NOT_DELETE ---
 ```
 
 `@function test:install`
@@ -60,6 +66,14 @@ scoreboard objectives add abc.main dummy
 ```mcfunction
 say Installing pack...
 function test:init_expressions
+```
+
+`@function test:reapermc/wicked_expressions/loader`
+
+```mcfunction
+function test:reapermc/wicked_expressions/loader/prio_0
+function test:reapermc/wicked_expressions/loader/prio_1
+function test:reapermc/wicked_expressions/loader/prio_2
 ```
 
 `@function test:load`
@@ -104,8 +118,8 @@ scoreboard players set $0 bolt.expr.const 0
 ```json
 {
   "values": [
-    "test:reapermc/wicked_expressions/safe_load",
-    "test:load"
+    "test:load",
+    "test:reapermc/wicked_expressions/loader"
   ]
 }
 ```

@@ -25,17 +25,31 @@ data modify storage demo:prefix/temp items[2] set value {id: "iron_sword", Count
 data modify storage demo:prefix/temp foo set from storage demo:prefix/temp bar
 ```
 
-`@function test:reapermc/wicked_expressions/safe_load`
+`@function test:reapermc/wicked_expressions/loader/prio_0`
 
 ```mcfunction
-function test:reapermc/wicked_expressions/safe_load/scoreboard_setup
+help --- DO_NOT_DELETE ---
+scoreboard objectives add abc.main dummy
 ```
 
-`@function test:reapermc/wicked_expressions/safe_load/scoreboard_setup`
+`@function test:reapermc/wicked_expressions/loader/prio_1`
 
 ```mcfunction
-scoreboard objectives add reapermc.wicked_expressions dummy
-scoreboard objectives add abc.main dummy
+help --- DO_NOT_DELETE ---
+```
+
+`@function test:reapermc/wicked_expressions/loader/prio_2`
+
+```mcfunction
+help --- DO_NOT_DELETE ---
+```
+
+`@function test:reapermc/wicked_expressions/loader`
+
+```mcfunction
+function test:reapermc/wicked_expressions/loader/prio_0
+function test:reapermc/wicked_expressions/loader/prio_1
+function test:reapermc/wicked_expressions/loader/prio_2
 ```
 
 ### minecraft
@@ -45,7 +59,7 @@ scoreboard objectives add abc.main dummy
 ```json
 {
   "values": [
-    "test:reapermc/wicked_expressions/safe_load"
+    "test:reapermc/wicked_expressions/loader"
   ]
 }
 ```

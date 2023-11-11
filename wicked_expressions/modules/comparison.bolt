@@ -1,259 +1,368 @@
+from dataclasses import dataclass, field
 from contextlib import contextmanager
 from bolt_expressions import ExpressionNode
-from bolt import Runtime
-
-from ./utils import Rebindable, parse_holder
+from typing import Any, ClassVar
 from ./config import Config
+from ./utils import raw, logger
+from ./loader import load
+from ./loader_components import RootLibraryScoreboard
 
+@dataclass
+class UniqueScoreRegister:
+    id: int = 0
+    holder: str = ''
+    obj: str = ''
 
-runtime = ctx.inject(Runtime)
+    next_id: ClassVar[int] = 0
 
+    def __post_init__(self):
+        load(RootLibraryScoreboard())
+        self.id = self._generate_unique_id()
+        self.holder = self._generate_fake_player(self.id)
+        self.obj = Config.SCOREBOARD_ROOT
 
-class ExpressionComparison(Rebindable):
-    incr_index = 0
-    _INVERTED_OPERATOR = {
-        '==': '!=',
-        '!=': '==',
-        '<': '>=',
-        '>': '<=',
-        '<=': '>',
-        '>=': '<'
-    }
-
-    def __init__(self, arg_0, operator='==', arg_1=None, initialized=False, check_exists=False):
-        self.arg_0 = arg_0
-        self.operator = operator
-        self.arg_1 = arg_1
-        self.initialized = initialized
-        self.check_exists = check_exists
-        self.temp_scoreboard = self.Scoreboard(Config.SCOREBOARD_ROOT)
-        self.temp_storage = self.Data.storage(Config.STORAGE_ROOT)
+    def _generate_fake_player(self, id: int) -> str:
+        return f"$binop.{ctx.project_id}.{id}"
 
     @classmethod
-    def monkeypatch(cls, Scoreboard, Data, ScoreSource, DataSource):
-        cls.Scoreboard = Scoreboard
-        cls.Data = Data
-        cls.ScoreSource = ScoreSource
-        cls.DataSource = DataSource
+    def _generate_unique_id(cls) -> int:
+        id = cls.next_id
+        cls.next_id += 1
+        return id
 
-    @classmethod
-    def incr(cls):
-        tmp = cls.incr_index
-        cls.incr_index += 1
-        return tmp
+@dataclass
+class ScoreRegister:
+    id: str
+    holder: str = ''
+    obj: str = ''
+
+    def __post_init__(self):
+        self.holder = f"$binop.register.{self.id}"
+        self.obj = Config.SCOREBOARD_ROOT
+
+@dataclass
+class StorageRegister:
+    id: str
+    _path: str = ''
+    _target: str = ''
+    _type: str = 'storage'
+
+    def __post_init__(self):
+        self._path = f"binop.register.{self.id}"
+        self._target = Config.STORAGE_ROOT
+
+@dataclass
+class BinaryOperation:
+    left: ExpressionNode
+    right: Any
+    outcome: UniqueScoreRegister | None = None
+    inverted: bool = False
+
+    def condition(self):
+        """Overwrite this method with custom condition."""
 
     @contextmanager
-    def autonest(self):
-        nest_path = ~/nested_{self.incr()}
+    def store_success(self):
+        """Only use this inside overwritten 'condition' methods."""
 
-        with runtime.scope() as commands:
+        store success score self.outcome.holder self.outcome.obj:
             yield True
-        if not commands:
-            return
-        if len(commands) == 1:
-            runtime.commands.append(commands[0])
-        else:
-            execute function nest_path:
-                runtime.commands.extend(commands)
 
     @contextmanager
     def __branch__(self):
-        score_count = 0
+        if not self.outcome:
+            self.outcome = UniqueScoreRegister()
+            self.condition()
 
-        if isinstance(self.arg_0, self.ScoreSource):
-            score_count += 1
-        if isinstance(self.arg_1, self.ScoreSource):
-            score_count += 1
-        
-        if not isinstance(self.arg_1, ExpressionNode) and self.arg_1 in (True, False):
-            self.arg_1 = int(self.arg_1)
-
-        # exists check
-        if self.check_exists:
-            if isinstance(self.arg_0, self.ScoreSource):
-                with self.compare_score_to_score(self.arg_0, self.arg_0):
-                    with self.autonest():
-                        yield True
-            elif isinstance(self.arg_0, self.DataSource):
-                with self.check_data_exists(self.arg_0):
-                    with self.autonest():
-                        yield True
-
-        # pseudo bool check
-        # Any :: None
-        elif self.arg_1 is None:
-            with self.check_boolean(self.arg_0):
-                with self.autonest():
-                    yield True
-
-        # ScoreSource :: ScoreSource
-        elif score_count == 2:
-            with self.compare_score_to_score(self.arg_0, self.arg_1):
-                with self.autonest():
-                    yield True
-        
-        # ScoreSource :: Any || Any :: ScoreSource
-        elif score_count == 1:
-            # Any = DataSource
-            if isinstance(self.arg_0, self.DataSource) or isinstance(self.arg_1, self.DataSource):
-                with self.compare_any_to_any(self.arg_0, self.arg_1):
-                    with self.autonest():
-                        yield True
-            # Any = ScoreSource
-            else:
-                with self.compare_score_to_constant(self.arg_0, self.arg_1):
-                    with self.autonest():
-                        yield True
-    
-        # DataSource :: DataSource
-        elif score_count == 0:
-            if self.operator in ('==', '!='):
-                with self.compare_data_to_data(self.arg_0, self.arg_1):
-                    with self.autonest():
-                        yield True
-            else:
-                with self.compare_any_to_any(self.arg_0, self.arg_1):
-                    with self.autonest():
-                        yield True
-
-        self.initialized = True
+        if not self.inverted:
+            if score self.outcome.holder self.outcome.obj matches 1:
+                yield True
+        else:
+            if score self.outcome.holder self.outcome.obj matches 0:
+                yield True
 
     def __not__(self):
-        return self.__class__(self.arg_0, self._INVERTED_OPERATOR[self.operator], self.arg_1, initialized=self.initialized, check_exists=self.check_exists)
+        return self.__class__(left=self.left, right=self.right,
+                              outcome=self.outcome, inverted=not self.inverted)
+
+    @classmethod
+    def provide_sources(cls, score_source, data_source):
+        cls.ScoreSource = score_source
+        cls.DataSource = data_source
+
+    @classmethod
+    def _move_data_to_storage(cls, in_data, out_stge):
+        if in_data._path == '':
+            logger.error(f"Data source for '{in_data._target}' is missing a path")
+
+        raw(f"data modify storage {out_stge._target} {out_stge._path} set from {in_data._type} {in_data._target} {in_data._path}")
+
+    @classmethod
+    def _convert_storage_to_score(cls, in_stge, out_score): 
+        # <out_score> = <in_stge>
+        store result score out_score.holder out_score.obj:
+            data get storage in_stge._target in_stge._path
+
+        # if not <in_stge>: <out_score> = None
+        unless data storage in_stge._target in_stge._path:
+            scoreboard players reset out_score.holder out_score.obj
+
+@dataclass
+class BooleanOperation:
+    left: ExpressionNode
+    outcome: UniqueScoreRegister | None = None
+    inverted: bool = False
 
     @contextmanager
-    def check_boolean(self, arg_0):
-        temp = self.temp_scoreboard['$temp']
+    def __branch__(self):
+        # print(f"{self.__class__.__name__} | __branch__ | {self.inverted} | {id(self)}")
+        if not self.outcome:
+            self.outcome = UniqueScoreRegister()
+            scoreboard players operation self.outcome.holder self.outcome.obj = self.left.holder self.left.obj
 
-        temp = arg_0
+        if not self.inverted:
+            if score self.outcome.holder self.outcome.obj matches 1:
+                yield True
+        else:
+            if score self.outcome.holder self.outcome.obj matches 0:
+                yield True
+    
+    def __not__(self):
+        # print(f"{self.__class__.__name__} | __not__    | {self.inverted} | {id(self)}")
+        return self.__class__(left=self.left, outcome=self.outcome, inverted=not self.inverted)
 
-        if self.operator == '==':
-            if score temp.holder temp.obj matches 1:
-                yield True
-        elif self.operator == '!=':
-            if score temp.holder temp.obj matches 0:
-                yield True
+class ScoreEQ(BinaryOperation):
+    def condition(self):
+        if isinstance(self.right, self.ScoreSource):
+            with self.store_success():
+                if score var self.left = var self.right
+        elif isinstance(self.right, self.DataSource):
+            reg_a = StorageRegister('a')
+            reg_b = ScoreRegister('b')
 
-    @contextmanager
-    def compare_score_to_constant(self, arg_0, arg_1):
-        arg_0_holder = parse_holder(arg_0.holder)
+            self._move_data_to_storage(self.right, reg_a)
+            self._convert_storage_to_score(reg_a, reg_b)
 
-        if self.operator == '==':
-            if score arg_0_holder arg_0.obj matches arg_1:
-                yield True
-        elif self.operator == '!=':
-            unless score arg_0_holder arg_0.obj matches arg_1:
-                yield True
-        elif self.operator == '<':
-            unless score arg_0_holder arg_0.obj matches (arg_1, None):
-                yield True
-        elif self.operator == '>':
-            unless score arg_0_holder arg_0.obj matches (None, arg_1):
-                yield True
-        elif self.operator == '<=':
-            if score arg_0_holder arg_0.obj matches (None, arg_1):
-                yield True
-        elif self.operator == '>=':
-            if score arg_0_holder arg_0.obj matches (arg_1, None):
-                yield True
+            with self.store_success():
+                if score var self.left = reg_b.holder reg_b.obj
+        else:
+            with self.store_success():
+                if score var self.left matches self.right
 
-    @contextmanager
-    def compare_score_to_score(self, arg_0, arg_1):
-        arg_0_holder = parse_holder(arg_0.holder)
-        arg_1_holder = parse_holder(arg_1.holder)
+class ScoreNE(BinaryOperation):
+    def condition(self):
+        if isinstance(self.right, self.ScoreSource):
+            with self.store_success():
+                unless score var self.left = var self.right
+        elif isinstance(self.right, self.DataSource):
+            reg_a = StorageRegister('a')
+            reg_b = ScoreRegister('b')
 
-        if self.operator == '==':
-            if score arg_0_holder arg_0.obj = arg_1_holder arg_1.obj:
-                yield True
-        elif self.operator == '!=':
-            unless score arg_0_holder arg_0.obj = arg_1_holder arg_1.obj:
-                yield True
-        elif self.operator == '<':
-            if score arg_0_holder arg_0.obj < arg_1_holder arg_1.obj:
-                yield True
-        elif self.operator == '>':
-            if score arg_0_holder arg_0.obj > arg_1_holder arg_1.obj:
-                yield True
-        elif self.operator == '<=':
-            if score arg_0_holder arg_0.obj <= arg_1_holder arg_1.obj:
-                yield True
-        elif self.operator == '>=':
-            if score arg_0_holder arg_0.obj >= arg_1_holder arg_1.obj:
-                yield True
+            self._move_data_to_storage(self.right, reg_a)
+            self._convert_storage_to_score(reg_a, reg_b)
 
-    @contextmanager
-    def compare_any_to_any(self, input_arg_0, input_arg_1):
-        arg_0 = self.temp_scoreboard['$arg_0']
-        arg_1 = self.temp_scoreboard['$arg_1']
-        arg_0_holder = parse_holder(arg_0.holder)
-        arg_1_holder = parse_holder(arg_1.holder)
+            with self.store_success():
+                unless score var self.left = reg_b.holder reg_b.obj
+        else:
+            with self.store_success():
+                unless score var self.left matches self.right
 
-        if not self.initialized:
-            if self.operator not in ('==', '!='):
-                arg_0 = input_arg_0
-                arg_1 = input_arg_1
+class ScoreLT(BinaryOperation):
+    def condition(self):
+        if isinstance(self.right, self.ScoreSource):
+            with self.store_success():
+                if score var self.left < var self.right
+        elif isinstance(self.right, self.DataSource):
+            reg_a = StorageRegister('a')
+            reg_b = ScoreRegister('b')
 
-        if self.operator in ('==', '!='):
-            # exception for `==` & `!=` operators
-            with self.compare_data_to_data(input_arg_0, input_arg_1):
-                yield True
-        elif self.operator == '<':
-            if score arg_0_holder arg_0.obj < arg_1_holder arg_1.obj:
-                yield True
-        elif self.operator == '>':
-            if score arg_0_holder arg_0.obj > arg_1_holder arg_1.obj:
-                yield True
-        elif self.operator == '<=':
-            if score arg_0_holder arg_0.obj <= arg_1_holder arg_1.obj:
-                yield True
-        elif self.operator == '>=':
-            if score arg_0_holder arg_0.obj >= arg_1_holder arg_1.obj:
-                yield True
+            self._move_data_to_storage(self.right, reg_a)
+            self._convert_storage_to_score(reg_a, reg_b)
 
-    @contextmanager
-    def compare_data_to_data(self, arg_0, arg_1):
-        is_not_equal = self.temp_scoreboard['$is_not_equal']
-        tmp = self.temp_storage['temp']
+            with self.store_success():
+                if score var self.left < reg_b.holder reg_b.obj
+        else:
+            with self.store_success():
+                unless score var self.left matches (self.right, None)
 
-        if not self.initialized:
-            tmp = -6666666
-            tmp = arg_0
+class ScoreGT(BinaryOperation):
+    def condition(self):
+        if isinstance(self.right, self.ScoreSource):
+            with self.store_success():
+                if score var self.left > var self.right
+        elif isinstance(self.right, self.DataSource):
+            reg_a = StorageRegister('a')
+            reg_b = ScoreRegister('b')
 
-            # attempt override
-            store success score is_not_equal.holder is_not_equal.obj:
-                tmp = arg_1
+            self._move_data_to_storage(self.right, reg_a)
+            self._convert_storage_to_score(reg_a, reg_b)
 
-        if self.operator == '==':
-            # 0 = equal (override failed)
-            if score is_not_equal.holder is_not_equal.obj matches 0:
-                yield True
+            with self.store_success():
+                if score var self.left > reg_b.holder reg_b.obj
+        else:
+            with self.store_success():
+                unless score var self.left matches (None, self.right)
 
-        elif self.operator == '!=':
-            # 1 = not equal (override succeeded)
-            if score is_not_equal.holder is_not_equal.obj matches 1:
-                yield True
+class ScoreLE(BinaryOperation):
+    def condition(self):
+        if isinstance(self.right, self.ScoreSource):
+            with self.store_success():
+                if score var self.left <= var self.right
+        elif isinstance(self.right, self.DataSource):
+            reg_a = StorageRegister('a')
+            reg_b = ScoreRegister('b')
 
-    @contextmanager
-    def check_data_exists(self, arg_0):
-        if arg_0._type == 'storage':
-            if self.operator == '==':
-                if data storage arg_0._target arg_0._path:
-                    yield True
-            elif self.operator == '!=':
-                unless data storage arg_0._target arg_0._path:
-                    yield True
-        elif arg_0._type == 'entity':
-            selector = parse_holder(arg_0._target)
-            if self.operator == '==':
-                if data entity selector arg_0._path:
-                    yield True
-            elif self.operator == '!=':
-                unless data entity selector arg_0._path:
-                    yield True
-        elif arg_0._type == 'block':
-            if self.operator == '==':
-                if data block arg_0._target arg_0._path:
-                    yield True
-            elif self.operator == '!=':
-                unless data block arg_0._target arg_0._path:
-                    yield True
+            self._move_data_to_storage(self.right, reg_a)
+            self._convert_storage_to_score(reg_a, reg_b)
+
+            with self.store_success():
+                if score var self.left <= reg_b.holder reg_b.obj
+        else:
+            with self.store_success():
+                if score var self.left matches (None, self.right)
+
+class ScoreGE(BinaryOperation):
+    def condition(self):
+        if isinstance(self.right, self.ScoreSource):
+            with self.store_success():
+                if score var self.left >= var self.right
+        elif isinstance(self.right, self.DataSource):
+            reg_a = StorageRegister('a')
+            reg_b = ScoreRegister('b')
+
+            self._move_data_to_storage(self.right, reg_a)
+            self._convert_storage_to_score(reg_a, reg_b)
+
+            with self.store_success():
+                if score var self.left >= reg_b.holder reg_b.obj
+        else:
+            with self.store_success():
+                if score var self.left matches (self.right, None)
+
+class DataEQ(BinaryOperation):
+    def condition(self):
+        if isinstance(self.right, self.ScoreSource):
+            reg_a = StorageRegister('a')
+            reg_b = ScoreRegister('b')
+
+            self._move_data_to_storage(self.left, reg_a)
+            self._convert_storage_to_score(reg_a, reg_b)
+
+            with self.store_success():
+                if score reg_b.holder reg_b.obj = var self.right
+        else:
+            reg_a = StorageRegister('a')
+            reg_b = StorageRegister('b')
+            override = ScoreRegister('c')
+
+            self._move_data_to_storage(self.left, reg_a)
+
+            if isinstance(self.right, self.DataSource):
+                self._move_data_to_storage(self.right, reg_b)
+            else:
+                data modify storage reg_b._target reg_b._path set value self.right
+
+            store result score override.holder override.obj:
+                data modify storage reg_a._target reg_a._path set from storage reg_b._target reg_b._path
+
+            # override = (reg_b => reg_a)
+            #
+            # if override == 1     # override success  => value does not exist
+            # if override == 0     # override fail => value exists
+
+            with self.store_success():
+                if score override.holder override.obj matches 0
+
+class DataNE(BinaryOperation):
+    def condition(self):
+        if isinstance(self.right, self.ScoreSource):
+            reg_a = StorageRegister('a')
+            reg_b = ScoreRegister('b')
+
+            self._move_data_to_storage(self.left, reg_a)
+            self._convert_storage_to_score(reg_a, reg_b)
+
+            with self.store_success():
+                unless score reg_b.holder reg_b.obj = var self.right
+        else:
+            reg_a = StorageRegister('a')
+            reg_b = StorageRegister('b')
+            override = ScoreRegister('c')
+
+            self._move_data_to_storage(self.left, reg_a)
+
+            if isinstance(self.right, self.DataSource):
+                self._move_data_to_storage(self.right, reg_b)
+            else:
+                data modify storage reg_b._target reg_b._path set value self.right
+
+            store result score override.holder override.obj:
+                data modify storage reg_a._target reg_a._path set from storage reg_b._target reg_b._path
+
+            # override = (reg_b => reg_a)
+            #
+            # if override == 1     # override success  => value does not exist
+            # if override == 0     # override fail => value exists
+
+            with self.store_success():
+                if score override.holder override.obj matches 1
+
+class DataLT(BinaryOperation):
+    def condition(self):
+        if isinstance(self.right, self.ScoreSource):
+            reg_a = StorageRegister('a')
+            reg_b = ScoreRegister('b')
+
+            self._move_data_to_storage(self.left, reg_a)
+            self._convert_storage_to_score(reg_a, reg_b)
+
+            with self.store_success():
+                if score reg_b.holder reg_b.obj < var self.right
+        else:
+            logger.error(f"Unsupported operation type (({self.left}) < ({self.right}))")
+            exit()
+
+class DataGT(BinaryOperation):
+    def condition(self):
+        if isinstance(self.right, self.ScoreSource):
+            reg_a = StorageRegister('a')
+            reg_b = ScoreRegister('b')
+
+            self._move_data_to_storage(self.left, reg_a)
+            self._convert_storage_to_score(reg_a, reg_b)
+
+            with self.store_success():
+                if score reg_b.holder reg_b.obj > var self.right
+        else:
+            logger.error(f"Unsupported operation type (({self.left}) > ({self.right}))")
+            exit()
+
+class DataLE(BinaryOperation):
+    def condition(self):
+        if isinstance(self.right, self.ScoreSource):
+            reg_a = StorageRegister('a')
+            reg_b = ScoreRegister('b')
+
+            self._move_data_to_storage(self.left, reg_a)
+            self._convert_storage_to_score(reg_a, reg_b)
+
+            with self.store_success():
+                if score reg_b.holder reg_b.obj <= var self.right
+        else:
+            logger.error(f"Unsupported operation type (({self.left}) <= ({self.right}))")
+            exit()
+
+class DataGE(BinaryOperation):
+    def condition(self):
+        if isinstance(self.right, self.ScoreSource):
+            reg_a = StorageRegister('a')
+            reg_b = ScoreRegister('b')
+
+            self._move_data_to_storage(self.left, reg_a)
+            self._convert_storage_to_score(reg_a, reg_b)
+
+            with self.store_success():
+                if score reg_b.holder reg_b.obj >= var self.right
+        else:
+            logger.error(f"Unsupported operation type (({self.left}) >= ({self.right}))")
+            exit()
