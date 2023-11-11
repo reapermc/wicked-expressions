@@ -2,6 +2,17 @@
 
 <!--next-version-placeholder-->
 
+## v1.0.0 (2023-11-11)
+### Feature
+
+* Complete rewrite ([`325eb93`](https://github.com/reapermc/wicked-expressions/commit/325eb935a1b10fa2886f4e7d63467827589b06df))
+* Complete rewrite ([`257d9af`](https://github.com/reapermc/wicked-expressions/commit/257d9af8e006bce351a207323812fd3c3368165e))
+
+### Breaking
+
+* complete rewrite ([`325eb93`](https://github.com/reapermc/wicked-expressions/commit/325eb935a1b10fa2886f4e7d63467827589b06df))
+* complete rewrite ([`257d9af`](https://github.com/reapermc/wicked-expressions/commit/257d9af8e006bce351a207323812fd3c3368165e))
+
 ## v0.10.0 (2023-11-11)
 ### Feature
 
