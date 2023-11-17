@@ -76,7 +76,7 @@ class BinaryOperation:
             self.condition()
 
         if not self.inverted:
-            if score self.outcome.holder self.outcome.obj matches 1:
+            unless score self.outcome.holder self.outcome.obj matches 0:
                 yield True
         else:
             if score self.outcome.holder self.outcome.obj matches 0:
@@ -100,7 +100,7 @@ class BinaryOperation:
         raw(f"data modify storage {out_stge._target} {out_stge._path} set from {in_data._type} {in_data._target} {in_data._path}")
 
     @classmethod
-    def _convert_storage_to_score(cls, in_stge, out_score): 
+    def _convert_storage_to_score(cls, in_stge, out_score):
         # <out_score> = <in_stge>
         store result score out_score.holder out_score.obj:
             data get storage in_stge._target in_stge._path
@@ -133,7 +133,7 @@ class DataExists:
                     if data block self.expr._target self.expr._path
 
         if not self.inverted:
-            if score self.outcome.holder self.outcome.obj matches 1:
+            unless score self.outcome.holder self.outcome.obj matches 0:
                 yield True
         else:
             if score self.outcome.holder self.outcome.obj matches 0:
@@ -160,12 +160,12 @@ class BooleanOperation:
             scoreboard players operation self.outcome.holder self.outcome.obj = self.left.holder self.left.obj
 
         if not self.inverted:
-            if score self.outcome.holder self.outcome.obj matches 1:
+            unless score self.outcome.holder self.outcome.obj matches 0:
                 yield True
         else:
             if score self.outcome.holder self.outcome.obj matches 0:
                 yield True
-    
+
     def __not__(self):
         # print(f"{self.__class__.__name__} | __not__    | {self.inverted} | {id(self)}")
         return self.__class__(left=self.left, outcome=self.outcome, inverted=not self.inverted)
@@ -350,7 +350,7 @@ class DataNE(BinaryOperation):
             # if override == 0     # override fail => value exists
 
             with self.store_success():
-                if score override.holder override.obj matches 1
+                unless score override.holder override.obj matches 0
 
 class DataLT(BinaryOperation):
     def condition(self):

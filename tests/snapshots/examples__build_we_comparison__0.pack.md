@@ -19,7 +19,7 @@
 
 ```mcfunction
 execute store success score $binop.we_comparison.0 reapermc.wicked_expressions if score $bar foo = $bar foo
-execute if score $binop.we_comparison.0 reapermc.wicked_expressions matches 1 run say 'exists'
+execute unless score $binop.we_comparison.0 reapermc.wicked_expressions matches 0 run say 'exists'
 execute if score $binop.we_comparison.0 reapermc.wicked_expressions matches 0 run say 'does not exist'
 ```
 

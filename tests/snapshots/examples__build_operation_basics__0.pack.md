@@ -22,7 +22,7 @@ execute if score #value abc.temp matches 100.. run scoreboard players set #value
 execute if score #value abc.temp matches 100.. run scoreboard players set #value abc.temp 0
 execute store result score #value abc.temp run scoreboard players add #foo abc.temp 1
 execute store success score $binop.wicked_expressions_basics.0 reapermc.wicked_expressions if score $435asd abc.main matches 123
-execute if score $binop.wicked_expressions_basics.0 reapermc.wicked_expressions matches 1 run say hello
+execute unless score $binop.wicked_expressions_basics.0 reapermc.wicked_expressions matches 0 run say hello
 ```
 
 `@function test:reapermc/wicked_expressions/loader/prio_0`

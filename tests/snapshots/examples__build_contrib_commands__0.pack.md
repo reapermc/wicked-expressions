@@ -44,7 +44,7 @@ scoreboard players operation $i0 bolt.expr.temp += $i1 bolt.expr.temp
 execute store result storage example:main value int 1 run scoreboard players get $i0 bolt.expr.temp
 help
 execute store success score $binop.wicked_expressions_commands.0 reapermc.wicked_expressions if score $test obj.temp matches 123
-execute if score $binop.wicked_expressions_commands.0 reapermc.wicked_expressions matches 1 run say hello
+execute unless score $binop.wicked_expressions_commands.0 reapermc.wicked_expressions matches 0 run say hello
 execute if score $binop.wicked_expressions_commands.0 reapermc.wicked_expressions matches 0 run function test:main/nested_execute_0
 ```
 
@@ -72,7 +72,7 @@ help --- DO_NOT_DELETE ---
 
 ```mcfunction
 execute store success score $binop.wicked_expressions_commands.1 reapermc.wicked_expressions if score $test1 obj.temp = $test2 obj.temp
-execute if score $binop.wicked_expressions_commands.1 reapermc.wicked_expressions matches 1 run say hello2
+execute unless score $binop.wicked_expressions_commands.1 reapermc.wicked_expressions matches 0 run say hello2
 ```
 
 `@function test:reapermc/wicked_expressions/loader`
