@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v1.0.4 (2023-11-17)
+
+### Fix
+
+* Missing DataSource '.exists' method ([`6dd3a78`](https://github.com/reapermc/wicked-expressions/commit/6dd3a78340a4b7ff82f783dc523af550adce038f))
+
 ## v1.0.3 (2023-11-17)
 
 ### Fix
