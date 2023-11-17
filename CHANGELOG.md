@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v1.0.3 (2023-11-17)
+
+### Fix
+
+* Restore variables to type-hint form instead of explicit ([`175235a`](https://github.com/reapermc/wicked-expressions/commit/175235a96d1aed05e3ea5dbbf798997a219205d8))
+* Restore variables to type-hint form instead of explicit ([`3c8384d`](https://github.com/reapermc/wicked-expressions/commit/3c8384d64cb01cd4ac2d21f66345c18c2aa4a2a6))
+
 ## v1.0.2 (2023-11-11)
 ### Fix
 
