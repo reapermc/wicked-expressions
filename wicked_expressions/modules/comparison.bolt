@@ -110,6 +110,43 @@ class BinaryOperation:
             scoreboard players reset out_score.holder out_score.obj
 
 @dataclass
+class DataExists:
+    expr: ExpressionNode
+    outcome: UniqueScoreRegister | None = None
+    inverted: bool = False
+
+    @contextmanager
+    def store_success(self):
+        store success score self.outcome.holder self.outcome.obj:
+            yield True
+
+    @contextmanager
+    def __branch__(self):
+        if not self.outcome:
+            self.outcome = UniqueScoreRegister()
+            with self.store_success():
+                if self.expr._type == 'storage':
+                    if data storage self.expr._target self.expr._path
+                elif self.expr._type == 'entity':
+                    if data entity self.expr._target self.expr._path
+                elif self.expr._type == 'block':
+                    if data block self.expr._target self.expr._path
+
+        if not self.inverted:
+            if score self.outcome.holder self.outcome.obj matches 1:
+                yield True
+        else:
+            if score self.outcome.holder self.outcome.obj matches 0:
+                yield True
+
+    def __not__(self):
+        return self.__class__(
+            expr=self.expr,
+            outcome=self.outcome,
+            inverted=not self.inverted
+        )
+
+@dataclass
 class BooleanOperation:
     left: ExpressionNode
     outcome: UniqueScoreRegister | None = None

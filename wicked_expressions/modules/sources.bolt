@@ -5,7 +5,7 @@ from dataclasses import dataclass, replace
 import bolt_expressions.sources as be_sources
 from ./raw_operation import get_expression_value, store_expression_value
 from ./comparison import ScoreEQ, ScoreNE, ScoreLT, ScoreGT, ScoreLE, ScoreGE,
-                         DataEQ, DataNE, DataLT, DataGT, DataLE, DataGE, BooleanOperation
+                         DataEQ, DataNE, DataLT, DataGT, DataLE, DataGE, DataExists
 
 @dataclass
 class ScoreSource(be_sources.ScoreSource):
@@ -65,6 +65,9 @@ class DataSource(be_sources.DataSource):
 
     def __ge__(self, other):
         return DataGE(self, other)
+
+    def exists(self):
+        return DataExists(self)
 
     @contextmanager
     def store(self, mode='result', type='int', scale=1):
