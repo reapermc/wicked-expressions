@@ -44,17 +44,15 @@ class Score(be_api.Score):
         return score_sources
 
 class Data(be_api.Data):
-    # _static_cast_cache: dict[tuple] = {}
-    # _cast_location_index: int = 0
-    _cast_type_map: dict[TypeAnnotation, str] = {
-        'bool': Bool,
-        'qint': qInt,
-        'byte': Byte,
-        'short': Short,
-        'int': Int,
-        'long': Long,
-        'float': Float,
-        'double': Double,
+    _static_cast_cache: dict[tuple] = {}
+    _cast_location_index: int = 0
+    _CAST_TYPE_MAP: dict[TypeAnnotation, str] = {
+        Byte: 'byte',
+        Short: 'short',
+        Int: 'int',
+        Long: 'long',
+        Float: 'float',
+        Double: 'double',
     }
 
     def storage(self, resource_location: str):
@@ -66,72 +64,63 @@ class Data(be_api.Data):
     def block(self, position: str):
         return sources.DataSource.create('block', position)
 
-    def cast(self, value, type: str | TypeAnnotation, scale: int | float | None = None):
-        return self._cast(value, type, is_static=False, scale=scale)
+    def cast(self, value, type: str | TypeAnnotation):
+        if not isinstance(type, str):
+            type = self._CAST_TYPE_MAP[type]
 
-    def static_cast(self, value, type: str | TypeAnnotation, scale: int | float | None = None):
-        return self._cast(value, type, is_static=True, scale=scale)
+        source = self.dummy(type=type)
 
-    def _cast(self, value, _type, is_static, scale: int | float | None = None):
-        if _type in self._cast_type_map:
-            type = self._cast_type_map[_type]
-        else:
-            type = _type
+        # allow casting as a method of the source
+        source.attach('cast', self.cast)
 
-        if is_static:
-            # offsets to the cast call itself
-            source = StaticVar(type, _static_level_offset=2)
-        else:
-            source = Var(type)
+        if not isinstance(value, ExpressionNode):
+            value = literal_types[type](value)
 
-        # get string representation of type
-        for key, val in self._cast_type_map.items():
-            if val == type:
-                nbt_type = key
+        self._expr.set(source, value)
+        return replace(source, _nbt_type=None)
 
-        if isinstance(self, VarStorageSource):
-            casted_source = replace(source, _nbt_type=nbt_type)
-        else:
-            casted_source = source
+    def static_cast(self, value, type: str | TypeAnnotation):
+        if not isinstance(type, str):
+            type = self._CAST_TYPE_MAP[type]
 
-        if scale != None:
-            v = value * float(scale)
-        else:
-            v = value
+        # source = self.dummy(type=type)
+        location_index = self._eval_cast_location_index(is_static=True)
+        target = Config.STORAGE_ROOT
+        path = f"data.{ctx.project_id}.static_cast.{location_index}"
+        source = sources.DataSource.create("storage", target, path)
 
-        if nbt_type in ['float', 'double']:
-            v *= 1      # this somehow makes float & double casting more precise
+        # allow casting as a method of the source
+        source.attach('static_cast', self.static_cast)
 
-        casted_source._rebind(casted_source, v, unsafe_cast=True)
+        if not isinstance(value, ExpressionNode):
+            value = literal_types[type](value)
+        self._expr.set(source, value)
+        return replace(source, _nbt_type=None)
 
-        if isinstance(self, VarScoreSource):
-            return replace(casted_source, _nbt_type=None)
-        return casted_source
+    @classmethod
+    def _eval_cast_location_index(cls, is_static: bool) -> int:
+        if not is_static:
+            return cls._next_cast_location_index()
 
-    # @classmethod
-    # def _eval_cast_location_index(cls, is_static: bool) -> int:
-    #     if not is_static:
-    #         return cls._next_cast_location_index()
+        cache_key = cls._get_frame_context()
+        retrieved_location_index = cls._static_cast_cache.get(cache_key)
 
-    #     cache_key = cls._get_frame_context()
-    #     retrieved_location_index = cls._static_cast_cache.get(cache_key)
+        if retrieved_location_index != None:
+            return retrieved_location_index
 
-    #     if retrieved_location_index != None:
-    #         return retrieved_location_index
+        location_index = cls._next_cast_location_index()
+        cls._static_cast_cache[cache_key] = location_index
+        return location_index
 
-    #     location_index = cls._next_static_cast_location_index()
-    #     cls._static_cast_cache[cache_key] = location_index
-    #     return location_index
+    @classmethod
+    def _next_cast_location_index(cls) -> int:
+        index = cls._cast_location_index
+        cls._cast_location_index += 1
+        return index
 
-    # @classmethod
-    # def _next_cast_location_index(cls) -> int:
-    #     index = cls._cast_location_index
-    #     cls._cast_location_index += 1
-    #     return index
-
-    # @staticmethod
-    # def _get_frame_context() -> tuple:
-    #     frame = inspect.getouterframes(inspect.currentframe(), 2)[3]
-    #     path = frame.filename[len(str(ctx.directory)):]
-    #     # print(frame.lineno, path)
-    #     return (frame.lineno, path)
+    @staticmethod
+    def _get_frame_context(offset: int = 0) -> tuple:
+        frame = inspect.getouterframes(inspect.currentframe(), 2)[3+offset]
+        path = frame.filename[len(str(ctx.directory)):]
+        # print(frame.lineno, path)
+        return (frame.lineno, path)

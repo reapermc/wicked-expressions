@@ -1,12 +1,4 @@
 {
-    "hide-files.files": [
-        ".vscode",
-        ".pytest_cache",
-        "wicked_expressions/__pycache__",
-        ".github",
-        "tests/__pycache__",
-        ".venv"
-    ],
     "files.exclude": {
         "**/.git": true,
         "**/.svn": true,
@@ -14,11 +6,15 @@
         "**/CVS": true,
         "**/.DS_Store": true,
         "**/Thumbs.db": true,
+        "**/__pycache__/": true,
+        "**/.beet_cache/": true,
         ".vscode": true,
-        ".pytest_cache": true,
-        "wicked_expressions/__pycache__": true,
-        ".github": true,
-        "tests/__pycache__": true,
-        ".venv": true
-    }
+        ".venv": true,
+        ".github": true
+    },
+    "hide-files.files": [
+        ".vscode",
+        ".venv",
+        ".github"
+    ]
 }
