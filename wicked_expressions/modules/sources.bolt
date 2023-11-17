@@ -5,7 +5,8 @@ from dataclasses import dataclass, replace
 import bolt_expressions.sources as be_sources
 from ./raw_operation import get_expression_value, store_expression_value
 from ./comparison import ScoreEQ, ScoreNE, ScoreLT, ScoreGT, ScoreLE, ScoreGE,
-                         DataEQ, DataNE, DataLT, DataGT, DataLE, DataGE, DataExists
+                         DataEQ, DataNE, DataLT, DataGT, DataLE, DataGE, DataExists,
+                         BinaryOperation
 
 @dataclass
 class ScoreSource(be_sources.ScoreSource):
@@ -42,6 +43,21 @@ class ScoreSource(be_sources.ScoreSource):
     def get(self, scale=None):
         return get_expression_value(self, scale)
 
+    def __rebind__(self, other):
+        """
+        Allows assignment of boolean expressions to scores.
+
+        Example: `x = y >= 10`
+        Result: `execute store success score $x reapermc.wicked_expressions if score $y reapermc.wicked_expressions matches 10..`
+        """
+        if isinstance(other, BinaryOperation):
+            other.outcome = self
+            other.condition()
+        else:
+            self._rebind(self, other)
+
+        return self
+
 @dataclass
 class DataSource(be_sources.DataSource):
     def __eq__(self, other):
@@ -77,6 +93,21 @@ class DataSource(be_sources.DataSource):
     def get(self, scale=None):
         return get_expression_value(self, scale)
 
+    def __rebind__(self, other):
+        """
+        Allows assignment of boolean expressions to data.
+
+        Example: `x = y >= 10`
+        Result: `execute store success <type> <target> <path> <nbt_type> 1 if score $y reapermc.wicked_expressions matches 10..`
+        """
+        if isinstance(other, BinaryOperation):
+            other.outcome = self
+            other.condition()
+        else:
+            self._rebind(self, other)
+
+        return self
+
 def is_comparison_case() -> bool:
     """Determines whether a comparison dunder method call was intended to compare."""
 
@@ -84,4 +115,3 @@ def is_comparison_case() -> bool:
     output = re.compile(r"sources.|optimizer.").search(frame.filename) == None
     # print(['   DEFAULT', 'COMPARISON'][output], '|', frame.filename)
     return output
- 
