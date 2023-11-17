@@ -25,7 +25,7 @@
 
 ```mcfunction
 execute store success score $binop.we_comparison_score_oper_literal.0 reapermc.wicked_expressions if score .x foo matches 10
-execute if score $binop.we_comparison_score_oper_literal.0 reapermc.wicked_expressions matches 1 run say yes :3
+execute unless score $binop.we_comparison_score_oper_literal.0 reapermc.wicked_expressions matches 0 run say yes :3
 execute if score $binop.we_comparison_score_oper_literal.0 reapermc.wicked_expressions matches 0 run say no :<
 ```
 
@@ -33,7 +33,7 @@ execute if score $binop.we_comparison_score_oper_literal.0 reapermc.wicked_expre
 
 ```mcfunction
 execute store success score $binop.we_comparison_score_oper_literal.1 reapermc.wicked_expressions unless score .x foo matches 10
-execute if score $binop.we_comparison_score_oper_literal.1 reapermc.wicked_expressions matches 1 run say yes :3
+execute unless score $binop.we_comparison_score_oper_literal.1 reapermc.wicked_expressions matches 0 run say yes :3
 execute if score $binop.we_comparison_score_oper_literal.1 reapermc.wicked_expressions matches 0 run say no :<
 ```
 
@@ -41,7 +41,7 @@ execute if score $binop.we_comparison_score_oper_literal.1 reapermc.wicked_expre
 
 ```mcfunction
 execute store success score $binop.we_comparison_score_oper_literal.2 reapermc.wicked_expressions unless score .x foo matches 10..
-execute if score $binop.we_comparison_score_oper_literal.2 reapermc.wicked_expressions matches 1 run say yes :3
+execute unless score $binop.we_comparison_score_oper_literal.2 reapermc.wicked_expressions matches 0 run say yes :3
 execute if score $binop.we_comparison_score_oper_literal.2 reapermc.wicked_expressions matches 0 run say no :<
 ```
 
@@ -49,7 +49,7 @@ execute if score $binop.we_comparison_score_oper_literal.2 reapermc.wicked_expre
 
 ```mcfunction
 execute store success score $binop.we_comparison_score_oper_literal.3 reapermc.wicked_expressions unless score .x foo matches ..10
-execute if score $binop.we_comparison_score_oper_literal.3 reapermc.wicked_expressions matches 1 run say yes :3
+execute unless score $binop.we_comparison_score_oper_literal.3 reapermc.wicked_expressions matches 0 run say yes :3
 execute if score $binop.we_comparison_score_oper_literal.3 reapermc.wicked_expressions matches 0 run say no :<
 ```
 
@@ -57,7 +57,7 @@ execute if score $binop.we_comparison_score_oper_literal.3 reapermc.wicked_expre
 
 ```mcfunction
 execute store success score $binop.we_comparison_score_oper_literal.4 reapermc.wicked_expressions if score .x foo matches ..10
-execute if score $binop.we_comparison_score_oper_literal.4 reapermc.wicked_expressions matches 1 run say yes :3
+execute unless score $binop.we_comparison_score_oper_literal.4 reapermc.wicked_expressions matches 0 run say yes :3
 execute if score $binop.we_comparison_score_oper_literal.4 reapermc.wicked_expressions matches 0 run say no :<
 ```
 
@@ -65,7 +65,7 @@ execute if score $binop.we_comparison_score_oper_literal.4 reapermc.wicked_expre
 
 ```mcfunction
 execute store success score $binop.we_comparison_score_oper_literal.5 reapermc.wicked_expressions if score .x foo matches 10..
-execute if score $binop.we_comparison_score_oper_literal.5 reapermc.wicked_expressions matches 1 run say yes :3
+execute unless score $binop.we_comparison_score_oper_literal.5 reapermc.wicked_expressions matches 0 run say yes :3
 execute if score $binop.we_comparison_score_oper_literal.5 reapermc.wicked_expressions matches 0 run say no :<
 ```
 

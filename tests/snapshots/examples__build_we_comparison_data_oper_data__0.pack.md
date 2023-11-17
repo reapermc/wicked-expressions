@@ -28,7 +28,7 @@ data modify storage reapermc:wicked_expressions binop.register.a set from storag
 data modify storage reapermc:wicked_expressions binop.register.b set from storage demo:foo y
 execute store result score $binop.register.c reapermc.wicked_expressions run data modify storage reapermc:wicked_expressions binop.register.a set from storage reapermc:wicked_expressions binop.register.b
 execute store success score $binop.we_comparison_data_oper_data.0 reapermc.wicked_expressions if score $binop.register.c reapermc.wicked_expressions matches 0
-execute if score $binop.we_comparison_data_oper_data.0 reapermc.wicked_expressions matches 1 run say yes :3
+execute unless score $binop.we_comparison_data_oper_data.0 reapermc.wicked_expressions matches 0 run say yes :3
 execute if score $binop.we_comparison_data_oper_data.0 reapermc.wicked_expressions matches 0 run say no :<
 ```
 
@@ -38,8 +38,8 @@ execute if score $binop.we_comparison_data_oper_data.0 reapermc.wicked_expressio
 data modify storage reapermc:wicked_expressions binop.register.a set from storage demo:foo x
 data modify storage reapermc:wicked_expressions binop.register.b set from storage demo:foo y
 execute store result score $binop.register.c reapermc.wicked_expressions run data modify storage reapermc:wicked_expressions binop.register.a set from storage reapermc:wicked_expressions binop.register.b
-execute store success score $binop.we_comparison_data_oper_data.1 reapermc.wicked_expressions if score $binop.register.c reapermc.wicked_expressions matches 1
-execute if score $binop.we_comparison_data_oper_data.1 reapermc.wicked_expressions matches 1 run say yes :3
+execute store success score $binop.we_comparison_data_oper_data.1 reapermc.wicked_expressions unless score $binop.register.c reapermc.wicked_expressions matches 0
+execute unless score $binop.we_comparison_data_oper_data.1 reapermc.wicked_expressions matches 0 run say yes :3
 execute if score $binop.we_comparison_data_oper_data.1 reapermc.wicked_expressions matches 0 run say no :<
 ```
 
