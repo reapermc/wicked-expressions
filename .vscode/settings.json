@@ -9,10 +9,12 @@
         "**/__pycache__/": true,
         "**/.beet_cache/": true,
         ".vscode": true,
-        ".venv": true
+        ".venv": true,
+        ".github": true
     },
     "hide-files.files": [
         ".vscode",
-        ".venv"
+        ".venv",
+        ".github"
     ]
 }
