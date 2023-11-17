@@ -8,7 +8,6 @@ from ./config import Config
 from ./loader import load
 from ./loader_components import RootLibraryScoreboard, ResetScore, VarSetDefaultValue, VarStorageSetupMemory
 from ./utils import logger
-from ./var_validation import validate_var_type
 from ./var_types import TypeAnnotation, Byte, Short, Int, Long, Float, Double,
                         String, List, Compound, ByteArray, IntArray, LongArray
 
@@ -16,36 +15,6 @@ class VarSource:
     _var_type: str = ''
     _location_index: int = 0
     _static_cache: dict[tuple] = {}
-
-    def __add__(self, other):
-        validate_var_type(value=other, expected_source=self.__class__)
-        return super().__add__(other)
-    
-    def __sub__(self, other):
-        validate_var_type(value=other, expected_source=self.__class__)
-        return super().__sub__(other)
-
-    def __mul__(self, other):
-        validate_var_type(value=other, expected_source=self.__class__, _ignore_literal_check=True)
-        return super().__mul__(other)
-
-    def __truediv__(self, other):
-        validate_var_type(value=other, expected_source=self.__class__, _ignore_literal_check=True)
-        return super().__truediv__(other)
-    
-    def __mod__(self, other):
-        validate_var_type(value=other, expected_source=self.__class__)
-        return super().__mod__(other)
-
-    def cast(self, type: TypeAnnotation, scale: int | float | None = None):
-        return self._cast(self, type, is_static=False, scale=scale)
-
-    def static_cast(self, type: TypeAnnotation, scale: int | float | None = None):
-        return self._cast(self, type, is_static=True, scale=scale)
-
-    @classmethod
-    def _provide_cast_method(cls, cast):
-        cls._cast = cast
 
     @classmethod
     def _eval_location_index(cls, is_static: bool, _static_level_offset: int = 0) -> int:
@@ -76,26 +45,6 @@ class VarSource:
         path = frame.filename[len(str(ctx.directory)):]
         # print(frame.lineno, path)
         return (frame.lineno, path)
-
-    @classmethod
-    def _unsupported_operation_error(cls, value):
-        logger.error(f"Invalid direct operation between value types '{cls.__name__}' and '{type(value).__name__}'\n\n\n")
-        exit()
-
-    @classmethod
-    def _unsupported_literal_type(cls, value):
-        logger.error(f"Variable type '{cls.__name__}' received invalid literal of type '{type(value)}'")
-        exit()
-
-    @classmethod
-    def _unsupported_assignment_error(cls, value):
-        logger.error(f"Invalid assignment attempt of value type '{type(value)}' to a '{cls.__name__}' variable type\n\n\n")
-        exit()
-
-    @classmethod
-    def _implicit_cast_error(cls, value):
-        logger.error(f"Invalid implicit cast attempt of value type '{value.__class__.__name__}' to a '{cls.__name__}' variable type. Use '.cast()' or '.static_cast()' instead\n\n\n")
-        exit()
 
 class VarScoreSource(VarSource, ScoreSource):
     @classmethod
@@ -153,43 +102,27 @@ class VarStorageSource(VarSource, DataSource):
 
 class BoolSource(VarScoreSource):
     _var_type: str = 'bool'
-    _nbt_type: str | None = None
     _scale: float = 1
 
-    _valid_literal_types: ClassVar[tuple] = (bool)
-
-    def _rebind(self, source, value, unsafe_cast=False):
-        if not unsafe_cast:
-            validate_var_type(value, source.__class__)
-        if isinstance(value, ExpressionNode):
-            return super()._rebind(source, value)
-        return super()._rebind(source, int(value))
+    def _rebind(self, source, value):
+        if isinstance(value, bool):
+            return super()._rebind(source, int(value))
+        return super()._rebind(source, value)
 
 class qIntSource(VarScoreSource):
-    _var_type: str = 'int'
-    _nbt_type: str | None = None
+    _var_type: str = 'qint'
     _scale: float = 1
-
-    _valid_literal_types: ClassVar[tuple] = (int)
-
-    def _rebind(self, source, value, unsafe_cast=False):
-        if not unsafe_cast:
-            validate_var_type(value, source.__class__)
-        return super()._rebind(source, value)
 
 class ByteSource(VarStorageSource):
     _var_type: str = 'byte'
     _nbt_type: str | None = None
     _scale: float = 1
 
-    _valid_literal_types: ClassVar[tuple] = (int)
     _default_nbt_type: ClassVar[str] = 'byte'
     _default_slot_value: ClassVar[Any] = Byte(0)
 
-    def _rebind(self, source, value, unsafe_cast=False):
-        if not unsafe_cast:
-            validate_var_type(value, source.__class__)
-        if not isinstance(value, ExpressionNode):
+    def _rebind(self, source, value):
+        if isinstance(value, int):
             return super()._rebind(source, Byte(value))
         return super()._rebind(source, value)
 
@@ -198,14 +131,11 @@ class ShortSource(VarStorageSource):
     _nbt_type: str | None = None
     _scale: float = 1
 
-    _valid_literal_types: ClassVar[tuple] = (int)
     _default_nbt_type: ClassVar[str] = 'short'
     _default_slot_value: ClassVar[Any] = Short(0)
 
-    def _rebind(self, source, value, unsafe_cast=False):
-        if not unsafe_cast:
-            validate_var_type(value, source.__class__)
-        if not isinstance(value, ExpressionNode):
+    def _rebind(self, source, value):
+        if isinstance(value, int):
             return super()._rebind(source, Short(value))
         return super()._rebind(source, value)
 
@@ -214,30 +144,19 @@ class IntSource(VarStorageSource):
     _nbt_type: str | None = None
     _scale: float = 1
 
-    _valid_literal_types: ClassVar[tuple] = (int)
     _default_slot_value: ClassVar[Any] = Int(0)
     _default_nbt_type: ClassVar[str] = 'int'
-
-    def _rebind(self, source, value, unsafe_cast=False):
-        if not unsafe_cast:
-            validate_var_type(value, source.__class__)
-        if not isinstance(value, ExpressionNode):
-            return super()._rebind(source, Int(value))
-        return super()._rebind(source, value)
 
 class LongSource(VarStorageSource):
     _var_type: str = 'long'
     _nbt_type: str | None = None
     _scale: float = 1
 
-    _valid_literal_types: ClassVar[tuple] = (int)
     _default_nbt_type: ClassVar[str] = 'long'
     _default_slot_value: ClassVar[Any] = Long(0)
 
-    def _rebind(self, source, value, unsafe_cast=False):
-        if not unsafe_cast:
-            validate_var_type(value, source.__class__)
-        if not isinstance(value, ExpressionNode):
+    def _rebind(self, source, value):
+        if isinstance(value, LongSource):
             return super()._rebind(source, Long(value))
         return super()._rebind(source, value)
 
@@ -246,14 +165,11 @@ class FloatSource(VarStorageSource):
     _nbt_type: str | None = None
     _scale: float = 1
 
-    _valid_literal_types: ClassVar[tuple] = (float)
     _default_slot_value: ClassVar[Any] = Float(0)
     _default_nbt_type: ClassVar[str] = 'float'
     _default_floating_point_type: ClassVar[str] = 'float'
 
-    def _rebind(self, source, value, unsafe_cast=False):
-        if not unsafe_cast:
-            validate_var_type(value, source.__class__)
+    def _rebind(self, source, value):
         if not isinstance(value, ExpressionNode):
             return super()._rebind(source, Float(value))
         return super()._rebind(source, value)
@@ -263,14 +179,11 @@ class DoubleSource(VarStorageSource):
     _nbt_type: str | None = None
     _scale: float = 1
 
-    _valid_literal_types: ClassVar[tuple] = (float)
     _default_slot_value: ClassVar[Any] = Double(0)
     _default_nbt_type: ClassVar[str] = 'double'
     _default_floating_point_type: ClassVar[str] = 'double'
 
-    def _rebind(self, source, value, unsafe_cast=False):
-        if not unsafe_cast:
-            validate_var_type(value, source.__class__)
+    def _rebind(self, source, value):
         if not isinstance(value, ExpressionNode):
             return super()._rebind(source, Double(value))
         return super()._rebind(source, value)

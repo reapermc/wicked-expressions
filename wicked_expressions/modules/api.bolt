@@ -16,9 +16,9 @@ Data = ctx.inject(internal_api.Data)
 this = Data.entity('@s')
 
 # big evil monkeypatch
+
 BinaryOperation.provide_sources(
     score_source=ScoreSource,
     data_source=DataSource,
     var_source=VarSource,
 )
-VarSource._provide_cast_method(cast=Data._cast)
