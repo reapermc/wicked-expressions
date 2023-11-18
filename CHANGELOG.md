@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v1.1.0 (2023-11-18)
+
+### Feature
+
+* Merge PR from PeerHeer "boolean-assignment" ([`eecf26f`](https://github.com/reapermc/wicked-expressions/commit/eecf26fbec905db1ab9b1d185d7e7a842938ada6))
+
 ## v1.0.5 (2023-11-18)
 
 ### Fix
