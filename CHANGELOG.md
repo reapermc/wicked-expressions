@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v1.0.5 (2023-11-18)
+
+### Fix
+
+* Merge PR from PeerHeer "true-is-not-0" ([`d7fd458`](https://github.com/reapermc/wicked-expressions/commit/d7fd458cf276b0df2801d5e341a4740e7e6fa5ca))
+
 ## v1.0.4 (2023-11-17)
 
 ### Fix
