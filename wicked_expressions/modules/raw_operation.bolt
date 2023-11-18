@@ -1,9 +1,21 @@
 from contextlib import contextmanager
 import bolt_expressions.sources as sources
-from ./utils import parse_holder
+from ./utils import parse_holder, logger
 
 @contextmanager
 def store_expression_value(expression, mode='result', type='int', scale=1):
+    if not (mode == 'success' or mode == 'result'):
+        logger.error(f"Unsupported store mode '{mode}'. Mode must be 'result' or 'success'.")
+        exit()
+
+    if not (isinstance(expression, sources.ScoreSource) or isinstance(expression, sources.DataSource)):
+        logger.error(f"Cannot store '{mode}' into {expression}. Expression must be of type 'bolt_expressions.ScoreSource' or 'bolt_expressions.DataSource'")
+        exit()
+
+    if isinstance(expression, sources.DataSource) and not (type == 'byte' or type == 'short' or type == 'int' or type == 'long' or type == 'float' or type == 'double'):
+        logger.error(f"Unsupported NBT type '{type}'. Type must be 'byte', 'short', 'int', 'long', 'float' or 'double'.")
+        exit()
+
     if isinstance(expression, sources.ScoreSource):
         holder = parse_holder(expression.holder)
 
