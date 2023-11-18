@@ -163,8 +163,12 @@ class BooleanOperation:
     def __branch__(self):
         # print(f"{self.__class__.__name__} | __branch__ | {self.inverted} | {id(self)}")
         if not self.outcome:
-            self.outcome = UniqueScoreRegister()
-            scoreboard players operation self.outcome.holder self.outcome.obj = self.left.holder self.left.obj
+            self.outcome = UniqueScoreRegister() # TODO: make this a ScoreSource, it makes it much easier!
+
+            if isinstance(self.left, self.ScoreSource):
+                scoreboard players operation self.outcome.holder self.outcome.obj = self.left.holder self.left.obj
+            elif isinstance(self.left, self.DataSource):
+                execute store result score self.outcome.holder self.outcome.obj run data get
 
         if not self.inverted:
             unless score self.outcome.holder self.outcome.obj matches 0:
@@ -176,6 +180,12 @@ class BooleanOperation:
     def __not__(self):
         # print(f"{self.__class__.__name__} | __not__    | {self.inverted} | {id(self)}")
         return self.__class__(left=self.left, outcome=self.outcome, inverted=not self.inverted)
+
+    @classmethod
+    def provide_sources(cls, score_source, data_source, var_source):
+        cls.ScoreSource = score_source
+        cls.DataSource = data_source
+        cls.VarSource = var_source
 
 class ScoreEQ(BinaryOperation):
     def condition(self):

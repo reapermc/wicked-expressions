@@ -6,7 +6,7 @@ import bolt_expressions.sources as be_sources
 from ./raw_operation import get_expression_value, store_expression_value
 from ./comparison import ScoreEQ, ScoreNE, ScoreLT, ScoreGT, ScoreLE, ScoreGE,
                          DataEQ, DataNE, DataLT, DataGT, DataLE, DataGE, DataExists,
-                         BinaryOperation
+                         BinaryOperation, BooleanOperation
 
 @dataclass
 class ScoreSource(be_sources.ScoreSource):
@@ -57,6 +57,25 @@ class ScoreSource(be_sources.ScoreSource):
             self._rebind(self, other)
 
         return self
+
+    def __not__(self):
+        """
+        Negates the score. This is boolean negation, so we need to
+        return an inverted boolean operation that is evaluated later.
+        """
+        return BooleanOperation(left=self, outcome=None, inverted=True)
+
+    @contextmanager
+    def __branch__(self):
+        """
+        Used when a branch is called on a score, for example:
+
+        x = Var(qInt)
+        if x:
+            say "x is true"
+        """
+        if BooleanOperation(left=self, outcome=None, inverted=False):
+            yield True
 
 @dataclass
 class DataSource(be_sources.DataSource):
