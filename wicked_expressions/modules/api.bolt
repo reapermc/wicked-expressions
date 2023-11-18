@@ -2,7 +2,7 @@ from bolt_expressions.node import ExpressionNode
 from bolt_expressions import Expression
 from ./sources import ScoreSource, DataSource
 from ./var import Var, StaticVar
-from ./comparison import BinaryOperation
+from ./comparison import BinaryOperation, BooleanOperation
 import ./internal_api as internal_api
 from ./var_types import Bool, qInt, Byte, Short, Int, Long, Float, Double, String, List,
                         Compound, ByteArray, IntArray, LongArray
@@ -17,6 +17,13 @@ this = Data.entity('@s')
 
 # big evil monkeypatch
 BinaryOperation.provide_sources(
+    score_source=ScoreSource,
+    data_source=DataSource,
+    var_source=VarSource,
+)
+
+# big evil monkeypatch v2
+BooleanOperation.provide_sources(
     score_source=ScoreSource,
     data_source=DataSource,
     var_source=VarSource,
