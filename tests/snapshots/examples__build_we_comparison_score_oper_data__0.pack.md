@@ -28,7 +28,7 @@ data modify storage reapermc:wicked_expressions binop.register.a set from storag
 execute store result score $binop.register.b reapermc.wicked_expressions run data get storage reapermc:wicked_expressions binop.register.a
 execute unless data storage reapermc:wicked_expressions binop.register.a run scoreboard players reset $binop.register.b reapermc.wicked_expressions
 execute store success score $binop.we_comparison_score_oper_data.0 reapermc.wicked_expressions if score .x foo = $binop.register.b reapermc.wicked_expressions
-execute if score $binop.we_comparison_score_oper_data.0 reapermc.wicked_expressions matches 1 run say yes :3
+execute unless score $binop.we_comparison_score_oper_data.0 reapermc.wicked_expressions matches 0 run say yes :3
 execute if score $binop.we_comparison_score_oper_data.0 reapermc.wicked_expressions matches 0 run say no :<
 ```
 
