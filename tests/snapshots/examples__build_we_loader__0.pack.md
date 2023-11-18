@@ -19,9 +19,9 @@
 
 ```mcfunction
 execute store success score $binop.we_loader.0 reapermc.wicked_expressions if score $y bar = $y bar
-execute if score $binop.we_loader.0 reapermc.wicked_expressions matches 1 run say hi
+execute unless score $binop.we_loader.0 reapermc.wicked_expressions matches 0 run say hi
 execute store success score $binop.we_loader.1 reapermc.wicked_expressions if score $y bar = $y bar
-execute if score $binop.we_loader.1 reapermc.wicked_expressions matches 1 run say hi2
+execute unless score $binop.we_loader.1 reapermc.wicked_expressions matches 0 run say hi2
 ```
 
 ### we_loader

@@ -19,10 +19,10 @@
 
 ```mcfunction
 execute store success score $binop.we_exists.0 reapermc.wicked_expressions if score $foo foo = $foo foo
-execute if score $binop.we_exists.0 reapermc.wicked_expressions matches 1 run say foo exists
+execute unless score $binop.we_exists.0 reapermc.wicked_expressions matches 0 run say foo exists
 execute if score $binop.we_exists.0 reapermc.wicked_expressions matches 0 run say foo is unassigned
 execute store success score $binop.we_exists.1 reapermc.wicked_expressions if data storage bar bar
-execute if score $binop.we_exists.1 reapermc.wicked_expressions matches 1 run say bar exists
+execute unless score $binop.we_exists.1 reapermc.wicked_expressions matches 0 run say bar exists
 execute if score $binop.we_exists.1 reapermc.wicked_expressions matches 0 run say bar is unassigned
 ```
 
