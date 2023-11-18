@@ -6,6 +6,7 @@ from ./config import Config
 from ./utils import raw, logger
 from ./loader import load
 from ./loader_components import RootLibraryScoreboard
+from ./raw_operation import store_expression_value
 from ./var_types import Float
 
 @dataclass
@@ -56,7 +57,7 @@ class StorageRegister:
 class BinaryOperation:
     left: ExpressionNode
     right: Any
-    outcome: UniqueScoreRegister | None = None
+    outcome: UniqueScoreRegister | None = None # TODO: Can also be DataSource or ScoreSource, how to put here???
     inverted: bool = False
 
     def condition(self):
@@ -65,9 +66,15 @@ class BinaryOperation:
     @contextmanager
     def store_success(self):
         """Only use this inside overwritten 'condition' methods."""
-
-        store success score self.outcome.holder self.outcome.obj:
-            yield True
+        if isinstance(self.outcome, UniqueScoreRegister):
+            store success score self.outcome.holder self.outcome.obj:
+                yield True
+        elif isinstance(self.outcome, self.DataSource) or isinstance(self.outcome, self.ScoreSource):
+            with self.outcome.store('success', self.outcome._var_type, 1):
+                yield True
+        else:
+            logger.error(f"Cannot store success of {self} into {self.outcome}")
+            exit()
 
     @contextmanager
     def __branch__(self):
