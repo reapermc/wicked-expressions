@@ -14,14 +14,23 @@ from ./var_types import TypeAnnotation, Byte, Short, Int, Long, Float, Double,
 class VarSource:
     _var_type: str = ''
     _location_index: int = 0
-    _static_cache: dict[tuple] = {}
+    _static_cache: dict[tuple, int] = {}
 
     @classmethod
-    def _eval_location_index(cls, is_static: bool, _static_level_offset: int = 0) -> int:
+    def _eval_location_index(cls,
+                             is_static: bool,
+                             _static_level_offset: int = 0,
+                             _custom_cache_key: Any = None,
+                            ) -> int:
         if not is_static:
             return cls._next_location_index()
 
-        cache_key = cls._get_frame_context(offset=_static_level_offset)
+        if _custom_cache_key == None:
+            cache_key = cls._get_frame_context(offset=_static_level_offset)
+        else:
+            cache_key = ('cck', _custom_cache_key)
+
+        # print(cache_key)
         retrieved_location_index = cls._static_cache.get(cache_key)
 
         # key exists -> retrieve location index
@@ -48,8 +57,13 @@ class VarSource:
 
 class VarScoreSource(VarSource, ScoreSource):
     @classmethod
-    def create(cls, is_static: bool, value: Any | None = None, _static_level_offset: int = 0):
-        location_index = cls._eval_location_index(is_static, _static_level_offset)
+    def create(cls,
+               is_static: bool,
+               value: Any | None = None,
+               _static_level_offset: int = 0,
+               _custom_cache_key: Any = None,
+              ):
+        location_index = cls._eval_location_index(is_static, _static_level_offset, _custom_cache_key)
         full_location = f"${ctx.project_id}#{cls._var_type}${location_index}"
 
         source = cls(full_location, Config.SCOREBOARD_ROOT)
@@ -71,12 +85,16 @@ class VarStorageSource(VarSource, DataSource):
     _MEM_BLOCK_SIZE = 32
 
     @classmethod
-    def create(cls, is_static: bool, value: Any | None = None, _static_level_offset: int = 0):
+    def create(cls,
+               is_static: bool,
+               value: Any | None = None,
+               _static_level_offset: int = 0,
+               _custom_cache_key: Any = None,
+              ):
+        location_index = cls._eval_location_index(is_static, _static_level_offset, _custom_cache_key)
         var_type = cls._var_type
-        location_index = cls._eval_location_index(is_static, _static_level_offset)
         minor, major = cls._get_minor_major_index(location_index)
         # print(f"{var_type} | loc: {location_index} | {major}.{minor}")
-
         source = cls('storage', Config.STORAGE_ROOT)['data'][ctx.project_id]['var'][var_type][major][minor]
 
         # setup 2D memory list
