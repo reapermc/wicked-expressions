@@ -18,10 +18,10 @@
 `@function demo:main`
 
 ```mcfunction
-execute store success score $binop.we_loader.0 reapermc.wicked_expressions if score $y bar = $y bar
-execute unless score $binop.we_loader.0 reapermc.wicked_expressions matches 0 run say hi
-execute store success score $binop.we_loader.1 reapermc.wicked_expressions if score $y bar = $y bar
-execute unless score $binop.we_loader.1 reapermc.wicked_expressions matches 0 run say hi2
+execute store success score $we_loader#bool$0 reapermc.wicked_expressions if score $y bar = $y bar
+execute unless score $we_loader#bool$0 reapermc.wicked_expressions matches 0 run say hi
+execute store success score $we_loader#bool$1 reapermc.wicked_expressions if score $y bar = $y bar
+execute unless score $we_loader#bool$1 reapermc.wicked_expressions matches 0 run say hi2
 ```
 
 ### we_loader
@@ -39,6 +39,8 @@ scoreboard objectives add reapermc.wicked_expressions dummy
 
 ```mcfunction
 help --- DO_NOT_DELETE ---
+scoreboard players reset $we_loader#bool$0 reapermc.wicked_expressions
+scoreboard players reset $we_loader#bool$1 reapermc.wicked_expressions
 ```
 
 `@function we_loader:reapermc/wicked_expressions/loader/prio_2`

@@ -21,8 +21,8 @@
 execute if score #value abc.temp matches 100.. run scoreboard players set #value abc.temp 0
 execute if score #value abc.temp matches 100.. run scoreboard players set #value abc.temp 0
 execute store result score #value abc.temp run scoreboard players add #foo abc.temp 1
-execute store success score $binop.wicked_expressions_basics.0 reapermc.wicked_expressions if score $435asd abc.main matches 123
-execute unless score $binop.wicked_expressions_basics.0 reapermc.wicked_expressions matches 0 run say hello
+execute store success score $wicked_expressions_basics#bool$0 reapermc.wicked_expressions if score $435asd abc.main matches 123
+execute unless score $wicked_expressions_basics#bool$0 reapermc.wicked_expressions matches 0 run say hello
 ```
 
 `@function test:reapermc/wicked_expressions/loader/prio_0`
@@ -38,6 +38,7 @@ scoreboard objectives add reapermc.wicked_expressions dummy
 
 ```mcfunction
 help --- DO_NOT_DELETE ---
+scoreboard players reset $wicked_expressions_basics#bool$0 reapermc.wicked_expressions
 ```
 
 `@function test:reapermc/wicked_expressions/loader/prio_2`
