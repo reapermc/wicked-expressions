@@ -6,15 +6,16 @@
         "**/CVS": true,
         "**/.DS_Store": true,
         "**/Thumbs.db": true,
+        ".pytest_cache/": true,
         "**/__pycache__/": true,
         "**/.beet_cache/": true,
-        ".vscode": true,
         ".venv": true,
-        ".github": true
+        ".github": true,
+        ".vscode": true
     },
     "hide-files.files": [
-        ".vscode",
         ".venv",
-        ".github"
+        ".github",
+        ".vscode"
     ]
 }
