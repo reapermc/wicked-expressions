@@ -7,30 +7,23 @@ from ./utils import raw, logger
 from ./loader import load
 from ./loader_components import RootLibraryScoreboard
 from ./raw_operation import store_expression_value
-from ./var_types import Float
+from ./var_types import Float, Bool
 
-@dataclass
-class UniqueScoreRegister:
-    id: int = 0
-    holder: str = ''
-    obj: str = ''
+ScoreSource = None
+DataSource = None
+VarSource = None
+Var = None
 
-    next_id: ClassVar[int] = 0
+def provide_sources(score_source, data_source, var_source, var):
+    """
+    Hacky solution to expose this module to necessary classes while avoiding circular imports.
+    """
+    global ScoreSource, DataSource, VarSource, Var
 
-    def __post_init__(self):
-        load(RootLibraryScoreboard())
-        self.id = self._generate_unique_id()
-        self.holder = self._generate_fake_player(self.id)
-        self.obj = Config.SCOREBOARD_ROOT
-
-    def _generate_fake_player(self, id: int) -> str:
-        return f"$binop.{ctx.project_id}.{id}"
-
-    @classmethod
-    def _generate_unique_id(cls) -> int:
-        id = cls.next_id
-        cls.next_id += 1
-        return id
+    ScoreSource = score_source
+    DataSource = data_source
+    VarSource = var_source
+    Var = var
 
 @dataclass
 class ScoreRegister:
@@ -57,7 +50,7 @@ class StorageRegister:
 class BinaryOperation:
     left: ExpressionNode
     right: Any
-    outcome: UniqueScoreRegister | None = None # TODO: Can also be DataSource or ScoreSource, how to put here???
+    outcome: None = None
     inverted: bool = False
 
     def condition(self):
@@ -66,10 +59,7 @@ class BinaryOperation:
     @contextmanager
     def store_success(self):
         """Only use this inside overwritten 'condition' methods."""
-        if isinstance(self.outcome, UniqueScoreRegister):
-            store success score self.outcome.holder self.outcome.obj:
-                yield True
-        elif isinstance(self.outcome, self.DataSource) or isinstance(self.outcome, self.ScoreSource):
+        if isinstance(self.outcome, DataSource) or isinstance(self.outcome, ScoreSource):
             with self.outcome.store('success', self.outcome._var_type, 1):
                 yield True
         else:
@@ -79,7 +69,7 @@ class BinaryOperation:
     @contextmanager
     def __branch__(self):
         if not self.outcome:
-            self.outcome = UniqueScoreRegister()
+            self.outcome = Var(Bool)
             self.condition()
 
         if not self.inverted:
@@ -92,12 +82,6 @@ class BinaryOperation:
     def __not__(self):
         return self.__class__(left=self.left, right=self.right,
                               outcome=self.outcome, inverted=not self.inverted)
-
-    @classmethod
-    def provide_sources(cls, score_source, data_source, var_source):
-        cls.ScoreSource = score_source
-        cls.DataSource = data_source
-        cls.VarSource = var_source
 
     @classmethod
     def _move_data_to_storage(cls, in_data, out_stge):
@@ -119,7 +103,7 @@ class BinaryOperation:
 @dataclass
 class DataExists:
     expr: ExpressionNode
-    outcome: UniqueScoreRegister | None = None
+    outcome: None = None
     inverted: bool = False
 
     @contextmanager
@@ -130,7 +114,7 @@ class DataExists:
     @contextmanager
     def __branch__(self):
         if not self.outcome:
-            self.outcome = UniqueScoreRegister()
+            self.outcome = Var(Bool)
             with self.store_success():
                 if self.expr._type == 'storage':
                     if data storage self.expr._target self.expr._path
@@ -156,14 +140,14 @@ class DataExists:
 @dataclass
 class BooleanOperation:
     left: ExpressionNode
-    outcome: UniqueScoreRegister | None = None
+    outcome: None = None
     inverted: bool = False
 
     @contextmanager
     def __branch__(self):
         # print(f"{self.__class__.__name__} | __branch__ | {self.inverted} | {id(self)}")
         if not self.outcome:
-            self.outcome = UniqueScoreRegister()
+            self.outcome = Var(Bool)
             scoreboard players operation self.outcome.holder self.outcome.obj = self.left.holder self.left.obj
 
         if not self.inverted:
@@ -179,10 +163,10 @@ class BooleanOperation:
 
 class ScoreEQ(BinaryOperation):
     def condition(self):
-        if isinstance(self.right, self.ScoreSource):
+        if isinstance(self.right, ScoreSource):
             with self.store_success():
                 if score var self.left = var self.right
-        elif isinstance(self.right, self.DataSource):
+        elif isinstance(self.right, DataSource):
             reg_a = StorageRegister('a')
             reg_b = ScoreRegister('b')
 
@@ -197,10 +181,10 @@ class ScoreEQ(BinaryOperation):
 
 class ScoreNE(BinaryOperation):
     def condition(self):
-        if isinstance(self.right, self.ScoreSource):
+        if isinstance(self.right, ScoreSource):
             with self.store_success():
                 unless score var self.left = var self.right
-        elif isinstance(self.right, self.DataSource):
+        elif isinstance(self.right, DataSource):
             reg_a = StorageRegister('a')
             reg_b = ScoreRegister('b')
 
@@ -215,10 +199,10 @@ class ScoreNE(BinaryOperation):
 
 class ScoreLT(BinaryOperation):
     def condition(self):
-        if isinstance(self.right, self.ScoreSource):
+        if isinstance(self.right, ScoreSource):
             with self.store_success():
                 if score var self.left < var self.right
-        elif isinstance(self.right, self.DataSource):
+        elif isinstance(self.right, DataSource):
             reg_a = StorageRegister('a')
             reg_b = ScoreRegister('b')
 
@@ -233,10 +217,10 @@ class ScoreLT(BinaryOperation):
 
 class ScoreGT(BinaryOperation):
     def condition(self):
-        if isinstance(self.right, self.ScoreSource):
+        if isinstance(self.right, ScoreSource):
             with self.store_success():
                 if score var self.left > var self.right
-        elif isinstance(self.right, self.DataSource):
+        elif isinstance(self.right, DataSource):
             reg_a = StorageRegister('a')
             reg_b = ScoreRegister('b')
 
@@ -251,10 +235,10 @@ class ScoreGT(BinaryOperation):
 
 class ScoreLE(BinaryOperation):
     def condition(self):
-        if isinstance(self.right, self.ScoreSource):
+        if isinstance(self.right, ScoreSource):
             with self.store_success():
                 if score var self.left <= var self.right
-        elif isinstance(self.right, self.DataSource):
+        elif isinstance(self.right, DataSource):
             reg_a = StorageRegister('a')
             reg_b = ScoreRegister('b')
 
@@ -269,10 +253,10 @@ class ScoreLE(BinaryOperation):
 
 class ScoreGE(BinaryOperation):
     def condition(self):
-        if isinstance(self.right, self.ScoreSource):
+        if isinstance(self.right, ScoreSource):
             with self.store_success():
                 if score var self.left >= var self.right
-        elif isinstance(self.right, self.DataSource):
+        elif isinstance(self.right, DataSource):
             reg_a = StorageRegister('a')
             reg_b = ScoreRegister('b')
 
@@ -287,7 +271,7 @@ class ScoreGE(BinaryOperation):
 
 class DataEQ(BinaryOperation):
     def condition(self):
-        if isinstance(self.right, self.ScoreSource):
+        if isinstance(self.right, ScoreSource):
             reg_a = StorageRegister('a')
             reg_b = ScoreRegister('b')
 
@@ -303,10 +287,10 @@ class DataEQ(BinaryOperation):
 
             self._move_data_to_storage(self.left, reg_a)
 
-            if isinstance(self.right, self.DataSource):
+            if isinstance(self.right, DataSource):
                 self._move_data_to_storage(self.right, reg_b)
             else:
-                if isinstance(self.left, self.VarSource) and self.left._var_type == 'float':
+                if isinstance(self.left, VarSource) and self.left._var_type == 'float':
                     data modify storage reg_b._target reg_b._path set value Float(self.right)
                 else:
                     data modify storage reg_b._target reg_b._path set value self.right
@@ -324,7 +308,7 @@ class DataEQ(BinaryOperation):
 
 class DataNE(BinaryOperation):
     def condition(self):
-        if isinstance(self.right, self.ScoreSource):
+        if isinstance(self.right, ScoreSource):
             reg_a = StorageRegister('a')
             reg_b = ScoreRegister('b')
 
@@ -340,10 +324,10 @@ class DataNE(BinaryOperation):
 
             self._move_data_to_storage(self.left, reg_a)
 
-            if isinstance(self.right, self.DataSource):
+            if isinstance(self.right, DataSource):
                 self._move_data_to_storage(self.right, reg_b)
             else:
-                if isinstance(self.left, self.VarSource) and self.left._var_type == 'float':
+                if isinstance(self.left, VarSource) and self.left._var_type == 'float':
                     data modify storage reg_b._target reg_b._path set value Float(self.right)
                 else:
                     data modify storage reg_b._target reg_b._path set value self.right
@@ -361,7 +345,7 @@ class DataNE(BinaryOperation):
 
 class DataLT(BinaryOperation):
     def condition(self):
-        if isinstance(self.right, self.ScoreSource):
+        if isinstance(self.right, ScoreSource):
             reg_a = StorageRegister('a')
             reg_b = ScoreRegister('b')
 
@@ -376,7 +360,7 @@ class DataLT(BinaryOperation):
 
 class DataGT(BinaryOperation):
     def condition(self):
-        if isinstance(self.right, self.ScoreSource):
+        if isinstance(self.right, ScoreSource):
             reg_a = StorageRegister('a')
             reg_b = ScoreRegister('b')
 
@@ -391,7 +375,7 @@ class DataGT(BinaryOperation):
 
 class DataLE(BinaryOperation):
     def condition(self):
-        if isinstance(self.right, self.ScoreSource):
+        if isinstance(self.right, ScoreSource):
             reg_a = StorageRegister('a')
             reg_b = ScoreRegister('b')
 
@@ -406,7 +390,7 @@ class DataLE(BinaryOperation):
 
 class DataGE(BinaryOperation):
     def condition(self):
-        if isinstance(self.right, self.ScoreSource):
+        if isinstance(self.right, ScoreSource):
             reg_a = StorageRegister('a')
             reg_b = ScoreRegister('b')
 
