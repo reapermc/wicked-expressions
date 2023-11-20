@@ -27,9 +27,9 @@
 data modify storage reapermc:wicked_expressions binop.register.a set from storage demo:foo x
 execute store result score $binop.register.b reapermc.wicked_expressions run data get storage reapermc:wicked_expressions binop.register.a
 execute unless data storage reapermc:wicked_expressions binop.register.a run scoreboard players reset $binop.register.b reapermc.wicked_expressions
-execute store success score $binop.we_comparison_data_oper_score.0 reapermc.wicked_expressions if score $binop.register.b reapermc.wicked_expressions = .y foo
-execute unless score $binop.we_comparison_data_oper_score.0 reapermc.wicked_expressions matches 0 run say yes :3
-execute if score $binop.we_comparison_data_oper_score.0 reapermc.wicked_expressions matches 0 run say no :<
+execute store success score $we_comparison_data_oper_score#bool$0 reapermc.wicked_expressions if score $binop.register.b reapermc.wicked_expressions = .y foo
+execute unless score $we_comparison_data_oper_score#bool$0 reapermc.wicked_expressions matches 0 run say yes :3
+execute if score $we_comparison_data_oper_score#bool$0 reapermc.wicked_expressions matches 0 run say no :<
 ```
 
 `@function demo:ne`
@@ -38,9 +38,9 @@ execute if score $binop.we_comparison_data_oper_score.0 reapermc.wicked_expressi
 data modify storage reapermc:wicked_expressions binop.register.a set from storage demo:foo x
 execute store result score $binop.register.b reapermc.wicked_expressions run data get storage reapermc:wicked_expressions binop.register.a
 execute unless data storage reapermc:wicked_expressions binop.register.a run scoreboard players reset $binop.register.b reapermc.wicked_expressions
-execute store success score $binop.we_comparison_data_oper_score.1 reapermc.wicked_expressions unless score $binop.register.b reapermc.wicked_expressions = .y foo
-execute unless score $binop.we_comparison_data_oper_score.1 reapermc.wicked_expressions matches 0 run say yes :3
-execute if score $binop.we_comparison_data_oper_score.1 reapermc.wicked_expressions matches 0 run say no :<
+execute store success score $we_comparison_data_oper_score#bool$1 reapermc.wicked_expressions unless score $binop.register.b reapermc.wicked_expressions = .y foo
+execute unless score $we_comparison_data_oper_score#bool$1 reapermc.wicked_expressions matches 0 run say yes :3
+execute if score $we_comparison_data_oper_score#bool$1 reapermc.wicked_expressions matches 0 run say no :<
 ```
 
 `@function demo:lt`
@@ -49,9 +49,9 @@ execute if score $binop.we_comparison_data_oper_score.1 reapermc.wicked_expressi
 data modify storage reapermc:wicked_expressions binop.register.a set from storage demo:foo x
 execute store result score $binop.register.b reapermc.wicked_expressions run data get storage reapermc:wicked_expressions binop.register.a
 execute unless data storage reapermc:wicked_expressions binop.register.a run scoreboard players reset $binop.register.b reapermc.wicked_expressions
-execute store success score $binop.we_comparison_data_oper_score.2 reapermc.wicked_expressions if score $binop.register.b reapermc.wicked_expressions < .y foo
-execute unless score $binop.we_comparison_data_oper_score.2 reapermc.wicked_expressions matches 0 run say yes :3
-execute if score $binop.we_comparison_data_oper_score.2 reapermc.wicked_expressions matches 0 run say no :<
+execute store success score $we_comparison_data_oper_score#bool$2 reapermc.wicked_expressions if score $binop.register.b reapermc.wicked_expressions < .y foo
+execute unless score $we_comparison_data_oper_score#bool$2 reapermc.wicked_expressions matches 0 run say yes :3
+execute if score $we_comparison_data_oper_score#bool$2 reapermc.wicked_expressions matches 0 run say no :<
 ```
 
 `@function demo:gt`
@@ -60,9 +60,9 @@ execute if score $binop.we_comparison_data_oper_score.2 reapermc.wicked_expressi
 data modify storage reapermc:wicked_expressions binop.register.a set from storage demo:foo x
 execute store result score $binop.register.b reapermc.wicked_expressions run data get storage reapermc:wicked_expressions binop.register.a
 execute unless data storage reapermc:wicked_expressions binop.register.a run scoreboard players reset $binop.register.b reapermc.wicked_expressions
-execute store success score $binop.we_comparison_data_oper_score.3 reapermc.wicked_expressions if score $binop.register.b reapermc.wicked_expressions > .y foo
-execute unless score $binop.we_comparison_data_oper_score.3 reapermc.wicked_expressions matches 0 run say yes :3
-execute if score $binop.we_comparison_data_oper_score.3 reapermc.wicked_expressions matches 0 run say no :<
+execute store success score $we_comparison_data_oper_score#bool$3 reapermc.wicked_expressions if score $binop.register.b reapermc.wicked_expressions > .y foo
+execute unless score $we_comparison_data_oper_score#bool$3 reapermc.wicked_expressions matches 0 run say yes :3
+execute if score $we_comparison_data_oper_score#bool$3 reapermc.wicked_expressions matches 0 run say no :<
 ```
 
 `@function demo:le`
@@ -71,9 +71,9 @@ execute if score $binop.we_comparison_data_oper_score.3 reapermc.wicked_expressi
 data modify storage reapermc:wicked_expressions binop.register.a set from storage demo:foo x
 execute store result score $binop.register.b reapermc.wicked_expressions run data get storage reapermc:wicked_expressions binop.register.a
 execute unless data storage reapermc:wicked_expressions binop.register.a run scoreboard players reset $binop.register.b reapermc.wicked_expressions
-execute store success score $binop.we_comparison_data_oper_score.4 reapermc.wicked_expressions if score $binop.register.b reapermc.wicked_expressions <= .y foo
-execute unless score $binop.we_comparison_data_oper_score.4 reapermc.wicked_expressions matches 0 run say yes :3
-execute if score $binop.we_comparison_data_oper_score.4 reapermc.wicked_expressions matches 0 run say no :<
+execute store success score $we_comparison_data_oper_score#bool$4 reapermc.wicked_expressions if score $binop.register.b reapermc.wicked_expressions <= .y foo
+execute unless score $we_comparison_data_oper_score#bool$4 reapermc.wicked_expressions matches 0 run say yes :3
+execute if score $we_comparison_data_oper_score#bool$4 reapermc.wicked_expressions matches 0 run say no :<
 ```
 
 `@function demo:ge`
@@ -82,9 +82,9 @@ execute if score $binop.we_comparison_data_oper_score.4 reapermc.wicked_expressi
 data modify storage reapermc:wicked_expressions binop.register.a set from storage demo:foo x
 execute store result score $binop.register.b reapermc.wicked_expressions run data get storage reapermc:wicked_expressions binop.register.a
 execute unless data storage reapermc:wicked_expressions binop.register.a run scoreboard players reset $binop.register.b reapermc.wicked_expressions
-execute store success score $binop.we_comparison_data_oper_score.5 reapermc.wicked_expressions if score $binop.register.b reapermc.wicked_expressions >= .y foo
-execute unless score $binop.we_comparison_data_oper_score.5 reapermc.wicked_expressions matches 0 run say yes :3
-execute if score $binop.we_comparison_data_oper_score.5 reapermc.wicked_expressions matches 0 run say no :<
+execute store success score $we_comparison_data_oper_score#bool$5 reapermc.wicked_expressions if score $binop.register.b reapermc.wicked_expressions >= .y foo
+execute unless score $we_comparison_data_oper_score#bool$5 reapermc.wicked_expressions matches 0 run say yes :3
+execute if score $we_comparison_data_oper_score#bool$5 reapermc.wicked_expressions matches 0 run say no :<
 ```
 
 ### we_comparison_data_oper_score
@@ -101,6 +101,12 @@ scoreboard objectives add foo dummy
 
 ```mcfunction
 help --- DO_NOT_DELETE ---
+scoreboard players reset $we_comparison_data_oper_score#bool$0 reapermc.wicked_expressions
+scoreboard players reset $we_comparison_data_oper_score#bool$1 reapermc.wicked_expressions
+scoreboard players reset $we_comparison_data_oper_score#bool$2 reapermc.wicked_expressions
+scoreboard players reset $we_comparison_data_oper_score#bool$3 reapermc.wicked_expressions
+scoreboard players reset $we_comparison_data_oper_score#bool$4 reapermc.wicked_expressions
+scoreboard players reset $we_comparison_data_oper_score#bool$5 reapermc.wicked_expressions
 ```
 
 `@function we_comparison_data_oper_score:reapermc/wicked_expressions/loader/prio_2`

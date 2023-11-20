@@ -43,9 +43,9 @@ execute store result score $i1 bolt.expr.temp run data get storage example:main 
 scoreboard players operation $i0 bolt.expr.temp += $i1 bolt.expr.temp
 execute store result storage example:main value int 1 run scoreboard players get $i0 bolt.expr.temp
 help
-execute store success score $binop.wicked_expressions_commands.0 reapermc.wicked_expressions if score $test obj.temp matches 123
-execute unless score $binop.wicked_expressions_commands.0 reapermc.wicked_expressions matches 0 run say hello
-execute if score $binop.wicked_expressions_commands.0 reapermc.wicked_expressions matches 0 run function test:main/nested_execute_0
+execute store success score $wicked_expressions_commands#bool$0 reapermc.wicked_expressions if score $test obj.temp matches 123
+execute unless score $wicked_expressions_commands#bool$0 reapermc.wicked_expressions matches 0 run say hello
+execute if score $wicked_expressions_commands#bool$0 reapermc.wicked_expressions matches 0 run function test:main/nested_execute_0
 ```
 
 `@function test:reapermc/wicked_expressions/loader/prio_0`
@@ -60,6 +60,8 @@ scoreboard objectives add reapermc.wicked_expressions dummy
 
 ```mcfunction
 help --- DO_NOT_DELETE ---
+scoreboard players reset $wicked_expressions_commands#bool$1 reapermc.wicked_expressions
+scoreboard players reset $wicked_expressions_commands#bool$0 reapermc.wicked_expressions
 ```
 
 `@function test:reapermc/wicked_expressions/loader/prio_2`
@@ -71,8 +73,8 @@ help --- DO_NOT_DELETE ---
 `@function test:main/nested_execute_0`
 
 ```mcfunction
-execute store success score $binop.wicked_expressions_commands.1 reapermc.wicked_expressions if score $test1 obj.temp = $test2 obj.temp
-execute unless score $binop.wicked_expressions_commands.1 reapermc.wicked_expressions matches 0 run say hello2
+execute store success score $wicked_expressions_commands#bool$1 reapermc.wicked_expressions if score $test1 obj.temp = $test2 obj.temp
+execute unless score $wicked_expressions_commands#bool$1 reapermc.wicked_expressions matches 0 run say hello2
 ```
 
 `@function test:reapermc/wicked_expressions/loader`

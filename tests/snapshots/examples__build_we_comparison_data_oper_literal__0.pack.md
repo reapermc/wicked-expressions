@@ -27,9 +27,9 @@
 data modify storage reapermc:wicked_expressions binop.register.a set from storage demo:foo x
 data modify storage reapermc:wicked_expressions binop.register.b set value 10.0d
 execute store result score $binop.register.c reapermc.wicked_expressions run data modify storage reapermc:wicked_expressions binop.register.a set from storage reapermc:wicked_expressions binop.register.b
-execute store success score $binop.we_comparison_data_oper_literal.0 reapermc.wicked_expressions if score $binop.register.c reapermc.wicked_expressions matches 0
-execute unless score $binop.we_comparison_data_oper_literal.0 reapermc.wicked_expressions matches 0 run say yes :3
-execute if score $binop.we_comparison_data_oper_literal.0 reapermc.wicked_expressions matches 0 run say no :<
+execute store success score $we_comparison_data_oper_literal#bool$0 reapermc.wicked_expressions if score $binop.register.c reapermc.wicked_expressions matches 0
+execute unless score $we_comparison_data_oper_literal#bool$0 reapermc.wicked_expressions matches 0 run say yes :3
+execute if score $we_comparison_data_oper_literal#bool$0 reapermc.wicked_expressions matches 0 run say no :<
 ```
 
 `@function demo:ne`
@@ -38,9 +38,9 @@ execute if score $binop.we_comparison_data_oper_literal.0 reapermc.wicked_expres
 data modify storage reapermc:wicked_expressions binop.register.a set from storage demo:foo x
 data modify storage reapermc:wicked_expressions binop.register.b set value 10
 execute store result score $binop.register.c reapermc.wicked_expressions run data modify storage reapermc:wicked_expressions binop.register.a set from storage reapermc:wicked_expressions binop.register.b
-execute store success score $binop.we_comparison_data_oper_literal.1 reapermc.wicked_expressions unless score $binop.register.c reapermc.wicked_expressions matches 0
-execute unless score $binop.we_comparison_data_oper_literal.1 reapermc.wicked_expressions matches 0 run say yes :3
-execute if score $binop.we_comparison_data_oper_literal.1 reapermc.wicked_expressions matches 0 run say no :<
+execute store success score $we_comparison_data_oper_literal#bool$1 reapermc.wicked_expressions unless score $binop.register.c reapermc.wicked_expressions matches 0
+execute unless score $we_comparison_data_oper_literal#bool$1 reapermc.wicked_expressions matches 0 run say yes :3
+execute if score $we_comparison_data_oper_literal#bool$1 reapermc.wicked_expressions matches 0 run say no :<
 ```
 
 ### we_comparison_data_oper_literal
@@ -57,6 +57,8 @@ scoreboard objectives add foo dummy
 
 ```mcfunction
 help --- DO_NOT_DELETE ---
+scoreboard players reset $we_comparison_data_oper_literal#bool$0 reapermc.wicked_expressions
+scoreboard players reset $we_comparison_data_oper_literal#bool$1 reapermc.wicked_expressions
 ```
 
 `@function we_comparison_data_oper_literal:reapermc/wicked_expressions/loader/prio_2`

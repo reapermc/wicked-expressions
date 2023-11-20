@@ -18,12 +18,12 @@
 `@function demo:main`
 
 ```mcfunction
-execute store success score $binop.we_exists.0 reapermc.wicked_expressions if score $foo foo = $foo foo
-execute unless score $binop.we_exists.0 reapermc.wicked_expressions matches 0 run say foo exists
-execute if score $binop.we_exists.0 reapermc.wicked_expressions matches 0 run say foo is unassigned
-execute store success score $binop.we_exists.1 reapermc.wicked_expressions if data storage bar bar
-execute unless score $binop.we_exists.1 reapermc.wicked_expressions matches 0 run say bar exists
-execute if score $binop.we_exists.1 reapermc.wicked_expressions matches 0 run say bar is unassigned
+execute store success score $we_exists#bool$0 reapermc.wicked_expressions if score $foo foo = $foo foo
+execute unless score $we_exists#bool$0 reapermc.wicked_expressions matches 0 run say foo exists
+execute if score $we_exists#bool$0 reapermc.wicked_expressions matches 0 run say foo is unassigned
+execute store success score $we_exists#bool$1 reapermc.wicked_expressions if data storage bar bar
+execute unless score $we_exists#bool$1 reapermc.wicked_expressions matches 0 run say bar exists
+execute if score $we_exists#bool$1 reapermc.wicked_expressions matches 0 run say bar is unassigned
 ```
 
 ### we_exists
@@ -40,6 +40,8 @@ scoreboard objectives add reapermc.wicked_expressions dummy
 
 ```mcfunction
 help --- DO_NOT_DELETE ---
+scoreboard players reset $we_exists#bool$0 reapermc.wicked_expressions
+scoreboard players reset $we_exists#bool$1 reapermc.wicked_expressions
 ```
 
 `@function we_exists:reapermc/wicked_expressions/loader/prio_2`

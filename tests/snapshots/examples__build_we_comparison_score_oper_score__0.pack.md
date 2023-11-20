@@ -24,49 +24,49 @@
 `@function demo:eq`
 
 ```mcfunction
-execute store success score $binop.we_comparison_score_oper_score.0 reapermc.wicked_expressions if score .x foo = .y foo
-execute unless score $binop.we_comparison_score_oper_score.0 reapermc.wicked_expressions matches 0 run say yes :3
-execute if score $binop.we_comparison_score_oper_score.0 reapermc.wicked_expressions matches 0 run say no :<
+execute store success score $we_comparison_score_oper_score#bool$0 reapermc.wicked_expressions if score .x foo = .y foo
+execute unless score $we_comparison_score_oper_score#bool$0 reapermc.wicked_expressions matches 0 run say yes :3
+execute if score $we_comparison_score_oper_score#bool$0 reapermc.wicked_expressions matches 0 run say no :<
 ```
 
 `@function demo:ne`
 
 ```mcfunction
-execute store success score $binop.we_comparison_score_oper_score.1 reapermc.wicked_expressions unless score .x foo = .y foo
-execute unless score $binop.we_comparison_score_oper_score.1 reapermc.wicked_expressions matches 0 run say yes :3
-execute if score $binop.we_comparison_score_oper_score.1 reapermc.wicked_expressions matches 0 run say no :<
+execute store success score $we_comparison_score_oper_score#bool$1 reapermc.wicked_expressions unless score .x foo = .y foo
+execute unless score $we_comparison_score_oper_score#bool$1 reapermc.wicked_expressions matches 0 run say yes :3
+execute if score $we_comparison_score_oper_score#bool$1 reapermc.wicked_expressions matches 0 run say no :<
 ```
 
 `@function demo:lt`
 
 ```mcfunction
-execute store success score $binop.we_comparison_score_oper_score.2 reapermc.wicked_expressions if score .x foo < .y foo
-execute unless score $binop.we_comparison_score_oper_score.2 reapermc.wicked_expressions matches 0 run say yes :3
-execute if score $binop.we_comparison_score_oper_score.2 reapermc.wicked_expressions matches 0 run say no :<
+execute store success score $we_comparison_score_oper_score#bool$2 reapermc.wicked_expressions if score .x foo < .y foo
+execute unless score $we_comparison_score_oper_score#bool$2 reapermc.wicked_expressions matches 0 run say yes :3
+execute if score $we_comparison_score_oper_score#bool$2 reapermc.wicked_expressions matches 0 run say no :<
 ```
 
 `@function demo:gt`
 
 ```mcfunction
-execute store success score $binop.we_comparison_score_oper_score.3 reapermc.wicked_expressions if score .x foo > .y foo
-execute unless score $binop.we_comparison_score_oper_score.3 reapermc.wicked_expressions matches 0 run say yes :3
-execute if score $binop.we_comparison_score_oper_score.3 reapermc.wicked_expressions matches 0 run say no :<
+execute store success score $we_comparison_score_oper_score#bool$3 reapermc.wicked_expressions if score .x foo > .y foo
+execute unless score $we_comparison_score_oper_score#bool$3 reapermc.wicked_expressions matches 0 run say yes :3
+execute if score $we_comparison_score_oper_score#bool$3 reapermc.wicked_expressions matches 0 run say no :<
 ```
 
 `@function demo:le`
 
 ```mcfunction
-execute store success score $binop.we_comparison_score_oper_score.4 reapermc.wicked_expressions if score .x foo <= .y foo
-execute unless score $binop.we_comparison_score_oper_score.4 reapermc.wicked_expressions matches 0 run say yes :3
-execute if score $binop.we_comparison_score_oper_score.4 reapermc.wicked_expressions matches 0 run say no :<
+execute store success score $we_comparison_score_oper_score#bool$4 reapermc.wicked_expressions if score .x foo <= .y foo
+execute unless score $we_comparison_score_oper_score#bool$4 reapermc.wicked_expressions matches 0 run say yes :3
+execute if score $we_comparison_score_oper_score#bool$4 reapermc.wicked_expressions matches 0 run say no :<
 ```
 
 `@function demo:ge`
 
 ```mcfunction
-execute store success score $binop.we_comparison_score_oper_score.5 reapermc.wicked_expressions if score .x foo >= .y foo
-execute unless score $binop.we_comparison_score_oper_score.5 reapermc.wicked_expressions matches 0 run say yes :3
-execute if score $binop.we_comparison_score_oper_score.5 reapermc.wicked_expressions matches 0 run say no :<
+execute store success score $we_comparison_score_oper_score#bool$5 reapermc.wicked_expressions if score .x foo >= .y foo
+execute unless score $we_comparison_score_oper_score#bool$5 reapermc.wicked_expressions matches 0 run say yes :3
+execute if score $we_comparison_score_oper_score#bool$5 reapermc.wicked_expressions matches 0 run say no :<
 ```
 
 ### we_comparison_score_oper_score
@@ -83,6 +83,12 @@ scoreboard objectives add foo dummy
 
 ```mcfunction
 help --- DO_NOT_DELETE ---
+scoreboard players reset $we_comparison_score_oper_score#bool$0 reapermc.wicked_expressions
+scoreboard players reset $we_comparison_score_oper_score#bool$1 reapermc.wicked_expressions
+scoreboard players reset $we_comparison_score_oper_score#bool$2 reapermc.wicked_expressions
+scoreboard players reset $we_comparison_score_oper_score#bool$3 reapermc.wicked_expressions
+scoreboard players reset $we_comparison_score_oper_score#bool$4 reapermc.wicked_expressions
+scoreboard players reset $we_comparison_score_oper_score#bool$5 reapermc.wicked_expressions
 ```
 
 `@function we_comparison_score_oper_score:reapermc/wicked_expressions/loader/prio_2`

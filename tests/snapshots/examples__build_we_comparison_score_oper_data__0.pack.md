@@ -27,9 +27,9 @@
 data modify storage reapermc:wicked_expressions binop.register.a set from storage demo:foo y
 execute store result score $binop.register.b reapermc.wicked_expressions run data get storage reapermc:wicked_expressions binop.register.a
 execute unless data storage reapermc:wicked_expressions binop.register.a run scoreboard players reset $binop.register.b reapermc.wicked_expressions
-execute store success score $binop.we_comparison_score_oper_data.0 reapermc.wicked_expressions if score .x foo = $binop.register.b reapermc.wicked_expressions
-execute unless score $binop.we_comparison_score_oper_data.0 reapermc.wicked_expressions matches 0 run say yes :3
-execute if score $binop.we_comparison_score_oper_data.0 reapermc.wicked_expressions matches 0 run say no :<
+execute store success score $we_comparison_score_oper_data#bool$0 reapermc.wicked_expressions if score .x foo = $binop.register.b reapermc.wicked_expressions
+execute unless score $we_comparison_score_oper_data#bool$0 reapermc.wicked_expressions matches 0 run say yes :3
+execute if score $we_comparison_score_oper_data#bool$0 reapermc.wicked_expressions matches 0 run say no :<
 ```
 
 ### we_comparison_score_oper_data
@@ -46,6 +46,7 @@ scoreboard objectives add foo dummy
 
 ```mcfunction
 help --- DO_NOT_DELETE ---
+scoreboard players reset $we_comparison_score_oper_data#bool$0 reapermc.wicked_expressions
 ```
 
 `@function we_comparison_score_oper_data:reapermc/wicked_expressions/loader/prio_2`
