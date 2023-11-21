@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v1.3.3 (2023-11-21)
+
+### Fix
+
+* @copy_args decorated funcs don't return anything ([`7e4fc32`](https://github.com/reapermc/wicked-expressions/commit/7e4fc32ecbbb348a8f91156efc9df098bbe405b0))
+
 ## v1.3.2 (2023-11-21)
 
 ### Fix
