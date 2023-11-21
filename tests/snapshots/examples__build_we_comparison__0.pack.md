@@ -18,9 +18,9 @@
 `@function demo:main`
 
 ```mcfunction
-execute store success score $binop.we_comparison.0 reapermc.wicked_expressions if score $bar foo = $bar foo
-execute unless score $binop.we_comparison.0 reapermc.wicked_expressions matches 0 run say 'exists'
-execute if score $binop.we_comparison.0 reapermc.wicked_expressions matches 0 run say 'does not exist'
+execute store success score $we_comparison#bool$0 reapermc.wicked_expressions if score $bar foo = $bar foo
+execute unless score $we_comparison#bool$0 reapermc.wicked_expressions matches 0 run say 'exists'
+execute if score $we_comparison#bool$0 reapermc.wicked_expressions matches 0 run say 'does not exist'
 ```
 
 ### we_comparison
@@ -37,6 +37,7 @@ scoreboard objectives add reapermc.wicked_expressions dummy
 
 ```mcfunction
 help --- DO_NOT_DELETE ---
+scoreboard players reset $we_comparison#bool$0 reapermc.wicked_expressions
 ```
 
 `@function we_comparison:reapermc/wicked_expressions/loader/prio_2`

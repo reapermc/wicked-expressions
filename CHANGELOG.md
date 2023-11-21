@@ -2,6 +2,18 @@
 
 <!--next-version-placeholder-->
 
+## v1.2.1 (2023-11-20)
+
+### Fix
+
+* Merge pull request #36 from reapermc/replace-uniquescoreregister ([`b3bb820`](https://github.com/reapermc/wicked-expressions/commit/b3bb82050279f9707f5d124b15cc4d656278bc74))
+
+## v1.2.0 (2023-11-19)
+
+### Feature
+
+* Add @copy_args ([`b30122b`](https://github.com/reapermc/wicked-expressions/commit/b30122b3d550ae21eaf2c88c89624aaf745d149a))
+
 ## v1.1.0 (2023-11-18)
 
 ### Feature
