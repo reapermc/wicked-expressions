@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## v1.3.0 (2023-11-21)
+
+### Feature
+
+* Rework 'copy_files' feature ([`fba5e75`](https://github.com/reapermc/wicked-expressions/commit/fba5e7555ae96119ddab261d1d41555913cf8560))
+* Rework 'copy_files' feature ([`1e09d87`](https://github.com/reapermc/wicked-expressions/commit/1e09d871d7d34d185dfbb0fd191beff3b69b681f))
+* Rework 'copy_args' feature ([`d734f3f`](https://github.com/reapermc/wicked-expressions/commit/d734f3fe42ef95a1966f363b81d16b2129fa91a6))
+
 ## v1.2.1 (2023-11-20)
 
 ### Fix
