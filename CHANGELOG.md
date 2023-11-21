@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v1.3.1 (2023-11-21)
+
+### Fix
+
+* Comparisons run into function redefinition issues ([`4d7c97f`](https://github.com/reapermc/wicked-expressions/commit/4d7c97fe6ffbe7a6325469370e130b5edf76506e))
+
 ## v1.3.0 (2023-11-21)
 
 ### Feature
