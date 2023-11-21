@@ -45,7 +45,7 @@ execute store result storage example:main value int 1 run scoreboard players get
 help
 execute store success score $wicked_expressions_commands#bool$0 reapermc.wicked_expressions if score $test obj.temp matches 123
 execute unless score $wicked_expressions_commands#bool$0 reapermc.wicked_expressions matches 0 run say hello
-execute if score $wicked_expressions_commands#bool$0 reapermc.wicked_expressions matches 0 run function test:main/nested_execute_0
+execute if score $wicked_expressions_commands#bool$0 reapermc.wicked_expressions matches 0 run function test:main/we_comp_autonest/0f
 ```
 
 `@function test:reapermc/wicked_expressions/loader/prio_0`
@@ -70,7 +70,7 @@ scoreboard players reset $wicked_expressions_commands#bool$0 reapermc.wicked_exp
 help --- DO_NOT_DELETE ---
 ```
 
-`@function test:main/nested_execute_0`
+`@function test:main/we_comp_autonest/0f`
 
 ```mcfunction
 execute store success score $wicked_expressions_commands#bool$1 reapermc.wicked_expressions if score $test1 obj.temp = $test2 obj.temp
