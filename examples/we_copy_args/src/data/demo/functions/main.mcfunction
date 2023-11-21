@@ -23,6 +23,8 @@ def random(
     tellraw @s min
     tellraw @s max
 
+    return "some return value here"
+
 
 
 x = Var(qInt, 0)
@@ -33,5 +35,5 @@ asd = Var(Byte, 8)
 inherit_type_from_arg(x, y, z, asd)
 
 function ./example2:
-    random(x, y)
-    random(x, y)
+    print(random(x, y))
+    print(random(x, y))
