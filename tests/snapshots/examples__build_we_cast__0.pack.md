@@ -18,7 +18,11 @@
 `@function demo:main`
 
 ```mcfunction
+data modify storage reapermc:wicked_expressions data.we_cast.var.byte[0][0]._is_static set value 0b
+data modify storage reapermc:wicked_expressions data.we_cast.var.byte[0][0]._index set value 0b
 data modify storage reapermc:wicked_expressions data.we_cast.var.byte[0][0] set value 10b
+data modify storage reapermc:wicked_expressions data.we_cast.var.float[0][0]._is_static set value 0.0f
+data modify storage reapermc:wicked_expressions data.we_cast.var.float[0][0]._index set value 0.0f
 data modify storage reapermc:wicked_expressions data.we_cast.var.float[0][0] set value 3.14f
 execute store result storage bolt.expr:temp 7o9rjbsscog7r_0 byte 1 run data get storage reapermc:wicked_expressions data.we_cast.var.float[0][0] 1
 execute store result storage bolt.expr:temp 7o9rjbsscog7r_1 byte 1 run data get storage reapermc:wicked_expressions data.we_cast.var.float[0][0] 1

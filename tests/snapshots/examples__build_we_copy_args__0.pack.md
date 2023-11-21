@@ -21,8 +21,12 @@
 scoreboard players set $we_copy_args#qint$0 reapermc.wicked_expressions 0
 scoreboard players set $we_copy_args#qint$1 reapermc.wicked_expressions 100
 scoreboard players set $we_copy_args#qint$2 reapermc.wicked_expressions 42
+data modify storage reapermc:wicked_expressions data.we_copy_args.var.byte[0][0]._is_static set value 0b
+data modify storage reapermc:wicked_expressions data.we_copy_args.var.byte[0][0]._index set value 0b
 data modify storage reapermc:wicked_expressions data.we_copy_args.var.byte[0][0] set value 8b
 scoreboard players operation $we_copy_args#qint$3 reapermc.wicked_expressions = $we_copy_args#qint$0 reapermc.wicked_expressions
+data modify storage reapermc:wicked_expressions data.we_copy_args.var.int[0][0]._is_static set value 0b
+data modify storage reapermc:wicked_expressions data.we_copy_args.var.int[0][0]._index set value 0
 execute store result storage reapermc:wicked_expressions data.we_copy_args.var.int[0][0] int 1 run scoreboard players get $we_copy_args#qint$1 reapermc.wicked_expressions
 scoreboard players operation $we_copy_args#copy_args$0 reapermc.wicked_expressions = $we_copy_args#qint$2 reapermc.wicked_expressions
 data modify storage reapermc:wicked_expressions data.we_copy_args.copy_args.0 set from storage reapermc:wicked_expressions data.we_copy_args.var.byte[0][0]
