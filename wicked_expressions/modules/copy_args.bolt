@@ -197,6 +197,6 @@ def copy_args(f):
         new_args = _modify_args(args, params, func_id)
         new_kwargs = _modify_kwargs(kwargs, params, func_id)
 
-        f(*new_args, **kwargs)
+        return f(*new_args, **kwargs)
 
     return wrapper
