@@ -33,10 +33,10 @@ data modify storage reapermc:wicked_expressions binop.register.b set value 3.3d
 execute store result score $binop.register.c reapermc.wicked_expressions run data modify storage reapermc:wicked_expressions binop.register.a set from storage reapermc:wicked_expressions binop.register.b
 execute store success score $we_comparison_float#bool$1 reapermc.wicked_expressions if score $binop.register.c reapermc.wicked_expressions matches 0
 execute unless score $we_comparison_float#bool$1 reapermc.wicked_expressions matches 0 run tellraw @a "a"
-execute if score $we_comparison_float#bool$1 reapermc.wicked_expressions matches 0 run function demo:main/nested_execute_0
+execute if score $we_comparison_float#bool$1 reapermc.wicked_expressions matches 0 run function demo:main/we_comp_autonest/1f
 ```
 
-`@function demo:main/nested_execute_0`
+`@function demo:main/we_comp_autonest/1f`
 
 ```mcfunction
 data modify storage reapermc:wicked_expressions binop.register.a set from storage reapermc:wicked_expressions data.we_comparison_float.var.double[0][0]

@@ -15,6 +15,8 @@ class VarSource:
     _var_type: str = ''
     _location_index: int = 0
     _static_cache: dict[tuple, int] = {}
+    _is_static: bool = False
+    _index: int = 0
 
     @classmethod
     def _eval_location_index(cls,
@@ -67,6 +69,8 @@ class VarScoreSource(VarSource, ScoreSource):
         full_location = f"${ctx.project_id}#{cls._var_type}${location_index}"
 
         source = cls(full_location, Config.SCOREBOARD_ROOT)
+        source._is_static = is_static
+        source._index = location_index
 
         # initialization
         load(RootLibraryScoreboard())

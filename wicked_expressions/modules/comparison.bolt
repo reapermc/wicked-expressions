@@ -8,22 +8,44 @@ from ./loader import load
 from ./loader_components import RootLibraryScoreboard
 from ./raw_operation import store_expression_value
 from ./var_types import Float, Bool
+from bolt import Runtime
+
+runtime = ctx.inject(Runtime)
 
 ScoreSource = None
 DataSource = None
 VarSource = None
-Var = None
+StaticVar = None
 
-def provide_sources(score_source, data_source, var_source, var):
+def provide_sources(score_source, data_source, var_source, static_var):
     """
     Hacky solution to expose this module to necessary classes while avoiding circular imports.
     """
-    global ScoreSource, DataSource, VarSource, Var
+    global ScoreSource, DataSource, VarSource, StaticVar
 
     ScoreSource = score_source
     DataSource = data_source
     VarSource = var_source
-    Var = var
+    StaticVar = static_var
+
+@contextmanager
+def autonest(outcome_var, out_branch: bool):
+    """
+    Solution for function redefinition issues.
+    """
+    suffix = ['f', 't'][out_branch]
+    loc = f"{outcome_var._index}{suffix}"
+    nest_path = ~/we_comp_autonest/{loc}
+
+    with runtime.scope() as commands:
+        yield True
+    if not commands:
+        return
+    if len(commands) == 1:
+        runtime.commands.append(commands[0])
+    else:
+        execute function nest_path:
+            runtime.commands.extend(commands)
 
 @dataclass
 class ScoreRegister:
@@ -53,6 +75,8 @@ class BinaryOperation:
     outcome: None = None
     inverted: bool = False
 
+    incr_index: ClassVar[int] = 0
+
     def condition(self):
         """Overwrite this method with custom condition."""
 
@@ -69,15 +93,17 @@ class BinaryOperation:
     @contextmanager
     def __branch__(self):
         if not self.outcome:
-            self.outcome = Var(Bool)
+            self.outcome = StaticVar(Bool, _static_level_offset=3)
             self.condition()
 
         if not self.inverted:
             unless score self.outcome.holder self.outcome.obj matches 0:
-                yield True
+                with autonest(self.outcome, True):
+                    yield True
         else:
             if score self.outcome.holder self.outcome.obj matches 0:
-                yield True
+                with autonest(self.outcome, False):
+                    yield True
 
     def __not__(self):
         return self.__class__(left=self.left, right=self.right,
@@ -114,7 +140,7 @@ class DataExists:
     @contextmanager
     def __branch__(self):
         if not self.outcome:
-            self.outcome = Var(Bool)
+            self.outcome = StaticVar(Bool, _static_level_offset=3)
             with self.store_success():
                 if self.expr._type == 'storage':
                     if data storage self.expr._target self.expr._path
@@ -125,10 +151,12 @@ class DataExists:
 
         if not self.inverted:
             unless score self.outcome.holder self.outcome.obj matches 0:
-                yield True
+                with autonest(self.outcome, True):
+                    yield True
         else:
             if score self.outcome.holder self.outcome.obj matches 0:
-                yield True
+                with autonest(self.outcome, False):
+                    yield True
 
     def __not__(self):
         return self.__class__(
@@ -137,29 +165,29 @@ class DataExists:
             inverted=not self.inverted
         )
 
-@dataclass
-class BooleanOperation:
-    left: ExpressionNode
-    outcome: None = None
-    inverted: bool = False
+# @dataclass
+# class BooleanOperation:
+#     left: ExpressionNode
+#     outcome: None = None
+#     inverted: bool = False
 
-    @contextmanager
-    def __branch__(self):
-        # print(f"{self.__class__.__name__} | __branch__ | {self.inverted} | {id(self)}")
-        if not self.outcome:
-            self.outcome = Var(Bool)
-            scoreboard players operation self.outcome.holder self.outcome.obj = self.left.holder self.left.obj
+#     @contextmanager
+#     def __branch__(self):
+#         # print(f"{self.__class__.__name__} | __branch__ | {self.inverted} | {id(self)}")
+#         if not self.outcome:
+#             self.outcome = StaticVar(Bool, _static_level_offset=2)
+#             scoreboard players operation self.outcome.holder self.outcome.obj = self.left.holder self.left.obj
 
-        if not self.inverted:
-            unless score self.outcome.holder self.outcome.obj matches 0:
-                yield True
-        else:
-            if score self.outcome.holder self.outcome.obj matches 0:
-                yield True
+#         if not self.inverted:
+#             unless score self.outcome.holder self.outcome.obj matches 0:
+#                 yield True
+#         else:
+#             if score self.outcome.holder self.outcome.obj matches 0:
+#                 yield True
 
-    def __not__(self):
-        # print(f"{self.__class__.__name__} | __not__    | {self.inverted} | {id(self)}")
-        return self.__class__(left=self.left, outcome=self.outcome, inverted=not self.inverted)
+#     def __not__(self):
+#         # print(f"{self.__class__.__name__} | __not__    | {self.inverted} | {id(self)}")
+#         return self.__class__(left=self.left, outcome=self.outcome, inverted=not self.inverted)
 
 class ScoreEQ(BinaryOperation):
     def condition(self):
