@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v1.3.2 (2023-11-21)
+
+### Fix
+
+* Missing '_index' and '_is_static' in 'VarStorageSource' objects ([`0097b23`](https://github.com/reapermc/wicked-expressions/commit/0097b23e3c6269d5e0bc3695ceac49c2a2ebe4db))
+
 ## v1.3.1 (2023-11-21)
 
 ### Fix
