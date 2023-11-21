@@ -1,111 +1,37 @@
-from wicked_expressions:api import Scoreboard, Data, Var, StaticVar, 
-                                   qInt, Float, Copy, StaticCopy, copy_args
+from wicked_expressions:api import Var, qInt, Byte, ExpressionNode,
+                                   copy_args, Copy, StaticCopy, this,
+                                   ScoreSource, DataSource, qIntSource,
+                                   IntSource, Inherit
 
-def test_normal_args():
-    function demo:normal_args:
-        @copy_args
-        def my_func(x: Copy[qInt],
-                    y: Copy[qInt],
-                    z: Copy[Scoreboard],
-                    xd: Copy[Data],
-                    xda: Copy[Data],
-                ):
-            ...
+@copy_args
+def inherit_type_from_arg(
+    x: Copy[Inherit],
+    y: Copy[IntSource],
+    z: Copy[ScoreSource],
+    asd: Copy[DataSource],
+):    
+    tellraw @s x
+    tellraw @s y
+    tellraw @s z
+    tellraw @s asd
 
-        buzz = Var(qInt, 42)
-        fizz = StaticVar(qInt, 10)
-        bazz = Scoreboard('bazz')['$bazz']
-        fazz = Data.storage('fazz:fazz').fazz
+@copy_args
+def random(
+    min: int | StaticCopy[qIntSource],
+    max: StaticCopy[qIntSource] | int,
+):
+    tellraw @s min
+    tellraw @s max
 
-        raw f"# <func run>"
-        my_func(buzz, fizz, bazz, fazz, fazz)
-        raw f"# <func run>"
-        my_func(buzz, fizz, bazz, fazz, fazz)
 
-def test_static_args():
-    function demo:static_args:
-        @copy_args
-        def my_func(x: StaticCopy[qInt],
-                    y: StaticCopy[qInt],
-                    z: StaticCopy[Scoreboard],
-                    xd: StaticCopy[Data],
-                    xda: StaticCopy[Data],
-                ):
-            ...
 
-        buzz = Var(qInt, 42)
-        fizz = StaticVar(qInt, 10)
-        bazz = Scoreboard('bazz')['$bazz']
-        fazz = Data.storage('fazz:fazz').fazz
+x = Var(qInt, 0)
+y = Var(qInt, 100)
+z = Var(qInt, 42)
+asd = Var(Byte, 8)
 
-        raw f"# <func run>"
-        my_func(buzz, fizz, bazz, fazz, fazz)
-        raw f"# <func run>"
-        my_func(buzz, fizz, bazz, fazz, fazz)
+inherit_type_from_arg(x, y, z, asd)
 
-def test_normal_kwargs():
-    function demo:normal_kwargs:
-        @copy_args
-        def my_func(x: Copy[qInt],
-                    y: Copy[qInt],
-                    z: Copy[Scoreboard],
-                    xd: Copy[Data],
-                    xda: Copy[Data],
-                ):
-            ...
-
-        buzz = Var(qInt, 42)
-        fizz = StaticVar(qInt, 10)
-        bazz = Scoreboard('bazz')['$bazz']
-        fazz = Data.storage('fazz:fazz').fazz
-
-        raw f"# <func run>"
-        my_func(x=buzz,
-                y=fizz,
-                z=bazz,
-                xd=fazz,
-                xda=fazz,
-               )
-        raw f"# <func run>"
-        my_func(x=buzz,
-                y=fizz,
-                z=bazz,
-                xd=fazz,
-                xda=fazz,
-               )
-
-def test_static_kwargs():
-    function demo:static_kwargs:
-        @copy_args
-        def my_func(x: StaticCopy[qInt],
-                    y: StaticCopy[qInt],
-                    z: StaticCopy[Scoreboard],
-                    xd: StaticCopy[Data],
-                    xda: StaticCopy[Data],
-                ):
-            ...
-
-        buzz = Var(qInt, 42)
-        fizz = StaticVar(qInt, 10)
-        bazz = Scoreboard('bazz')['$bazz']
-        fazz = Data.storage('fazz:fazz').fazz
-
-        raw f"# <func run>"
-        my_func(x=buzz,
-                y=fizz,
-                z=bazz,
-                xd=fazz,
-                xda=fazz,
-               )
-        raw f"# <func run>"
-        my_func(x=buzz,
-                y=fizz,
-                z=bazz,
-                xd=fazz,
-                xda=fazz,
-               )
-
-test_normal_args()
-test_static_args()
-test_normal_kwargs()
-test_static_kwargs()
+function ./example2:
+    random(x, y)
+    random(x, y)
