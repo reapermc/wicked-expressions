@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 import inspect
-from typing import get_args, ClassVar
+from typing import get_args, ClassVar, Type
 from types import UnionType
 from bolt_expressions.node import ExpressionNode
 from ./var_sources import VarSource
@@ -9,38 +9,68 @@ from ./var import Var, StaticVar, TYPE_SOURCE_MAP
 from ./sources import ScoreSource, DataSource
 from ./utils import logger, IndexGenerator
 from ./internal_api import Scoreboard, Data
-from ./var_types import Bool, qInt, Byte, Short, Int, Long, Float, Double, String, List,
-                        Compound, ByteArray, IntArray, LongArray
+from ./var_sources import BoolSource, qIntSource, ByteSource,
+                          ShortSource, IntSource, LongSource,
+                          FloatSource, DoubleSource, StringSource,
+                          ListSource, CompoundSource, ByteArraySource,
+                          IntArraySource, LongArraySource
 from ./config import Config
 
 @dataclass
-class BaseCopy:
-    expr: ExpressionNode
+class Inherit:
+    """Used as a type for BaseCopy. Makes the copied arg inherit it's type from the passed arg"""
 
-    VALID_TYPE_HINTS: ClassVar[tuple] = (
-        Scoreboard, Data, Bool,
-        qInt, Byte, Short, Int,
-        Long, Float, Double, String,
-        List, Compound, ByteArray,
-        IntArray, LongArray,
+@dataclass
+class BaseCopy:
+    type: Type[ExpressionNode] | Type[Inherit] | None = None
+
+    VALID_ANNOTATIONS: ClassVar[tuple] = (
+        Inherit,
+        ScoreSource,
+        DataSource,
+        BoolSource,
+        qIntSource,
+        ByteSource,
+        ShortSource,
+        IntSource,
+        LongSource,
+        FloatSource,
+        DoubleSource,
+        StringSource,
+        ListSource,
+        CompoundSource,
+        ByteArraySource,
+        IntArraySource,
+        LongArraySource,
     )
+
     def __class_getitem__(cls, item):
         if not isinstance(item, UnionType):
-            cls._verify_type_hint(item)
+            cls._verify_type_annotation(item)
         else:
-            for type_hint in get_args(item):
-                cls._verify_type_hint(type_hint)
+            for annotation in get_args(item):
+                cls._verify_type_annotation(annotation)
 
-        return cls(expr=item)
+        return cls(type=item)
+
+    def __or__(self, other):
+        return self
+
+    def __ror__(self, other):
+        return self
 
     @classmethod
-    def _verify_type_hint(cls, type_hint):
-        # de-inject 'Scoreboard' and 'Data'
-        if issubclass(type_hint.__class__, (Scoreboard, Data)):
-            type_hint = type_hint.__class__
+    def _verify_type_annotation(cls, annotation):
+        if isinstance(annotation, slice):
+            logger.error("Type annotation can not be empty")
+            exit()
 
-        if not issubclass(type_hint, cls.VALID_TYPE_HINTS):
-            logger.error(f"Invalid type hint '{type_hint.__name__}'")
+        # de-inject 'Scoreboard' and 'Data'
+        if issubclass(annotation.__class__, (Scoreboard, Data)):
+            annotation = annotation.__class__
+
+        if not issubclass(annotation, cls.VALID_ANNOTATIONS):
+            logger.error(f"Invalid type annotation '{annotation.__name__}'")
             exit()
 
 class Copy(BaseCopy):
@@ -64,6 +94,41 @@ def _get_params(f):
 
     return params
 
+def _get_var_type(var: VarSource | Type[VarSource]):
+    if not inspect.isclass(var):
+        source = var.__class__
+    else:
+        source = var
+    
+    for var_type, var_source in TYPE_SOURCE_MAP.items():
+        if issubclass(source, var_source):
+           return var_type
+
+def _generate_var(var_type: TypeAnnotation, is_static: bool, static_cache_key: str):
+    if is_static:
+        return StaticVar(var_type, _custom_cache_key=static_cache_key)
+    return Var(var_type)
+
+def _generate_score(is_static: bool, static_cache_key: str):
+    if is_static:
+        index = ScoreCopyIndex(static_cache_key)
+    else:
+        index = ScoreCopyIndex()
+
+    scoreholder = f"${ctx.project_id}#copy_args${index}"
+    objective = Config.SCOREBOARD_ROOT
+    return ScoreSource(scoreholder, objective)
+    
+def _generate_storage(is_static: bool, static_cache_key: str):
+    if is_static:
+        index = DataCopyIndex(static_cache_key)
+    else:
+        index = DataCopyIndex()
+
+    path = f"data.{ctx.project_id}.copy_args.{index}"
+    target = Config.STORAGE_ROOT
+    return DataSource('storage', target, path)
+
 def _modify_kwargs(kwargs: dict, params: list, func_id: int) -> list:
     # copy, then replace old values with new ones
     new_kwargs = kwargs
@@ -86,47 +151,42 @@ def _modify_args(args: tuple | list, params: list, func_id: int) -> list:
     for n, arg in enumerate(args):
         param = params[n]
 
-        if not isinstance(param.annotation, BaseCopy):
+        if (
+            not isinstance(param.annotation, BaseCopy) and
+            not issubclass(param.annotation, BaseCopy)
+        ):
             new_args.append(arg)
             continue
 
-        is_static = isinstance(param.annotation, StaticCopy)
-        cache_key = f"{func_id}-{param.name}"
+        annotation = param.annotation
+        is_static = isinstance(annotation, StaticCopy)
 
-        # 'VarSource' has to be checked first,
-        # as runtime variables inherit from
-        # both 'ScoreSource' & 'DataSource'
-        if isinstance(arg, VarSource):
-            for var_type, source in TYPE_SOURCE_MAP.items():
-                if not isinstance(arg, source):
-                    continue
+        # catches when 'BaseCopy' is used without the []
+        if inspect.isclass(annotation):
+            # modify 'is_static' again, since 'annotation'
+            # is a class, not an instance if it gets here,
+            # so 'issubclass' is used instead of 'isinstance'
+            is_static = issubclass(annotation, StaticCopy)
+            logger.error(f"'{['Copy', 'StaticCopy'][is_static]}' annotation was used without specifying a type")
+            exit()
 
-                if is_static:
-                    new_args.append(StaticVar(var_type, arg, _custom_cache_key=cache_key))
-                else:
-                    new_args.append(Var(var_type, arg))
-        elif isinstance(arg, ScoreSource):
-            if is_static:
-                location_index = ScoreCopyIndex(cache_key)
-            else:
-                location_index = ScoreCopyIndex()
-            scoreholder = f"${ctx.project_id}#copy_args${location_index}"
-            objective = Config.SCOREBOARD_ROOT
-            source = ScoreSource(scoreholder, objective)
+        static_cache_key = f"{func_id}-{param.name}"
+        should_inherit = issubclass(annotation.type, Inherit)
+        new_expr_source_class = annotation.type
 
-            source = arg
-            new_args.append(source)
-        elif isinstance(arg, DataSource):
-            if is_static:
-                location_index = DataCopyIndex(cache_key)
-            else:
-                location_index = DataCopyIndex()
-            path = f"data.{ctx.project_id}.copy_args.{location_index}"
-            target = Config.STORAGE_ROOT
-            source = DataSource('storage', target, path)
+        if should_inherit:
+            new_expr_source_class = arg.__class__
 
-            source = arg
-            new_args.append(source)
+        if issubclass(new_expr_source_class, VarSource):
+            var_type = _get_var_type(new_expr_source_class)
+            expr = _generate_var(var_type, is_static, static_cache_key)
+        elif issubclass(new_expr_source_class, ScoreSource):
+            expr = _generate_score(is_static, static_cache_key)
+        elif issubclass(new_expr_source_class, DataSource):
+            expr = _generate_storage(is_static, static_cache_key)
+
+        expr.__rebind__(arg)
+        new_args.append(expr)
 
     return new_args
 

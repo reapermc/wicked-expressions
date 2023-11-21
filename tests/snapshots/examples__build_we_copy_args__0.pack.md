@@ -15,86 +15,34 @@
 
 ### demo
 
-`@function(strip_final_newline) demo:main`
+`@function demo:main`
 
 ```mcfunction
-
+scoreboard players set $we_copy_args#qint$0 reapermc.wicked_expressions 0
+scoreboard players set $we_copy_args#qint$1 reapermc.wicked_expressions 100
+scoreboard players set $we_copy_args#qint$2 reapermc.wicked_expressions 42
+data modify storage reapermc:wicked_expressions data.we_copy_args.var.byte[0][0] set value 8b
+scoreboard players operation $we_copy_args#qint$3 reapermc.wicked_expressions = $we_copy_args#qint$0 reapermc.wicked_expressions
+execute store result storage reapermc:wicked_expressions data.we_copy_args.var.int[0][0] int 1 run scoreboard players get $we_copy_args#qint$1 reapermc.wicked_expressions
+scoreboard players operation $we_copy_args#copy_args$0 reapermc.wicked_expressions = $we_copy_args#qint$2 reapermc.wicked_expressions
+data modify storage reapermc:wicked_expressions data.we_copy_args.copy_args.0 set from storage reapermc:wicked_expressions data.we_copy_args.var.byte[0][0]
+tellraw @s {"score": {"name": "$we_copy_args#qint$3", "objective": "reapermc.wicked_expressions"}}
+tellraw @s {"nbt": "data.we_copy_args.var.int[0][0]", "storage": "reapermc:wicked_expressions"}
+tellraw @s {"score": {"name": "$we_copy_args#copy_args$0", "objective": "reapermc.wicked_expressions"}}
+tellraw @s {"nbt": "data.we_copy_args.copy_args.0", "storage": "reapermc:wicked_expressions"}
 ```
 
-`@function demo:normal_args`
+`@function demo:example2`
 
 ```mcfunction
-scoreboard players set $we_copy_args#qint$0 reapermc.wicked_expressions 42
-scoreboard players set $we_copy_args#qint$1 reapermc.wicked_expressions 10
-# <func run>
-scoreboard players operation $we_copy_args#qint$2 reapermc.wicked_expressions = $we_copy_args#qint$0 reapermc.wicked_expressions
-scoreboard players operation $we_copy_args#qint$3 reapermc.wicked_expressions = $we_copy_args#qint$1 reapermc.wicked_expressions
-scoreboard players operation $we_copy_args#copy_args$0 reapermc.wicked_expressions = $bazz bazz
-data modify storage reapermc:wicked_expressions data.we_copy_args.copy_args.0 set from storage fazz:fazz fazz
-data modify storage reapermc:wicked_expressions data.we_copy_args.copy_args.1 set from storage fazz:fazz fazz
-# <func run>
 scoreboard players operation $we_copy_args#qint$4 reapermc.wicked_expressions = $we_copy_args#qint$0 reapermc.wicked_expressions
 scoreboard players operation $we_copy_args#qint$5 reapermc.wicked_expressions = $we_copy_args#qint$1 reapermc.wicked_expressions
-scoreboard players operation $we_copy_args#copy_args$1 reapermc.wicked_expressions = $bazz bazz
-data modify storage reapermc:wicked_expressions data.we_copy_args.copy_args.2 set from storage fazz:fazz fazz
-data modify storage reapermc:wicked_expressions data.we_copy_args.copy_args.3 set from storage fazz:fazz fazz
-```
-
-`@function demo:static_args`
-
-```mcfunction
-scoreboard players set $we_copy_args#qint$6 reapermc.wicked_expressions 42
-scoreboard players set $we_copy_args#qint$7 reapermc.wicked_expressions 10
-# <func run>
-scoreboard players operation $we_copy_args#qint$8 reapermc.wicked_expressions = $we_copy_args#qint$6 reapermc.wicked_expressions
-scoreboard players operation $we_copy_args#qint$9 reapermc.wicked_expressions = $we_copy_args#qint$7 reapermc.wicked_expressions
-scoreboard players operation $we_copy_args#copy_args$2 reapermc.wicked_expressions = $bazz bazz
-data modify storage reapermc:wicked_expressions data.we_copy_args.copy_args.4 set from storage fazz:fazz fazz
-data modify storage reapermc:wicked_expressions data.we_copy_args.copy_args.5 set from storage fazz:fazz fazz
-# <func run>
-scoreboard players operation $we_copy_args#qint$8 reapermc.wicked_expressions = $we_copy_args#qint$6 reapermc.wicked_expressions
-scoreboard players operation $we_copy_args#qint$9 reapermc.wicked_expressions = $we_copy_args#qint$7 reapermc.wicked_expressions
-scoreboard players operation $we_copy_args#copy_args$2 reapermc.wicked_expressions = $bazz bazz
-data modify storage reapermc:wicked_expressions data.we_copy_args.copy_args.4 set from storage fazz:fazz fazz
-data modify storage reapermc:wicked_expressions data.we_copy_args.copy_args.5 set from storage fazz:fazz fazz
-```
-
-`@function demo:normal_kwargs`
-
-```mcfunction
-scoreboard players set $we_copy_args#qint$10 reapermc.wicked_expressions 42
-scoreboard players set $we_copy_args#qint$11 reapermc.wicked_expressions 10
-# <func run>
-scoreboard players operation $we_copy_args#qint$12 reapermc.wicked_expressions = $we_copy_args#qint$10 reapermc.wicked_expressions
-scoreboard players operation $we_copy_args#qint$13 reapermc.wicked_expressions = $we_copy_args#qint$11 reapermc.wicked_expressions
-scoreboard players operation $we_copy_args#copy_args$3 reapermc.wicked_expressions = $bazz bazz
-data modify storage reapermc:wicked_expressions data.we_copy_args.copy_args.6 set from storage fazz:fazz fazz
-data modify storage reapermc:wicked_expressions data.we_copy_args.copy_args.7 set from storage fazz:fazz fazz
-# <func run>
-scoreboard players operation $we_copy_args#qint$14 reapermc.wicked_expressions = $we_copy_args#qint$10 reapermc.wicked_expressions
-scoreboard players operation $we_copy_args#qint$15 reapermc.wicked_expressions = $we_copy_args#qint$11 reapermc.wicked_expressions
-scoreboard players operation $we_copy_args#copy_args$4 reapermc.wicked_expressions = $bazz bazz
-data modify storage reapermc:wicked_expressions data.we_copy_args.copy_args.8 set from storage fazz:fazz fazz
-data modify storage reapermc:wicked_expressions data.we_copy_args.copy_args.9 set from storage fazz:fazz fazz
-```
-
-`@function demo:static_kwargs`
-
-```mcfunction
-scoreboard players set $we_copy_args#qint$16 reapermc.wicked_expressions 42
-scoreboard players set $we_copy_args#qint$17 reapermc.wicked_expressions 10
-# <func run>
-scoreboard players operation $we_copy_args#qint$18 reapermc.wicked_expressions = $we_copy_args#qint$16 reapermc.wicked_expressions
-scoreboard players operation $we_copy_args#qint$19 reapermc.wicked_expressions = $we_copy_args#qint$17 reapermc.wicked_expressions
-scoreboard players operation $we_copy_args#copy_args$5 reapermc.wicked_expressions = $bazz bazz
-data modify storage reapermc:wicked_expressions data.we_copy_args.copy_args.10 set from storage fazz:fazz fazz
-data modify storage reapermc:wicked_expressions data.we_copy_args.copy_args.11 set from storage fazz:fazz fazz
-# <func run>
-scoreboard players operation $we_copy_args#qint$18 reapermc.wicked_expressions = $we_copy_args#qint$16 reapermc.wicked_expressions
-scoreboard players operation $we_copy_args#qint$19 reapermc.wicked_expressions = $we_copy_args#qint$17 reapermc.wicked_expressions
-scoreboard players operation $we_copy_args#copy_args$5 reapermc.wicked_expressions = $bazz bazz
-data modify storage reapermc:wicked_expressions data.we_copy_args.copy_args.10 set from storage fazz:fazz fazz
-data modify storage reapermc:wicked_expressions data.we_copy_args.copy_args.11 set from storage fazz:fazz fazz
+tellraw @s {"score": {"name": "$we_copy_args#qint$4", "objective": "reapermc.wicked_expressions"}}
+tellraw @s {"score": {"name": "$we_copy_args#qint$5", "objective": "reapermc.wicked_expressions"}}
+scoreboard players operation $we_copy_args#qint$4 reapermc.wicked_expressions = $we_copy_args#qint$0 reapermc.wicked_expressions
+scoreboard players operation $we_copy_args#qint$5 reapermc.wicked_expressions = $we_copy_args#qint$1 reapermc.wicked_expressions
+tellraw @s {"score": {"name": "$we_copy_args#qint$4", "objective": "reapermc.wicked_expressions"}}
+tellraw @s {"score": {"name": "$we_copy_args#qint$5", "objective": "reapermc.wicked_expressions"}}
 ```
 
 ### we_copy_args
@@ -104,33 +52,22 @@ data modify storage reapermc:wicked_expressions data.we_copy_args.copy_args.11 s
 ```mcfunction
 help --- DO_NOT_DELETE ---
 scoreboard objectives add reapermc.wicked_expressions dummy
-scoreboard objectives add bazz dummy
 ```
 
 `@function we_copy_args:reapermc/wicked_expressions/loader/prio_1`
 
 ```mcfunction
 help --- DO_NOT_DELETE ---
+scoreboard players reset $we_copy_args#qint$4 reapermc.wicked_expressions
+scoreboard players reset $we_copy_args#qint$5 reapermc.wicked_expressions
 scoreboard players reset $we_copy_args#qint$0 reapermc.wicked_expressions
 scoreboard players reset $we_copy_args#qint$1 reapermc.wicked_expressions
 scoreboard players reset $we_copy_args#qint$2 reapermc.wicked_expressions
+data remove storage reapermc:wicked_expressions data.we_copy_args.var.byte
+data modify storage reapermc:wicked_expressions data.we_copy_args.var.byte append value [0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b, 0b]
 scoreboard players reset $we_copy_args#qint$3 reapermc.wicked_expressions
-scoreboard players reset $we_copy_args#qint$4 reapermc.wicked_expressions
-scoreboard players reset $we_copy_args#qint$5 reapermc.wicked_expressions
-scoreboard players reset $we_copy_args#qint$6 reapermc.wicked_expressions
-scoreboard players reset $we_copy_args#qint$7 reapermc.wicked_expressions
-scoreboard players reset $we_copy_args#qint$8 reapermc.wicked_expressions
-scoreboard players reset $we_copy_args#qint$9 reapermc.wicked_expressions
-scoreboard players reset $we_copy_args#qint$10 reapermc.wicked_expressions
-scoreboard players reset $we_copy_args#qint$11 reapermc.wicked_expressions
-scoreboard players reset $we_copy_args#qint$12 reapermc.wicked_expressions
-scoreboard players reset $we_copy_args#qint$13 reapermc.wicked_expressions
-scoreboard players reset $we_copy_args#qint$14 reapermc.wicked_expressions
-scoreboard players reset $we_copy_args#qint$15 reapermc.wicked_expressions
-scoreboard players reset $we_copy_args#qint$16 reapermc.wicked_expressions
-scoreboard players reset $we_copy_args#qint$17 reapermc.wicked_expressions
-scoreboard players reset $we_copy_args#qint$18 reapermc.wicked_expressions
-scoreboard players reset $we_copy_args#qint$19 reapermc.wicked_expressions
+data remove storage reapermc:wicked_expressions data.we_copy_args.var.int
+data modify storage reapermc:wicked_expressions data.we_copy_args.var.int append value [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ```
 
 `@function we_copy_args:reapermc/wicked_expressions/loader/prio_2`
