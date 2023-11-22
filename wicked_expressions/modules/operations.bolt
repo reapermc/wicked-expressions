@@ -1,0 +1,184 @@
+from dataclasses import dataclass, field
+from contextlib import contextmanager
+from bolt_expressions import ExpressionNode
+from typing import Any, ClassVar
+from ./config import Config
+from ./utils import raw, logger
+from ./loader import load
+from ./loader_components import RootLibraryScoreboard
+from ./raw_operation import store_expression_value
+from ./var_types import Float, Bool
+from bolt import Runtime
+
+runtime = ctx.inject(Runtime)
+
+ScoreSource = None
+DataSource = None
+VarSource = None
+StaticVar = None
+
+def provide_sources(score_source, data_source, var_source, static_var):
+    """
+    Hacky solution to expose this module to necessary classes while avoiding circular imports.
+    """
+    global ScoreSource, DataSource, VarSource, StaticVar
+
+    ScoreSource = score_source
+    DataSource = data_source
+    VarSource = var_source
+    StaticVar = static_var
+
+@contextmanager
+def autonest(outcome_var, out_branch: bool):
+    """
+    Solution for function redefinition issues.
+    """
+    suffix = ['f', 't'][out_branch]
+    loc = f"{outcome_var._index}{suffix}"
+    nest_path = ~/we_comp_autonest/{loc}
+
+    with runtime.scope() as commands:
+        yield True
+    if not commands:
+        return
+    if len(commands) == 1:
+        runtime.commands.append(commands[0])
+    else:
+        execute function nest_path:
+            runtime.commands.extend(commands)
+
+@dataclass
+class ScoreRegister:
+    id: str
+    holder: str = ''
+    obj: str = ''
+
+    def __post_init__(self):
+        self.holder = f"$binop.register.{self.id}"
+        self.obj = Config.SCOREBOARD_ROOT
+
+@dataclass
+class StorageRegister:
+    id: str
+    _path: str = ''
+    _target: str = ''
+    _type: str = 'storage'
+
+    def __post_init__(self):
+        self._path = f"binop.register.{self.id}"
+        self._target = Config.STORAGE_ROOT
+
+@dataclass
+class UnaryOperation:
+    """
+    Operation on a single expression.
+    """
+    expr: ExpressionNode
+    outcome: None = None
+    inverted: bool = False
+
+    def condition(self) -> None:
+        """Overwrite this method with custom condition."""
+        raise NotImplementedError()
+
+    def result(self) -> None:
+        """Overwrite this method with custom result."""
+        raise NotImplementedError()
+
+    @contextmanager
+    def store_success(self):
+        """Only use this inside overwritten 'condition' methods."""
+        if isinstance(self.outcome, DataSource) or isinstance(self.outcome, ScoreSource):
+            with self.outcome.store('success', self.outcome._var_type, 1):
+                yield True
+        else:
+            logger.error(f"Cannot store success of {self} into {self.outcome}")
+            exit()
+
+    @contextmanager
+    def store_result(self, scale: float=1):
+        """Only use this inside overwritten 'condition' methods."""
+        if isinstance(self.outcome, DataSource) or isinstance(self.outcome, ScoreSource):
+            with self.outcome.store('result', self.outcome._var_type, scale):
+                yield True
+        else:
+            logger.error(f"Cannot store result of {self} into {self.outcome}")
+            exit()
+
+    @contextmanager
+    def __branch__(self):
+        if not self.outcome:
+            self.outcome = StaticVar(Bool, _static_level_offset=3)
+            self.condition()
+
+        if not self.inverted:
+            unless score self.outcome.holder self.outcome.obj matches 0:
+                with autonest(self.outcome, True):
+                    yield True
+        else:
+            if score self.outcome.holder self.outcome.obj matches 0:
+                with autonest(self.outcome, False):
+                    yield True
+
+    def __not__(self):
+        return self.__class__(expr=self.expr,
+                              outcome=self.outcome, inverted=not self.inverted)
+
+@dataclass
+class BinaryOperation:
+    left: ExpressionNode
+    right: Any
+    outcome: None = None
+    inverted: bool = False
+
+    incr_index: ClassVar[int] = 0
+
+    def condition(self) -> None:
+        """Overwrite this method with custom condition."""
+        raise NotImplementedError()
+
+    @contextmanager
+    def store_success(self):
+        """Only use this inside overwritten 'condition' methods."""
+        if isinstance(self.outcome, DataSource) or isinstance(self.outcome, ScoreSource):
+            with self.outcome.store('success', self.outcome._var_type, 1):
+                yield True
+        else:
+            logger.error(f"Cannot store success of {self} into {self.outcome}")
+            exit()
+
+    @contextmanager
+    def __branch__(self):
+        if not self.outcome:
+            self.outcome = StaticVar(Bool, _static_level_offset=3)
+            self.condition()
+
+        if not self.inverted:
+            unless score self.outcome.holder self.outcome.obj matches 0:
+                with autonest(self.outcome, True):
+                    yield True
+        else:
+            if score self.outcome.holder self.outcome.obj matches 0:
+                with autonest(self.outcome, False):
+                    yield True
+
+    def __not__(self):
+        return self.__class__(left=self.left, right=self.right,
+                              outcome=self.outcome, inverted=not self.inverted)
+
+    @classmethod
+    def _move_data_to_storage(cls, in_data, out_stge):
+        if in_data._path == '':
+            logger.error(f"Data source for '{in_data._target}' is missing a path")
+
+        raw(f"data modify storage {out_stge._target} {out_stge._path} set from {in_data._type} {in_data._target} {in_data._path}")
+
+    @classmethod
+    def _convert_storage_to_score(cls, in_stge, out_score):
+        # <out_score> = <in_stge>
+        store result score out_score.holder out_score.obj:
+            data get storage in_stge._target in_stge._path
+
+        # if not <in_stge>: <out_score> = None
+        unless data storage in_stge._target in_stge._path:
+            scoreboard players reset out_score.holder out_score.obj
