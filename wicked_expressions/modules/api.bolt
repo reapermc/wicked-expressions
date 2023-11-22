@@ -1,8 +1,10 @@
 from bolt_expressions.node import ExpressionNode
 from bolt_expressions import Expression
 from ./sources import ScoreSource, DataSource
+import ./sources as sources
 from ./var import Var, StaticVar
-from ./comparison import provide_sources
+import ./operations as operations
+import ./comparison as comparison
 from ./copy_args import Copy, StaticCopy, copy_args, Inherit
 import ./internal_api as internal_api
 from ./var_types import Bool, qInt, Byte, Short, Int, Long, Float, Double, String, List,
@@ -17,9 +19,20 @@ Data = ctx.inject(internal_api.Data)
 this = Data.entity('@s')
 
 # big evil monkeypatch
-provide_sources(
+operations.provide_sources(
     score_source=ScoreSource,
     data_source=DataSource,
     var_source=VarSource,
     static_var=StaticVar,
+)
+
+comparison.provide_sources(
+    score_source=ScoreSource,
+    data_source=DataSource,
+    var_source=VarSource,
+    static_var=StaticVar,
+)
+
+sources.provide_sources(
+    var_source=VarSource,
 )

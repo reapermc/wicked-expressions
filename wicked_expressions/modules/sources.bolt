@@ -1,12 +1,22 @@
 import inspect
 import re
 from contextlib import contextmanager
-from dataclasses import dataclass, replace
+from dataclasses import dataclass
 import bolt_expressions.sources as be_sources
 from ./raw_operation import get_expression_value, store_expression_value
 from ./comparison import ScoreEQ, ScoreNE, ScoreLT, ScoreGT, ScoreLE, ScoreGE,
                          DataEQ, DataNE, DataLT, DataGT, DataLE, DataGE, DataExists,
-                         BinaryOperation
+                         BinaryOperation, UnaryOperation
+
+VarSource = None
+
+def provide_sources(var_source):
+    """
+    Hacky solution to expose this module to necessary classes while avoiding circular imports.
+    """
+    global VarSource
+
+    VarSource = var_source
 
 @dataclass
 class ScoreSource(be_sources.ScoreSource):
@@ -50,9 +60,12 @@ class ScoreSource(be_sources.ScoreSource):
         Example: `x = y >= 10`
         Result: `execute store success score $x reapermc.wicked_expressions if score $y reapermc.wicked_expressions matches 10..`
         """
-        if isinstance(other, BinaryOperation):
+        if isinstance(other, BinaryOperation) or (isinstance(other, UnaryOperation) and isinstance(self, VarSource) and self._var_type == 'bool'):
             other.outcome = self
             other.condition()
+        elif isinstance(other, UnaryOperation):
+            other.outcome = self
+            other.result()
         else:
             self._rebind(self, other)
 
@@ -103,6 +116,9 @@ class DataSource(be_sources.DataSource):
         if isinstance(other, BinaryOperation):
             other.outcome = self
             other.condition()
+        elif isinstance(other, UnaryOperation):
+             other.outcome = self
+             other.result()
         else:
             self._rebind(self, other)
 
