@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v1.4.0 (2023-11-22)
+
+### Feature
+
+* Add unary operation ([`11c163c`](https://github.com/reapermc/wicked-expressions/commit/11c163cdd6237d7b2b7dcb6e246e260c5d906ef1))
+
 ## v1.3.3 (2023-11-21)
 
 ### Fix
