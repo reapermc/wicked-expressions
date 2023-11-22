@@ -17,33 +17,41 @@ compare_data = Var(Int)
 # var_bool = Var(String)
 
 function demo:bool:
+    var_bool = compare_data.exists()
     var_bool = compare_data == 42
     var_bool = compare_data != 42
 
 function demo:byte:
+    var_byte = compare_data.exists()
     var_byte = compare_data == 42
     var_byte = compare_data != 42
 
 function demo:short:
+    var_short = compare_data.exists()
     var_short = compare_data == 42
     var_short = compare_data != 42
 
 function demo:qint:
+    var_qint = compare_data.exists()
     var_qint = compare_data == 42
     var_qint = compare_data != 42
 
 function demo:int:
+    var_int = compare_data.exists()
     var_int = compare_data == 42
     var_int = compare_data != 42
 
 function demo:long:
+    var_long = compare_data.exists()
     var_long = compare_data == 42
     var_long = compare_data != 42
 
 function demo:float:
+    var_float = compare_data.exists()
     var_float = compare_data == 42
     var_float = compare_data != 42
 
 function demo:double:
+    var_double = compare_data.exists()
     var_double = compare_data == 42
     var_double = compare_data != 42
