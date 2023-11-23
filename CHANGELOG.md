@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v1.5.0 (2023-11-23)
+
+### Feature
+
+* Rework @copy_args ([`6acefac`](https://github.com/reapermc/wicked-expressions/commit/6acefacacfdf46da103a7d066d51e6b025facd77))
+
 ## v1.4.0 (2023-11-22)
 
 ### Feature
