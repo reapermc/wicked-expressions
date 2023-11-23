@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v1.5.1 (2023-11-23)
+
+### Fix
+
+* Remove unwanted print ([`f5369b0`](https://github.com/reapermc/wicked-expressions/commit/f5369b02852c5a6ca2bf71e35b07088a08d719ef))
+
 ## v1.5.0 (2023-11-23)
 
 ### Feature
