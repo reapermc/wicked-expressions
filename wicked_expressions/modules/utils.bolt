@@ -29,7 +29,6 @@ class IndexGenerator:
         # cached entry exists -> retrieve existing index
         return cached_index
 
-
     @classmethod
     def _next_index(cls) -> int:
         index = cls._index

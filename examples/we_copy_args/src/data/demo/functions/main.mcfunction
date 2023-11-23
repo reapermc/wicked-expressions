@@ -1,39 +1,31 @@
-from wicked_expressions:api import Var, qInt, Byte, ExpressionNode,
-                                   copy_args, Copy, StaticCopy, this,
-                                   ScoreSource, DataSource, qIntSource,
-                                   IntSource, Inherit
+from wicked_expressions:api import copy_args, Var, StaticVar, qInt, ExpressionNode, ExprOnly, Scoreboard, this
 
-@copy_args
-def inherit_type_from_arg(
-    x: Copy[Inherit],
-    y: Copy[IntSource],
-    z: Copy[ScoreSource],
-    asd: Copy[DataSource],
-):    
-    tellraw @s x
-    tellraw @s y
-    tellraw @s z
-    tellraw @s asd
-
-@copy_args
-def random(
-    min: int | StaticCopy[qIntSource],
-    max: StaticCopy[qIntSource] | int,
-):
+@copy_args(min=StaticVar[qInt], max=StaticVar[qInt],)
+def random(min: int | ExpressionNode, max: int | ExpressionNode, a):
     tellraw @s min
     tellraw @s max
+    tellraw @s a
 
-    return "some return value here"
+@copy_args(amount=ExprOnly(StaticVar[qInt]))
+def set_xp_level(amount: int | ExpressionNode):
+    tellraw @s amount
 
+x = Var(qInt, 100)
 
+function ./test:
+    random(0, x, 'a')
 
-x = Var(qInt, 0)
-y = Var(qInt, 100)
-z = Var(qInt, 42)
-asd = Var(Byte, 8)
+function ./test1:
+    random(min=0, max=x, a='a')
 
-inherit_type_from_arg(x, y, z, asd)
+function ./test2:
+    set_xp_level(100)
 
-function ./example2:
-    print(random(x, y))
-    print(random(x, y))
+function ./test3:
+    set_xp_level(x)
+
+function ./test4:
+    set_xp_level(amount=x)
+
+function ./test5:
+    set_xp_level(this.Health)

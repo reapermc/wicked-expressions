@@ -54,7 +54,7 @@ class VarSource:
     def _get_frame_context(offset: int = 0) -> tuple:
         frame = inspect.getouterframes(inspect.currentframe(), 2)[4+offset]
         path = frame.filename[len(str(ctx.directory)):]
-        # print(frame.lineno, path)
+        print(frame.lineno, path)
         return (frame.lineno, path)
 
 class VarScoreSource(VarSource, ScoreSource):

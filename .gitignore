@@ -18,3 +18,5 @@ examples/template
 examples/docs_test
 
 *.bak
+
+design_notes/
