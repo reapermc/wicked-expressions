@@ -25,35 +25,45 @@ TYPE_SOURCE_MAP = {
 }
 
 class Var:
-    def __new__(cls,
-                type_annotation: Type[TypeAnnotation],
-                value: Any | None = None,
-               ) -> VarSource:
+    def __new__(
+        cls,
+        type_annotation: Type[TypeAnnotation],
+        value: Any | None = None,
+    ) -> VarSource:
         source = TYPE_SOURCE_MAP.get(type_annotation)
 
         if not source:
             logger.error(f"'Var' received an unrecognized type annotation of '{type_annotation}'")
             exit()
 
-        return source.create(is_static=False,
-                             value=value,
-                            )
+        return source.create(
+            is_static=False,
+            value=value,
+        )
+
+    def __class_getitem__(cls, var_type):
+        return {class_obj: cls, var_type: var_type}
 
 class StaticVar:
-    def __new__(cls,
-                type_annotation: Type[TypeAnnotation],
-                value: Any | None = None,
-                _static_level_offset: int = 0,
-                _custom_cache_key: Any = None,
-               ) -> VarSource:
+    def __new__(
+        cls,
+        type_annotation: Type[TypeAnnotation],
+        value: Any | None = None,
+        _static_level_offset: int = 0,
+        _custom_cache_key: Any = None,
+    ) -> VarSource:
         source = TYPE_SOURCE_MAP.get(type_annotation)
 
         if not source:
             logger.error(f"'StaticVar' received an unrecognized type annotation of '{type_annotation}'")
             exit()
 
-        return source.create(is_static=True,
-                             value=value,
-                             _static_level_offset=_static_level_offset,
-                             _custom_cache_key=_custom_cache_key,
-                            )
+        return source.create(
+            is_static=True,
+            value=value,
+            _static_level_offset=_static_level_offset,
+            _custom_cache_key=_custom_cache_key,
+        )
+
+    def __class_getitem__(cls, var_type):
+        return {class_obj: cls, var_type: var_type}

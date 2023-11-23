@@ -1,83 +1,21 @@
+from bolt_expressions import ExpressionNode
 from dataclasses import dataclass
 import inspect
-from typing import get_args, ClassVar, Type
-from types import UnionType
-from bolt_expressions.node import ExpressionNode
+from typing import Any
+from ./internal_api import Scoreboard, Data
+from ./var import Var, StaticVar
 from ./var_sources import VarSource
 from ./var_types import TypeAnnotation
-from ./var import Var, StaticVar, TYPE_SOURCE_MAP
-from ./sources import ScoreSource, DataSource
-from ./utils import logger, IndexGenerator
-from ./internal_api import Scoreboard, Data
-from ./var_sources import BoolSource, qIntSource, ByteSource,
-                          ShortSource, IntSource, LongSource,
-                          FloatSource, DoubleSource, StringSource,
-                          ListSource, CompoundSource, ByteArraySource,
-                          IntArraySource, LongArraySource
+from ./utils import IndexGenerator
 from ./config import Config
+from ./sources import ScoreSource, DataSource
 
 @dataclass
-class Inherit:
-    """Used as a type for BaseCopy. Makes the copied arg inherit it's type from the passed arg"""
-
-@dataclass
-class BaseCopy:
-    type: Type[ExpressionNode] | Type[Inherit] | None = None
-
-    VALID_ANNOTATIONS: ClassVar[tuple] = (
-        Inherit,
-        ScoreSource,
-        DataSource,
-        BoolSource,
-        qIntSource,
-        ByteSource,
-        ShortSource,
-        IntSource,
-        LongSource,
-        FloatSource,
-        DoubleSource,
-        StringSource,
-        ListSource,
-        CompoundSource,
-        ByteArraySource,
-        IntArraySource,
-        LongArraySource,
-    )
-
-    def __class_getitem__(cls, item):
-        if not isinstance(item, UnionType):
-            cls._verify_type_annotation(item)
-        else:
-            for annotation in get_args(item):
-                cls._verify_type_annotation(annotation)
-
-        return cls(type=item)
-
-    def __or__(self, other):
-        return self
-
-    def __ror__(self, other):
-        return self
-
-    @classmethod
-    def _verify_type_annotation(cls, annotation):
-        if isinstance(annotation, slice):
-            logger.error("Type annotation can not be empty")
-            exit()
-
-        # de-inject 'Scoreboard' and 'Data'
-        if issubclass(annotation.__class__, (Scoreboard, Data)):
-            annotation = annotation.__class__
-
-        if not issubclass(annotation, cls.VALID_ANNOTATIONS):
-            logger.error(f"Invalid type annotation '{annotation.__name__}'")
-            exit()
-
-class Copy(BaseCopy):
-    ...
-
-class StaticCopy(BaseCopy):
-    ...
+class ExprOnly:
+    """
+    This makes '@copy_args' ignore everything but passed 'ExpressionNode' type args.
+    """
+    item_: dict[ExpressionNode, bool]
 
 class ScoreCopyIndex(IndexGenerator):
     ...
@@ -85,7 +23,7 @@ class ScoreCopyIndex(IndexGenerator):
 class DataCopyIndex(IndexGenerator):
     ...
 
-def _get_params(f):
+def get_params(f) -> list:
     sig = inspect.signature(f)
 
     params = []
@@ -94,109 +32,91 @@ def _get_params(f):
 
     return params
 
-def _get_var_type(var: VarSource | Type[VarSource]):
-    if not inspect.isclass(var):
-        source = var.__class__
-    else:
-        source = var
-    
-    for var_type, var_source in TYPE_SOURCE_MAP.items():
-        if issubclass(source, var_source):
-           return var_type
+def generate_var(
+    class_obj: Var | StaticVar,
+    type: TypeAnnotation,
+    static_cache_key: str
+) -> VarSource:
+    if issubclass(class_obj, StaticVar):
+        return StaticVar(type, _custom_cache_key=static_cache_key)
+    return Var(type)
 
-def _generate_var(var_type: TypeAnnotation, is_static: bool, static_cache_key: str):
-    if is_static:
-        return StaticVar(var_type, _custom_cache_key=static_cache_key)
-    return Var(var_type)
-
-def _generate_score(is_static: bool, static_cache_key: str):
-    if is_static:
-        index = ScoreCopyIndex(static_cache_key)
-    else:
-        index = ScoreCopyIndex()
-
+def generate_score() -> ScoreSource:
+    index = ScoreCopyIndex()
     scoreholder = f"${ctx.project_id}#copy_args${index}"
     objective = Config.SCOREBOARD_ROOT
     return ScoreSource(scoreholder, objective)
-    
-def _generate_storage(is_static: bool, static_cache_key: str):
-    if is_static:
-        index = DataCopyIndex(static_cache_key)
-    else:
-        index = DataCopyIndex()
 
+def generate_storage() -> DataSource:
+    index = DataCopyIndex()
     path = f"data.{ctx.project_id}.copy_args.{index}"
     target = Config.STORAGE_ROOT
     return DataSource('storage', target, path)
 
-def _modify_kwargs(kwargs: dict, params: list, func_id: int) -> list:
-    # copy, then replace old values with new ones
-    new_kwargs = kwargs
-
-    # convert kwargs to args
-    args = []
-    for _, arg in new_kwargs.items():
-        args.append(arg)
-
-    # eval kwargs as args
-    modified_args = (_modify_args(args, params, func_id))
-    
-    # map new args list to old kwargs dict
-    for n, kwarg_name in enumerate(new_kwargs):
-        new_kwargs[kwarg_name] = modified_args[n]
-
-def _modify_args(args: tuple | list, params: list, func_id: int) -> list:
+def modify_args(args: tuple, params: list, options: dict, func_id: int) -> list:
     new_args = []
 
-    for n, arg in enumerate(args):
-        param = params[n]
+    for i, arg in enumerate(args):
+        param = params[i]
+        option = options.get(param.name)
 
-        if (
-            not isinstance(param.annotation, BaseCopy) and
-            not issubclass(param.annotation, BaseCopy)
-        ):
+        if option == None:
             new_args.append(arg)
             continue
 
-        annotation = param.annotation
-        is_static = isinstance(annotation, StaticCopy)
-
-        # catches when 'BaseCopy' is used without the []
-        if inspect.isclass(annotation):
-            # modify 'is_static' again, since 'annotation'
-            # is a class, not an instance if it gets here,
-            # so 'issubclass' is used instead of 'isinstance'
-            is_static = issubclass(annotation, StaticCopy)
-            logger.error(f"'{['Copy', 'StaticCopy'][is_static]}' annotation was used without specifying a type")
-            exit()
-
         static_cache_key = f"{func_id}-{param.name}"
-        should_inherit = issubclass(annotation.type, Inherit)
-        new_expr_source_class = annotation.type
 
-        if should_inherit:
-            new_expr_source_class = arg.__class__
+        is_expr_only = isinstance(option, ExprOnly)
+        if is_expr_only:
+            # catch if arg is not an expression
+            if not isinstance(arg, ExpressionNode):
+                new_args.append(arg)
+                continue
 
-        if issubclass(new_expr_source_class, VarSource):
-            var_type = _get_var_type(new_expr_source_class)
-            expr = _generate_var(var_type, is_static, static_cache_key)
-        elif issubclass(new_expr_source_class, ScoreSource):
-            expr = _generate_score(is_static, static_cache_key)
-        elif issubclass(new_expr_source_class, DataSource):
-            expr = _generate_storage(is_static, static_cache_key)
+            # format 'ExprOnly' options
+            option = option.item_
 
-        expr.__rebind__(arg)
+        # format 'Scoreboard' and 'Data' options
+        if issubclass(option.__class__, (Scoreboard, Data)):
+            option = {class_obj: option.__class__}
+
+        if issubclass(option.class_obj, (Var, StaticVar)):
+            expr = generate_var(option.class_obj, option.var_type, static_cache_key)
+        elif issubclass(option.class_obj, Scoreboard):
+            expr = generate_score()
+        elif issubclass(option.class_obj, Data):
+            expr = generate_storage()
+
+        expr = arg
         new_args.append(expr)
 
     return new_args
 
-def copy_args(f):
-    def wrapper(*args, **kwargs):
-        params = _get_params(f)
-        func_id = id(f)
-        new_args = _modify_args(args, params, func_id)
-        new_kwargs = _modify_kwargs(kwargs, params, func_id)
+def modify_kwargs(kwargs: tuple, params: list, options: dict, func_id: int) -> dict:
+    new_kwargs = kwargs.copy()
 
-        return f(*new_args, **kwargs)
+    # convert kwargs to args
+    args = []
+    for _, kwarg_value in new_kwargs.items():
+        args.append(kwarg_value)
 
-    return wrapper
+    # eval as args
+    modified_args = modify_args(args, params, options, func_id)
+    
+    # map args list to new kwargs dict
+    for i, kwarg_name in enumerate(new_kwargs):
+        new_kwargs[kwarg_name] = modified_args[i]
+
+    return new_kwargs
+
+def copy_args(**options):
+    def decorator(f):
+        def wrapper(*args, **kwargs):
+            params = get_params(f)
+            func_id = id(f)
+            new_args = modify_args(args, params, options, func_id)
+            new_kwargs = modify_kwargs(kwargs, params, options, func_id)
+
+            return f(*new_args, **new_kwargs)
+        return wrapper
+    return decorator
