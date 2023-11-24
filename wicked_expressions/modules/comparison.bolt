@@ -32,7 +32,7 @@ class DataExists(UnaryOperation):
     """
     Checks if data exists.
     """
-    def condition(self):
+    def condition_impl(self):
         with self.store_success():
             if self.expr._type == 'storage':
                 if data storage self.expr._target self.expr._path
@@ -41,7 +41,7 @@ class DataExists(UnaryOperation):
             elif self.expr._type == 'block':
                 if data block self.expr._target self.expr._path
 
-    def result(self):
+    def result_impl(self):
         """
         Since this is a boolean operation, the result is the same as the condition.
         """
