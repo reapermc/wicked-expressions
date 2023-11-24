@@ -76,14 +76,24 @@ class UnaryOperation:
     expr: ExpressionNode
     outcome: None = None
     inverted: bool = False
+    is_boolean_expression: bool = False
 
-    def condition(self) -> None:
+    def condition_impl(self) -> None:
         """Overwrite this method with custom condition."""
         raise NotImplementedError()
 
-    def result(self) -> None:
+    def condition(self) -> None:
+        self.condition_impl()
+
+    def result_impl(self) -> None:
         """Overwrite this method with custom result."""
         raise NotImplementedError()
+
+    def result(self) -> None:
+        if self.is_boolean_expression:
+            self.condition()
+        else:
+            self.result_impl()
 
     @contextmanager
     def store_success(self):
@@ -121,8 +131,11 @@ class UnaryOperation:
                     yield True
 
     def __not__(self):
+        """
+        This operation transforms the expression into a boolean, where the result will be either 0 or 1.
+        """
         return self.__class__(expr=self.expr,
-                              outcome=self.outcome, inverted=not self.inverted)
+                              outcome=self.outcome, inverted=not self.inverted, is_boolean_expression=True)
 
 @dataclass
 class BinaryOperation:

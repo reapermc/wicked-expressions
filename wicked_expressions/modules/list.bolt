@@ -1,0 +1,30 @@
+from ./operations import UnaryOperation
+from ./utils import logger
+
+class Length(UnaryOperation):
+    """
+    Checks if data exists.
+    """
+    def condition_impl(self):
+        self.result()
+
+        with self.store_success():
+            if not self.inverted:
+                unless score self.outcome.holder self.outcome.obj matches 0
+            else:
+                if score self.outcome.holder self.outcome.obj matches 0
+
+    def result_impl(self):
+        """
+        Since this is a boolean operation, the result is the same as the condition.
+        """
+        with self.store_result():
+            if self.expr._type == 'storage':
+                data get storage self.expr._target self.expr._path
+            elif self.expr._type == 'entity':
+                data get entity self.expr._target self.expr._path
+            elif self.expr._type == 'block':
+                data get block self.expr._target self.expr._path
+            else:
+                logger.error(f"Unsupported expression type '{self.expr._type}'. Type must be 'storage', 'entity' or 'block'.")
+                exit()

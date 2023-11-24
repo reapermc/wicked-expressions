@@ -6,4 +6,3 @@ if scb.exists():
     say 'exists'
 else:
     say 'does not exist'
-

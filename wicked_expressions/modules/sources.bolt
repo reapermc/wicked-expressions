@@ -4,9 +4,11 @@ from contextlib import contextmanager
 from dataclasses import dataclass
 import bolt_expressions.sources as be_sources
 from ./raw_operation import get_expression_value, store_expression_value
+from ./list import Length
 from ./comparison import ScoreEQ, ScoreNE, ScoreLT, ScoreGT, ScoreLE, ScoreGE,
                          DataEQ, DataNE, DataLT, DataGT, DataLE, DataGE, DataExists,
                          BinaryOperation, UnaryOperation
+from ./utils import logger
 
 VarSource = None
 
@@ -94,6 +96,13 @@ class DataSource(be_sources.DataSource):
 
     def __ge__(self, other):
         return DataGE(self, other)
+
+    def length(self):
+        if self.get_type() in ['list', 'compound', 'string', 'byte_array', 'int_array', 'long_array']:
+            return Length(self)
+        else:
+            logger.error(f"Length operation not supported for type '{self.get_type()}', expected one of 'list', 'compound', 'string', 'byte_array', 'int_array', 'long_array'.")
+            exit()
 
     def exists(self):
         return DataExists(self)

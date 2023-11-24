@@ -75,7 +75,7 @@ class VarScoreSource(VarSource, ScoreSource):
         # initialization
         load(RootLibraryScoreboard())
         load(ResetScore(
-            player_name=full_location, 
+            player_name=full_location,
             objective=Config.SCOREBOARD_ROOT
         ))
 
@@ -216,11 +216,15 @@ class StringSource(VarStorageSource):
     _var_type: str = 'string'
     _nbt_type: str | None = None
 
+    _default_nbt_type: ClassVar[str] = 'string'
+
     _default_slot_value: ClassVar[Any] = String('')
 
 class ListSource(VarStorageSource):
     _var_type: str = 'list'
     _nbt_type: str | None = None
+
+    _default_nbt_type: ClassVar[str] = 'list'
 
     _default_slot_value: ClassVar[Any] = List()
 
@@ -228,11 +232,15 @@ class CompoundSource(VarStorageSource):
     _var_type: str = 'compound'
     _nbt_type: str | None = None
 
+    _default_nbt_type: ClassVar[str] = 'compound'
+
     _default_slot_value: ClassVar[Any] = Compound()
 
 class ByteArraySource(VarStorageSource):
     _var_type: str = 'byte_array'
     _nbt_type: str | None = None
+
+    _default_nbt_type: ClassVar[str] = 'byte_array'
 
     _default_slot_value: ClassVar[Any] = ByteArray()
 
@@ -240,10 +248,14 @@ class IntArraySource(VarStorageSource):
     _var_type: str = 'int_array'
     _nbt_type: str | None = None
 
+    _default_nbt_type: ClassVar[str] = 'int_array'
+
     _default_slot_value: ClassVar[Any] = IntArray()
 
 class LongArraySource(VarStorageSource):
     _var_type: str = 'long_array'
     _nbt_type: str | None = None
+
+    _default_nbt_type: ClassVar[str] = 'long_array'
 
     _default_slot_value: ClassVar[Any] = LongArray()
