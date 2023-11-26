@@ -24,6 +24,9 @@ operations.provide_sources(
     data_source=DataSource,
     var_source=VarSource,
     static_var=StaticVar,
+    operation_eq = comparison.OperationEQ,
+    operation_lt = comparison.OperationLT,
+    operation_le = comparison.OperationLE,
 )
 
 comparison.provide_sources(
