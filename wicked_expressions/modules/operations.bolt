@@ -7,7 +7,7 @@ from ./utils import raw, logger
 from ./loader import load
 from ./loader_components import RootLibraryScoreboard
 from ./raw_operation import store_expression_value
-from ./var_types import Float, Bool
+from ./var_types import Float, Bool, qInt
 from bolt import Runtime
 
 runtime = ctx.inject(Runtime)
@@ -16,17 +16,23 @@ ScoreSource = None
 DataSource = None
 VarSource = None
 StaticVar = None
+OperationEQ = None
+OperationLT = None
+OperationLE = None
 
-def provide_sources(score_source, data_source, var_source, static_var):
+def provide_sources(score_source, data_source, var_source, static_var, operation_eq, operation_lt, operation_le):
     """
     Hacky solution to expose this module to necessary classes while avoiding circular imports.
     """
-    global ScoreSource, DataSource, VarSource, StaticVar
+    global ScoreSource, DataSource, VarSource, StaticVar, OperationEQ, OperationLT, OperationLE
 
     ScoreSource = score_source
     DataSource = data_source
     VarSource = var_source
     StaticVar = static_var
+    OperationEQ = operation_eq
+    OperationLT = operation_lt
+    OperationLE = operation_le
 
 @contextmanager
 def autonest(outcome_var, out_branch: bool):
@@ -69,11 +75,7 @@ class StorageRegister:
         self._target = Config.STORAGE_ROOT
 
 @dataclass
-class UnaryOperation:
-    """
-    Operation on a single expression.
-    """
-    expr: ExpressionNode
+class Operation:
     outcome: None = None
     inverted: bool = False
 
@@ -88,6 +90,9 @@ class UnaryOperation:
     @contextmanager
     def store_success(self):
         """Only use this inside overwritten 'condition' methods."""
+        if self.outcome is None:
+            self.outcome = StaticVar(Bool, _static_level_offset=3)
+
         if isinstance(self.outcome, DataSource) or isinstance(self.outcome, ScoreSource):
             with self.outcome.store('success', self.outcome._var_type, 1):
                 yield True
@@ -98,12 +103,40 @@ class UnaryOperation:
     @contextmanager
     def store_result(self, scale: float=1):
         """Only use this inside overwritten 'condition' methods."""
+        if self.outcome is None:
+            self.outcome = StaticVar(qInt, _static_level_offset=3)
+
         if isinstance(self.outcome, DataSource) or isinstance(self.outcome, ScoreSource):
             with self.outcome.store('result', self.outcome._var_type, scale):
                 yield True
         else:
             logger.error(f"Cannot store result of {self} into {self.outcome}")
             exit()
+
+@dataclass
+class UnaryOperation(Operation):
+    """
+    Operation on a single expression.
+    """
+    expr: ExpressionNode | None = None
+
+    # def __eq__(self, other):
+    #     return OperationEQ(left=self, right=other)
+
+    # def __ne__(self, other):
+    #     return OperationEQ(left=self, right=other, inverted=True)
+
+    # def __lt__(self, other):
+    #     return OperationLT(left=self, right=other)
+
+    # def __gt__(self, other):
+    #     return OperationGT(left=self, right=other)
+
+    # def __le__(self, other):
+    #     return OperationLE(left=self, right=other)
+
+    # def __ge__(self, other):
+    #     return OperationGE(left=self, right=other)
 
     @contextmanager
     def __branch__(self):
@@ -125,27 +158,30 @@ class UnaryOperation:
                               outcome=self.outcome, inverted=not self.inverted)
 
 @dataclass
-class BinaryOperation:
-    left: ExpressionNode
-    right: Any
-    outcome: None = None
-    inverted: bool = False
+class BinaryOperation(Operation):
+    left: ExpressionNode | None = None
+    right: Any = None
 
-    incr_index: ClassVar[int] = 0
+    def __eq__(self, other):
+        return OperationEQ(left=self, right=other)
 
-    def condition(self) -> None:
-        """Overwrite this method with custom condition."""
-        raise NotImplementedError()
+    def __ne__(self, other):
+        return OperationEQ(left=self, right=other, inverted=True)
 
-    @contextmanager
-    def store_success(self):
-        """Only use this inside overwritten 'condition' methods."""
-        if isinstance(self.outcome, DataSource) or isinstance(self.outcome, ScoreSource):
-            with self.outcome.store('success', self.outcome._var_type, 1):
-                yield True
-        else:
-            logger.error(f"Cannot store success of {self} into {self.outcome}")
-            exit()
+    def __lt__(self, other):
+        return OperationLT(left=self, right=other)
+
+    def __gt__(self, other):
+        return OperationLE(left=self, right=other, inverted=True)
+
+    def __le__(self, other):
+        return OperationLE(left=self, right=other)
+
+    def __ge__(self, other):
+        return OperationLT(left=self, right=other, inverted=True)
+
+    def result(self):
+        self.condition()
 
     @contextmanager
     def __branch__(self):

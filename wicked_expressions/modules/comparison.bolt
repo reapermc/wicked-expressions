@@ -8,7 +8,7 @@ from ./loader import load
 from ./loader_components import RootLibraryScoreboard
 from ./raw_operation import store_expression_value
 from ./var_types import Float, Bool
-from ./operations import autonest, UnaryOperation, BinaryOperation, ScoreRegister, StorageRegister
+from ./operations import autonest, Operation, UnaryOperation, BinaryOperation, ScoreRegister, StorageRegister
 from bolt import Runtime
 
 ScoreSource = None
@@ -26,6 +26,116 @@ def provide_sources(score_source, data_source, var_source, static_var):
     DataSource = data_source
     VarSource = var_source
     StaticVar = static_var
+
+
+@dataclass
+class OperationEQ(BinaryOperation):
+    def condition(self):
+        self.left.result()
+
+        if isinstance(self.right, ScoreSource):
+            with self.store_success():
+                if not self.inverted:
+                    if score var self.left.outcome = var self.right
+                else:
+                    unless score var self.left.outcome = var self.right
+        elif isinstance(self.right, DataSource):
+            reg_a = StorageRegister('a')
+            reg_b = ScoreRegister('b')
+
+            self._move_data_to_storage(self.right, reg_a)
+            self._convert_storage_to_score(reg_a, reg_b)
+
+            with self.store_success():
+                if not self.inverted:
+                    if score var self.left.outcome = reg_b.holder reg_b.obj
+                else:
+                    unless score var self.left.outcome = reg_b.holder reg_b.obj
+        elif isinstance(self.right, Operation):
+            self.right.result()
+            with self.store_success():
+                if not self.inverted:
+                    if score var self.left.outcome = var self.right.outcome
+                else:
+                    unless score var self.left.outcome = var self.right.outcome
+        else:
+            with self.store_success():
+                if not self.inverted:
+                    if score var self.left.outcome matches self.right
+                else:
+                    unless score var self.left.outcome matches self.right
+
+class OperationLT(BinaryOperation):
+    def condition(self):
+        self.left.result()
+
+        if isinstance(self.right, ScoreSource):
+            with self.store_success():
+                if not self.inverted:
+                    if score var self.left < var self.right
+                else:
+                    unless score var self.left < var self.right
+        elif isinstance(self.right, DataSource):
+            reg_a = StorageRegister('a')
+            reg_b = ScoreRegister('b')
+
+            self._move_data_to_storage(self.right, reg_a)
+            self._convert_storage_to_score(reg_a, reg_b)
+
+            with self.store_success():
+                if not self.inverted:
+                    if score var self.left < reg_b.holder reg_b.obj
+                else:
+                    unless score var self.left < reg_b.holder reg_b.obj
+        elif isinstance(self.right, Operation):
+            self.right.result()
+            with self.store_success():
+                if not self.inverted:
+                    if score var self.left.outcome < var self.right.outcome
+                else:
+                    unless score var self.left.outcome < var self.right.outcome
+        else:
+            with self.store_success():
+                if not self.inverted:
+                    unless score var self.left matches (self.right, None)
+                else:
+                    if score var self.left matches (self.right, None)
+
+class OperationLE(BinaryOperation):
+    def condition(self):
+        self.left.result()
+
+        if isinstance(self.right, ScoreSource):
+            with self.store_success():
+                if not self.inverted:
+                    if score var self.left <= var self.right
+                else:
+                    unless score var self.left <= var self.right
+        elif isinstance(self.right, DataSource):
+            reg_a = StorageRegister('a')
+            reg_b = ScoreRegister('b')
+
+            self._move_data_to_storage(self.right, reg_a)
+            self._convert_storage_to_score(reg_a, reg_b)
+
+            with self.store_success():
+                if not self.inverted:
+                    if score var self.left <= reg_b.holder reg_b.obj
+                else:
+                    unless score var self.left <= reg_b.holder reg_b.obj
+        elif isinstance(self.right, Operation):
+            self.right.result()
+            with self.store_success():
+                if not self.inverted:
+                    if score var self.left.outcome <= var self.right.outcome
+                else:
+                    unless score var self.left.outcome <= var self.right.outcome
+        else:
+            with self.store_success():
+                if not self.inverted:
+                    if score var self.left matches (None, self.right)
+                else:
+                    unless score var self.left matches (None, self.right)
 
 @dataclass
 class DataExists(UnaryOperation):
@@ -61,6 +171,12 @@ class ScoreEQ(BinaryOperation):
 
             with self.store_success():
                 if score var self.left = reg_b.holder reg_b.obj
+        elif isinstance(self.right, Operation):
+            if not self.right.outcome:
+                self.right.outcome = StaticVar(Bool, _static_level_offset=3)
+            self.right.result()
+            with self.store_success():
+                if score var self.left = var self.right.outcome
         else:
             with self.store_success():
                 if score var self.left matches self.right
@@ -118,6 +234,7 @@ class ScoreGT(BinaryOperation):
         else:
             with self.store_success():
                 unless score var self.left matches (None, self.right)
+
 
 class ScoreLE(BinaryOperation):
     def condition(self):

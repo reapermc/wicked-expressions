@@ -22,28 +22,28 @@ def provide_sources(var_source):
 class ScoreSource(be_sources.ScoreSource):
     def __eq__(self, other):
         if is_comparison_case():
-            return ScoreEQ(self, other)
+            return ScoreEQ(left=self, right=other)
         return super().__eq__(other)
 
     def __ne__(self, other):
         if is_comparison_case():
-            return ScoreNE(self, other)
+            return ScoreNE(left=self, right=other)
         return super().__ne__(other)
 
     def __lt__(self, other):
-        return ScoreLT(self, other)
+        return ScoreLT(left=self, right=other)
 
     def __gt__(self, other):
-        return ScoreGT(self, other)
+        return ScoreGT(left=self, right=other)
 
     def __le__(self, other):
-        return ScoreLE(self, other)
+        return ScoreLE(left=self, right=other)
 
     def __ge__(self, other):
-        return ScoreGE(self, other)
+        return ScoreGE(left=self, right=other)
 
     def exists(self):
-        return ScoreEQ(self, self)
+        return ScoreEQ(left=self, right=self)
 
     @contextmanager
     def store(self, mode='result', type='int', scale=1):
@@ -75,28 +75,28 @@ class ScoreSource(be_sources.ScoreSource):
 class DataSource(be_sources.DataSource):
     def __eq__(self, other):
         if is_comparison_case():
-            return DataEQ(self, other)
+            return DataEQ(left=self, right=other)
         return super().__eq__(other)
 
     def __ne__(self, other):
         if is_comparison_case():
-            return DataNE(self, other)
+            return DataNE(left=self, right=other)
         return super().__ne__(other)
 
     def __lt__(self, other):
-        return DataLT(self, other)
+        return DataLT(left=self, right=other)
 
     def __gt__(self, other):
-        return DataGT(self, other)
+        return DataGT(left=self, right=other)
 
     def __le__(self, other):
-        return DataLE(self, other)
+        return DataLE(left=self, right=other)
 
     def __ge__(self, other):
-        return DataGE(self, other)
+        return DataGE(left=self, right=other)
 
     def exists(self):
-        return DataExists(self)
+        return DataExists(expr=self)
 
     @contextmanager
     def store(self, mode='result', type='int', scale=1):
