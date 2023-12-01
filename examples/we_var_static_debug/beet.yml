@@ -1,0 +1,15 @@
+output: "dist"
+
+require:
+  - bolt
+  - wicked_expressions
+
+data_pack:
+  load: "src"
+
+pipeline:
+  - mecha
+
+meta:
+  wicked_expressions: 
+    debug_static_var: true

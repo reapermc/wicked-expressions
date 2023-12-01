@@ -1,4 +1,6 @@
-
+beet_config_options = ctx.meta.get('wicked_expressions')
+if beet_config_options == None:
+    beet_config_options = {}
 
 class Config:
     LIBRARY_NAME = 'wicked_expressions'
@@ -7,3 +9,4 @@ class Config:
     SCOREBOARD_ROOT = f"reapermc.{LIBRARY_NAME}"
     STORAGE_ROOT = f"reapermc:{LIBRARY_NAME}"
     TAG_ROOT = f"reapermc.{LIBRARY_NAME}"
+    DEBUG_STATIC_VAR = beet_config_options.get('debug_static_var', False)
