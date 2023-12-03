@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v1.6.2 (2023-12-03)
+
+### Fix
+
+* Unintended assignments during creation of VarStorageSource objects ([`29b4cfa`](https://github.com/reapermc/wicked-expressions/commit/29b4cfa3383561e055a749cc2691e2b8d016e104))
+
 ## v1.6.1 (2023-12-03)
 
 ### Fix
