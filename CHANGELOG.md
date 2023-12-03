@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v1.6.1 (2023-12-03)
+
+### Fix
+
+* Missing Rebindable import in wicked_expressions:api ([`8ed3b7b`](https://github.com/reapermc/wicked-expressions/commit/8ed3b7bea134051a1d1fa504ef2a2219c628cec1))
+
 ## v1.6.0 (2023-12-01)
 
 ### Feature
