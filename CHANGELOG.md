@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v1.6.0 (2023-12-01)
+
+### Feature
+
+* Add bool 'wicked_expressions.debug_static_var' ctx.meta option ([`ec79ac8`](https://github.com/reapermc/wicked-expressions/commit/ec79ac846513341a479f3b39f8e32f855149aa78))
+
 ## v1.5.1 (2023-11-23)
 
 ### Fix
