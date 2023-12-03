@@ -89,7 +89,13 @@ class VarScoreSource(VarSource, ScoreSource):
         return source
 
 class VarStorageSource(VarSource, DataSource):
-    _MEM_BLOCK_SIZE = 32
+    _MEM_BLOCK_SIZE: int = 32
+
+    def __init__(self, *args, **kwargs):
+        # patchy fix, setups default attributes
+        self._is_static = False
+        self._index = 0
+        super().__init__(*args, **kwargs)
 
     @classmethod
     def create(cls,
@@ -103,8 +109,9 @@ class VarStorageSource(VarSource, DataSource):
         minor, major = cls._get_minor_major_index(location_index)
         # print(f"{var_type} | loc: {location_index} | {major}.{minor}")
         source = cls('storage', Config.STORAGE_ROOT)['data'][ctx.project_id]['var'][var_type][major][minor]
-        source._is_static = is_static
-        source._index = location_index
+
+        # source._is_static = is_static
+        # source._index = location_index
 
         # setup 2D memory list
         load(VarStorageSetupMemory(

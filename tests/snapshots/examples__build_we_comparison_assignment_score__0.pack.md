@@ -15,21 +15,10 @@
 
 ### demo
 
-`@function demo:main`
+`@function(strip_final_newline) demo:main`
 
 ```mcfunction
-data modify storage reapermc:wicked_expressions data.we_comparison_assignment_score.var.byte[0][0]._is_static set value 0b
-data modify storage reapermc:wicked_expressions data.we_comparison_assignment_score.var.byte[0][0]._index set value 0b
-data modify storage reapermc:wicked_expressions data.we_comparison_assignment_score.var.short[0][0]._is_static set value 0s
-data modify storage reapermc:wicked_expressions data.we_comparison_assignment_score.var.short[0][0]._index set value 0s
-data modify storage reapermc:wicked_expressions data.we_comparison_assignment_score.var.int[0][0]._is_static set value 0b
-data modify storage reapermc:wicked_expressions data.we_comparison_assignment_score.var.int[0][0]._index set value 0
-data modify storage reapermc:wicked_expressions data.we_comparison_assignment_score.var.long[0][0]._is_static set value 0b
-data modify storage reapermc:wicked_expressions data.we_comparison_assignment_score.var.long[0][0]._index set value 0
-data modify storage reapermc:wicked_expressions data.we_comparison_assignment_score.var.float[0][0]._is_static set value 0.0f
-data modify storage reapermc:wicked_expressions data.we_comparison_assignment_score.var.float[0][0]._index set value 0.0f
-data modify storage reapermc:wicked_expressions data.we_comparison_assignment_score.var.double[0][0]._is_static set value 0.0d
-data modify storage reapermc:wicked_expressions data.we_comparison_assignment_score.var.double[0][0]._index set value 0.0d
+
 ```
 
 `@function demo:bool`
