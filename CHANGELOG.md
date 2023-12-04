@@ -2,6 +2,24 @@
 
 <!--next-version-placeholder-->
 
+## v1.6.2 (2023-12-03)
+
+### Fix
+
+* Unintended assignments during creation of VarStorageSource objects ([`29b4cfa`](https://github.com/reapermc/wicked-expressions/commit/29b4cfa3383561e055a749cc2691e2b8d016e104))
+
+## v1.6.1 (2023-12-03)
+
+### Fix
+
+* Missing Rebindable import in wicked_expressions:api ([`8ed3b7b`](https://github.com/reapermc/wicked-expressions/commit/8ed3b7bea134051a1d1fa504ef2a2219c628cec1))
+
+## v1.6.0 (2023-12-01)
+
+### Feature
+
+* Add bool 'wicked_expressions.debug_static_var' ctx.meta option ([`ec79ac8`](https://github.com/reapermc/wicked-expressions/commit/ec79ac846513341a479f3b39f8e32f855149aa78))
+
 ## v1.5.1 (2023-11-23)
 
 ### Fix

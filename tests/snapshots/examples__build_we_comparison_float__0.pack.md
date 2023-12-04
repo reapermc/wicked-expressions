@@ -18,11 +18,7 @@
 `@function demo:main`
 
 ```mcfunction
-data modify storage reapermc:wicked_expressions data.we_comparison_float.var.float[0][0]._is_static set value 0.0f
-data modify storage reapermc:wicked_expressions data.we_comparison_float.var.float[0][0]._index set value 0.0f
 data modify storage reapermc:wicked_expressions data.we_comparison_float.var.float[0][0] set value 3.14159f
-data modify storage reapermc:wicked_expressions data.we_comparison_float.var.double[0][0]._is_static set value 0.0d
-data modify storage reapermc:wicked_expressions data.we_comparison_float.var.double[0][0]._index set value 0.0d
 data modify storage reapermc:wicked_expressions data.we_comparison_float.var.double[0][0] set value 10.3d
  
 data modify storage reapermc:wicked_expressions binop.register.a set from storage reapermc:wicked_expressions data.we_comparison_float.var.float[0][0]

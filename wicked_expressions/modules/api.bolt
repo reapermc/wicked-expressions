@@ -3,6 +3,7 @@ from bolt_expressions import Expression
 from ./sources import ScoreSource, DataSource
 import ./sources as sources
 from ./var import Var, StaticVar
+from ./rebindable import Rebindable
 import ./operations as operations
 import ./comparison as comparison
 from ./copy_args import copy_args, ExprOnly

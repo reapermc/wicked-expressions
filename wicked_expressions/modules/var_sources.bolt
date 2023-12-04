@@ -54,7 +54,10 @@ class VarSource:
     def _get_frame_context(offset: int = 0) -> tuple:
         frame = inspect.getouterframes(inspect.currentframe(), 2)[4+offset]
         path = frame.filename[len(str(ctx.directory)):]
-        # print(frame.lineno, path)
+        
+        if Config.DEBUG_STATIC_VAR:
+            print(f"frame_lineno: {frame.lineno}\nframe_path: '{path}'\n")
+
         return (frame.lineno, path)
 
 class VarScoreSource(VarSource, ScoreSource):
@@ -86,7 +89,13 @@ class VarScoreSource(VarSource, ScoreSource):
         return source
 
 class VarStorageSource(VarSource, DataSource):
-    _MEM_BLOCK_SIZE = 32
+    _MEM_BLOCK_SIZE: int = 32
+
+    def __init__(self, *args, **kwargs):
+        # patchy fix, setups default attributes
+        self._is_static = False
+        self._index = 0
+        super().__init__(*args, **kwargs)
 
     @classmethod
     def create(cls,
@@ -100,8 +109,9 @@ class VarStorageSource(VarSource, DataSource):
         minor, major = cls._get_minor_major_index(location_index)
         # print(f"{var_type} | loc: {location_index} | {major}.{minor}")
         source = cls('storage', Config.STORAGE_ROOT)['data'][ctx.project_id]['var'][var_type][major][minor]
-        source._is_static = is_static
-        source._index = location_index
+
+        # source._is_static = is_static
+        # source._index = location_index
 
         # setup 2D memory list
         load(VarStorageSetupMemory(
