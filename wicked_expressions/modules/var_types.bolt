@@ -1,5 +1,4 @@
 import nbtlib as nbt
-
 class TypeAnnotation:
     ...
 
@@ -44,3 +43,20 @@ class IntArray(TypeAnnotation, nbt.IntArray):
 
 class LongArray(TypeAnnotation, nbt.LongArray):
     ...
+
+var_types_from_string = {
+    "bool": Bool,
+    "qint": qInt,
+    "byte": Byte,
+    "short": Short,
+    "int": Int,
+    "long": Long,
+    "float": Float,
+    "double": Double,
+    "compound": Compound,
+    "list": List,
+    "string": String,
+    "byte_array": ByteArray,
+    "int_array": IntArray,
+    "long_array": LongArray,
+}
