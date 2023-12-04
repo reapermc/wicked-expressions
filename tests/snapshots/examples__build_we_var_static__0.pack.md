@@ -18,31 +18,17 @@
 `@function demo:main`
 
 ```mcfunction
-data modify storage reapermc:wicked_expressions data.we_var_static.var.int[0][0]._is_static set value 0b
-data modify storage reapermc:wicked_expressions data.we_var_static.var.int[0][0]._index set value 0
 data modify storage reapermc:wicked_expressions data.we_var_static.var.int[0][0] set value 10
-data modify storage reapermc:wicked_expressions data.we_var_static.var.int[0][1]._is_static set value 1b
-data modify storage reapermc:wicked_expressions data.we_var_static.var.int[0][1]._index set value 1
 data modify storage reapermc:wicked_expressions data.we_var_static.var.int[0][1] set value 20
-data modify storage reapermc:wicked_expressions data.we_var_static.var.int[0][2]._is_static set value 0b
-data modify storage reapermc:wicked_expressions data.we_var_static.var.int[0][2]._index set value 2
 data modify storage reapermc:wicked_expressions data.we_var_static.var.int[0][2] set value 10
-data modify storage reapermc:wicked_expressions data.we_var_static.var.int[0][1]._is_static set value 1b
-data modify storage reapermc:wicked_expressions data.we_var_static.var.int[0][1]._index set value 1
 data modify storage reapermc:wicked_expressions data.we_var_static.var.int[0][1] set value 20
 ```
 
 `@function demo:static_path`
 
 ```mcfunction
-data modify storage reapermc:wicked_expressions data.we_var_static.var.int[0][3]._is_static set value 1b
-data modify storage reapermc:wicked_expressions data.we_var_static.var.int[0][3]._index set value 3
 data modify storage reapermc:wicked_expressions data.we_var_static.var.int[0][3] set value 10
-data modify storage reapermc:wicked_expressions data.we_var_static.var.float[0][0]._is_static set value 1.0f
-data modify storage reapermc:wicked_expressions data.we_var_static.var.float[0][0]._index set value 0.0f
 data modify storage reapermc:wicked_expressions data.we_var_static.var.float[0][0] set value 3.14159f
-data modify storage reapermc:wicked_expressions data.we_var_static.var.float[0][1]._is_static set value 1.0f
-data modify storage reapermc:wicked_expressions data.we_var_static.var.float[0][1]._index set value 1.0f
 data modify storage reapermc:wicked_expressions data.we_var_static.var.float[0][1] set value 1.5f
 ```
 

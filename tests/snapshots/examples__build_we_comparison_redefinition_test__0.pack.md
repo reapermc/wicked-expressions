@@ -19,8 +19,6 @@
 
 ```mcfunction
 scoreboard players set $we_comparison_redefinition_test#qint$0 reapermc.wicked_expressions 42
-data modify storage reapermc:wicked_expressions data.we_comparison_redefinition_test.var.byte[0][0]._is_static set value 0b
-data modify storage reapermc:wicked_expressions data.we_comparison_redefinition_test.var.byte[0][0]._index set value 0b
 data modify storage reapermc:wicked_expressions data.we_comparison_redefinition_test.var.byte[0][0] set value 8b
 function demo:static_path
 function demo:static_path
