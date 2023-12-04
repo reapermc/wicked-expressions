@@ -1,5 +1,20 @@
-from ./operations import UnaryOperation
+from ./operations import UnaryOperation, BinaryOperation
 from ./utils import logger
+from ./var_types import List, Int, qInt, var_types_from_string
+
+StaticVar = None
+DataSource = None
+ScoreSource = None
+
+def provide_sources(data_source, score_source, static_var):
+    """
+    Hacky solution to expose this module to necessary classes while avoiding circular imports.
+    """
+    global StaticVar, DataSource, ScoreSource
+
+    DataSource = data_source
+    ScoreSource = score_source
+    StaticVar = static_var
 
 class Length(UnaryOperation):
     """
@@ -28,3 +43,38 @@ class Length(UnaryOperation):
             else:
                 logger.error(f"Unsupported expression type '{self.expr._type}'. Type must be 'storage', 'entity' or 'block'.")
                 exit()
+
+class ListContains(BinaryOperation):
+    """
+    Checks if a value is inside a list or array.
+    Called when using `val in list`.
+    """
+    def condition(self):
+        # Get length of the data.
+        length_op = Length(self.left)
+        length_op.outcome = StaticVar(qInt)
+        length_op.result()
+
+        # Transfer the target data to storage (if needed).
+        # If the target is a literal, we set from the value instead.
+        target_storage = None
+        if isinstance(self.right, DataSource):
+            target_storage = self.right
+        elif isinstance(self.right, ScoreSource):
+            target_storage = StaticVar(Int)
+            target_storage = self.right
+
+        # Get number of differing entries.
+        temp_data = StaticVar(var_types_from_string[self.left._var_type])
+        temp_data = self.left
+        diff_score = StaticVar(qInt)
+        with diff_score.store('result', diff_score._var_type, 1):
+            if target_storage is not None:
+                temp_data[] = target_storage
+            else:
+                temp_data[] = self.right
+
+        # List contains value if there is at least one
+        # element that is not different from the containing value.
+        with self.store_success():
+            unless score var length_op.outcome = var diff_score

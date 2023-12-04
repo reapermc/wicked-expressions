@@ -24,6 +24,8 @@
 `@function demo:bool`
 
 ```mcfunction
+execute store result score $we_comparison_assignment_data#bool$0 reapermc.wicked_expressions run data get storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.list[0][0]
+execute store success score $we_comparison_assignment_data#bool$0 reapermc.wicked_expressions unless score $we_comparison_assignment_data#bool$0 reapermc.wicked_expressions matches 0
 execute store success score $we_comparison_assignment_data#bool$0 reapermc.wicked_expressions if data storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.int[0][1]
 data modify storage reapermc:wicked_expressions binop.register.a set from storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.int[0][1]
 data modify storage reapermc:wicked_expressions binop.register.b set value 42
@@ -38,6 +40,7 @@ execute store success score $we_comparison_assignment_data#bool$0 reapermc.wicke
 `@function demo:byte`
 
 ```mcfunction
+execute store result storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.byte[0][0] byte 1 run data get storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.list[0][0]
 execute store success storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.byte[0][0] byte 1 if data storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.int[0][1]
 data modify storage reapermc:wicked_expressions binop.register.a set from storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.int[0][1]
 data modify storage reapermc:wicked_expressions binop.register.b set value 42
@@ -52,6 +55,7 @@ execute store success storage reapermc:wicked_expressions data.we_comparison_ass
 `@function demo:short`
 
 ```mcfunction
+execute store result storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.short[0][0] short 1 run data get storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.list[0][0]
 execute store success storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.short[0][0] short 1 if data storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.int[0][1]
 data modify storage reapermc:wicked_expressions binop.register.a set from storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.int[0][1]
 data modify storage reapermc:wicked_expressions binop.register.b set value 42
@@ -66,6 +70,7 @@ execute store success storage reapermc:wicked_expressions data.we_comparison_ass
 `@function demo:qint`
 
 ```mcfunction
+execute store result score $we_comparison_assignment_data#qint$0 reapermc.wicked_expressions run data get storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.list[0][0]
 execute store success score $we_comparison_assignment_data#qint$0 reapermc.wicked_expressions if data storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.int[0][1]
 data modify storage reapermc:wicked_expressions binop.register.a set from storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.int[0][1]
 data modify storage reapermc:wicked_expressions binop.register.b set value 42
@@ -80,6 +85,7 @@ execute store success score $we_comparison_assignment_data#qint$0 reapermc.wicke
 `@function demo:int`
 
 ```mcfunction
+execute store result storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.int[0][0] int 1 run data get storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.list[0][0]
 execute store success storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.int[0][0] int 1 if data storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.int[0][1]
 data modify storage reapermc:wicked_expressions binop.register.a set from storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.int[0][1]
 data modify storage reapermc:wicked_expressions binop.register.b set value 42
@@ -94,6 +100,7 @@ execute store success storage reapermc:wicked_expressions data.we_comparison_ass
 `@function demo:long`
 
 ```mcfunction
+execute store result storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.long[0][0] long 1 run data get storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.list[0][0]
 execute store success storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.long[0][0] long 1 if data storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.int[0][1]
 data modify storage reapermc:wicked_expressions binop.register.a set from storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.int[0][1]
 data modify storage reapermc:wicked_expressions binop.register.b set value 42
@@ -108,6 +115,7 @@ execute store success storage reapermc:wicked_expressions data.we_comparison_ass
 `@function demo:float`
 
 ```mcfunction
+execute store result storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.float[0][0] float 1 run data get storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.list[0][0]
 execute store success storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.float[0][0] float 1 if data storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.int[0][1]
 data modify storage reapermc:wicked_expressions binop.register.a set from storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.int[0][1]
 data modify storage reapermc:wicked_expressions binop.register.b set value 42
@@ -122,6 +130,7 @@ execute store success storage reapermc:wicked_expressions data.we_comparison_ass
 `@function demo:double`
 
 ```mcfunction
+execute store result storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.double[0][0] double 1 run data get storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.list[0][0]
 execute store success storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.double[0][0] double 1 if data storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.int[0][1]
 data modify storage reapermc:wicked_expressions binop.register.a set from storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.int[0][1]
 data modify storage reapermc:wicked_expressions binop.register.b set value 42
@@ -160,6 +169,8 @@ data remove storage reapermc:wicked_expressions data.we_comparison_assignment_da
 data modify storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.float append value [0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f]
 data remove storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.double
 data modify storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.double append value [0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d, 0.0d]
+data remove storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.list
+data modify storage reapermc:wicked_expressions data.we_comparison_assignment_data.var.list append value [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []]
 ```
 
 `@function we_comparison_assignment_data:reapermc/wicked_expressions/loader/prio_2`
