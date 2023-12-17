@@ -11,14 +11,16 @@ from ./comparison import ScoreEQ, ScoreNE, ScoreLT, ScoreGT, ScoreLE, ScoreGE,
 from ./utils import logger
 
 VarSource = None
+Iterator = None
 
-def provide_sources(var_source):
+def provide_sources(var_source, iterator):
     """
     Hacky solution to expose this module to necessary classes while avoiding circular imports.
     """
-    global VarSource
+    global VarSource, Iterator
 
     VarSource = var_source
+    Iterator = iterator
 
 @dataclass
 class ScoreSource(be_sources.ScoreSource):
@@ -102,15 +104,22 @@ class DataSource(be_sources.DataSource):
         if self.get_type() in ['list', 'byte_array', 'int_array', 'long_array']:
             return ListContains(left=self, right=other)
         else:
-            logger.error(f"Length operation not supported for type '{self.get_type()}', expected one of 'list', 'byte_array', 'int_array', 'long_array'.")
+            logger.error(f"Operation not supported for type '{self.get_type()}', expected one of 'list', 'byte_array', 'int_array', 'long_array'.")
             exit()
 
-    def length(self):
-        if self.get_type() in ['list', 'compound', 'string', 'byte_array', 'int_array', 'long_array']:
-            return Length(self)
-        else:
-            logger.error(f"Length operation not supported for type '{self.get_type()}', expected one of 'list', 'compound', 'string', 'byte_array', 'int_array', 'long_array'.")
+    def __iter__(self):
+        if self.get_type() not in ['list', 'byte_array', 'int_array', 'long_array']:
+            logger.error(f"Operation not supported for type '{self.get_type()}', expected one of 'list', 'byte_array', 'int_array', 'long_array'.")
             exit()
+
+        return Iterator.iterate_container(self)
+
+    def iterator(self, reversed=False, macro_arguments=None, allow_early_return=True):
+        if self.get_type() not in ['list', 'byte_array', 'int_array', 'long_array']:
+            logger.error(f"Operation not supported for type '{self.get_type()}', expected one of 'list', 'byte_array', 'int_array', 'long_array'.")
+            exit()
+
+        return Iterator(self, reversed, macro_arguments, allow_early_return)
 
     def exists(self):
         return DataExists(self)

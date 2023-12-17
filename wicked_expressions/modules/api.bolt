@@ -8,6 +8,9 @@ import ./operations as operations
 import ./comparison as comparison
 from ./copy_args import copy_args, ExprOnly
 import ./list as list_ops
+from ./list import len
+import ./loop as loop
+from ./loop import loop_break, loop_continue
 import ./internal_api as internal_api
 from ./var_types import Bool, qInt, Byte, Short, Int, Long, Float, Double, String, List,
                         Compound, ByteArray, IntArray, LongArray
@@ -37,6 +40,7 @@ comparison.provide_sources(
 
 sources.provide_sources(
     var_source=VarSource,
+    iterator=loop.Iterator
 )
 
 list_ops.provide_sources(
