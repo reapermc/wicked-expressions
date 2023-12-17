@@ -1,0 +1,198 @@
+from ./config import Config
+from ./utils import raw, logger
+from ./var_types import qInt, var_types_from_string
+from ./sources import ScoreSource, DataSource
+from ./var import Var, StaticVar
+from contextlib import contextmanager
+from bolt import Runtime
+
+runtime = ctx.inject(Runtime)
+
+class Iterator:
+    break_return_value = -2147483648
+    continue_return_value = 2147483647
+
+    loop_id: int = 0
+    num_nested_loops: int = 0
+
+    inner_loop_result  = ScoreSource("$loop.result.inner", Config.SCOREBOARD_ROOT)
+    outer_function_result  = ScoreSource("$loop.result", Config.SCOREBOARD_ROOT)
+
+    outer_function_format = "{root}/loop/{list_name}/outer"
+    inner_function_format = "{root}/loop/{list_name}/inner"
+
+    def __init__(self, target: DataSource, reversed: bool, macro_arguments: None, allow_early_return: bool):
+        self.target = target
+        self.reversed = reversed
+        self.macro_arguments = macro_arguments
+        self.allow_early_return = allow_early_return
+
+    def __iter__(self):
+        return Iterator.iterate_container(self.target, self.reversed, self.macro_arguments, self.allow_early_return)
+
+    @staticmethod
+    @contextmanager
+    def function_with_macros(function_name, macro_arguments):
+        if macro_arguments is not None:
+            if isinstance(macro_arguments, DataSource):
+                if macro_arguments._type == 'storage':
+                    if macro_arguments._path:
+                        execute return run execute function function_name with storage macro_arguments._target macro_arguments._path:
+                            yield True
+                    else:
+                        execute return run execute function function_name with storage macro_arguments._target:
+                            yield True
+                elif macro_arguments._type == 'entity':
+                    if macro_arguments._path:
+                        execute return run execute function function_name with entity macro_arguments._target macro_arguments._path:
+                            yield True
+                    else:
+                        execute return run execute function function_name with entity macro_arguments._target:
+                            yield True
+                elif macro_arguments._type == 'block':
+                    if macro_arguments._path:
+                        execute return run execute function function_name with block macro_arguments._target macro_arguments._path:
+                            yield True
+                    else:
+                        execute return run execute function function_name with block macro_arguments._target:
+                            yield True
+                else:
+                    logger.error("Invalid NBT type for macro arguments.")
+                    exit()
+            else:
+                execute return run execute function function_name macro_arguments:
+                    yield True
+        else:
+            execute return run execute function function_name:
+                yield True
+    @staticmethod
+    @contextmanager
+    def outer_function_condition(outer_function_success: ScoreSource | None, temp_storage_path: DataSource):
+        if outer_function_success is not None:
+            if data var temp_storage_path store success score var outer_function_success store result score var Iterator.outer_function_result:
+                yield True
+        else:
+            if data var temp_storage_path:
+                yield True
+
+    @staticmethod
+    @contextmanager
+    def innner_loop_condition(inner_loop_success: ScoreSource | None):
+        if inner_loop_success is not None:
+            store success score var inner_loop_success store result score var Iterator.inner_loop_result:
+                yield True
+        else:
+            store result score var Iterator.inner_loop_result:
+                yield True
+
+    @staticmethod
+    def iterate_container(target: DataSource, reversed=False, macro_arguments=None, allow_early_return=True):
+        """
+        Iterate over an NBT list at runtime.
+
+        Iteration is done by processing the first or last element (depending on direction of iteration),
+        and then removing this element from the list.
+
+        If a return command is executed inside the loop, it is propagated
+        """
+        # Loop from back if reversed.
+        process_index = 0
+        if reversed:
+            process_index = -1
+
+        # Copy list to storage.
+        temp_storage = StaticVar(var_types_from_string[target.get_type()])
+        temp_storage = target
+
+        # Get function names.
+        outer_function_name = Iterator.outer_function_format.format(root=Config.LOCAL_DIR, list_name=Iterator.loop_id)
+        inner_function_name = Iterator.inner_function_format.format(root=Config.LOCAL_DIR, list_name=Iterator.loop_id)
+
+        # Set success values to -1 so we can distinguish return <value>, return fail and no return.
+        # Needs to be a nonstatic variable so nested loops don't affect their parent loops.
+        outer_function_success = None
+        if allow_early_return:
+            outer_function_success = ScoreSource(f"$loop.success.{Iterator.loop_id}", Config.SCOREBOARD_ROOT)
+            outer_function_success = -1
+
+        inner_loop_success = None
+        if allow_early_return:
+            inner_loop_success = ScoreSource(f"$loop.success.inner.{Iterator.loop_id}", Config.SCOREBOARD_ROOT)
+            inner_loop_success = -1
+
+        # Start iteration if the list is not empty.
+        with Iterator.outer_function_condition(outer_function_success, temp_storage[process_index]):
+            with Iterator.function_with_macros(outer_function_name, macro_arguments):
+                # Get the return value of the inner loop function.
+                with Iterator.innner_loop_condition(inner_loop_success):
+                    with Iterator.function_with_macros(inner_function_name, macro_arguments):
+                        Iterator.loop_id += 1
+                        Iterator.num_nested_loops += 1
+                        yield temp_storage[process_index]
+                        Iterator.num_nested_loops -= 1
+
+                if allow_early_return:
+                    # Propagate inner loop return value.
+                    if score var inner_loop_success matches 1 unless score var Iterator.inner_loop_result matches Iterator.continue_return_value unless score var Iterator.inner_loop_result matches Iterator.break_return_value:
+                        raw(f"return run scoreboard players get {Iterator.inner_loop_result}")
+                    if score var inner_loop_success matches 0:
+                        raw(f"return fail")
+
+                # Remove processed list element.
+                temp_storage[process_index].remove()
+
+                # Recursively call outer loop function unless broken by loop_break.
+                if data var temp_storage[process_index] unless score var Iterator.inner_loop_result matches Iterator.break_return_value:
+                    if macro_arguments is not None:
+                        if isinstance(macro_arguments, DataSource):
+                            if macro_arguments._type == 'storage':
+                                if macro_arguments._path:
+                                    execute return run execute function ~/ with storage macro_arguments._target macro_arguments._path
+                                else:
+                                    execute return run execute function ~/ with storage macro_arguments._target
+                            elif macro_arguments._type == 'entity':
+                                if macro_arguments._path:
+                                    execute return run execute function ~/ with entity macro_arguments._target macro_arguments._path
+                                else:
+                                    execute return run execute function ~/ with entity macro_arguments._target
+                            elif macro_arguments._type == 'block':
+                                if macro_arguments._path:
+                                    execute return run execute function ~/ with block macro_arguments._target macro_arguments._path
+                                else:
+                                    execute return run execute function ~/ with block macro_arguments._target
+                        else:
+                            execute return run execute function ~/ macro_arguments
+                    else:
+                        execute return run execute function ~/
+
+        if allow_early_return:
+            # Propagate outer loop return value.
+            if score var outer_function_success matches 1:
+                raw(f"return run scoreboard players get {Iterator.outer_function_result}")
+            if score var outer_function_success matches 0:
+                raw(f"return fail")
+
+macro loop_continue:
+    """
+    Immediately continue to the next loop iteration.
+    Can't be used inside nested functions!
+    """
+    # TODO: try to get this to work in nested functions
+    # TODO: if working in nested functions, use a score to keep track so we don't reserve return values
+    if Iterator.num_nested_loops > 0:
+        raw(f"return {Iterator.continue_return_value}")
+    else:
+        logger.warn("Continue used outside loop, statement will be ignored.")
+
+macro loop_break:
+    """
+    Immediately break from the loop.
+    Can't be used inside nested functions!
+    """
+    # TODO: try to get this to work in nested functions
+    # TODO: if working in nested functions, use a score to keep track so we don't reserve return values
+    if Iterator.num_nested_loops > 0:
+        raw(f"return {Iterator.break_return_value}")
+    else:
+        logger.warn("Break used outside loop, statement will be ignored.")
+

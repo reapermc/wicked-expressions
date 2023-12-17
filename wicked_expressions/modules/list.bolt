@@ -1,5 +1,5 @@
 from ./operations import UnaryOperation, BinaryOperation
-from ./utils import logger
+from ./utils import logger, raw
 from ./var_types import List, Int, qInt, var_types_from_string
 
 StaticVar = None
@@ -15,6 +15,14 @@ def provide_sources(data_source, score_source, static_var):
     DataSource = data_source
     ScoreSource = score_source
     StaticVar = static_var
+
+len_copy = len
+def len(target):
+    if isinstance(target, DataSource) and target.get_type() in ['list', 'compound', 'string', 'byte_array', 'int_array', 'long_array']:
+        return Length(target)
+    else:
+        # Fall back to default implementation
+        return len_copy(target)
 
 class Length(UnaryOperation):
     """
@@ -65,10 +73,10 @@ class ListContains(BinaryOperation):
             target_storage = self.right
 
         # Get number of differing entries.
-        temp_data = StaticVar(var_types_from_string[self.left._var_type])
+        temp_data = StaticVar(var_types_from_string[self.left.get_type()])
         temp_data = self.left
         diff_score = StaticVar(qInt)
-        with diff_score.store('result', diff_score._var_type, 1):
+        with diff_score.store('result', None, 1):
             if target_storage is not None:
                 temp_data[] = target_storage
             else:
