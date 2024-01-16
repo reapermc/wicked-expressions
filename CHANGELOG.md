@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## v1.6.3 (2024-01-16)
+
+### Fix
+
+* Error in test case for dotted namespace fix ([`4dc3911`](https://github.com/reapermc/wicked-expressions/commit/4dc391111b57baea24022bcddb432cd71b5cf165))
+* Var setup can't process namespaces with dots ([`39afd5f`](https://github.com/reapermc/wicked-expressions/commit/39afd5fb6b427e4fa06240337b349186ac2502a0))
+
 ## v1.6.2 (2023-12-03)
 
 ### Fix
