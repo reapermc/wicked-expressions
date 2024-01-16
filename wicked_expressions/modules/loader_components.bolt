@@ -85,9 +85,9 @@ class VarStorageSetupMemory(LoaderComponent):
         if self.minor != 0:
             return
         
-        nbt_type_path = f"data.{ctx.project_id}.var.{self.var_type}"
+        nbt_type_path = f'data."{ctx.project_id}".var.{self.var_type}'
         mem_block = []
-        
+
         if self.major == 0:
             data remove storage Config.STORAGE_ROOT nbt_type_path
 
