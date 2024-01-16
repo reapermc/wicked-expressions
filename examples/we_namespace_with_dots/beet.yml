@@ -1,5 +1,5 @@
 output: "dist"
-# id: 'my.namespace'
+id: 'my.namespace'
 
 require:
   - bolt
