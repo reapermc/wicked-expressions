@@ -4,6 +4,10 @@
 
 > Extension of bolt-expressions written in Bolt.
 
+> [!WARNING]
+> This library is now mostly reduntant as of [bolt-expressions](https://github.com/rx-modules/bolt-expressions) version [v0.15.0](https://github.com/rx-modules/bolt-expressions/releases/tag/v0.15.0) with the addition of conditional statements built into the base library.<br><br>
+> Other features such as annonymous variables may come as a separate library in the future!<br><br>
+> Thank you for using my library!
 
 ## Introduction
 
