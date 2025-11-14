@@ -2,7 +2,7 @@
 name = "wicked_expressions"
 version = "1.6.3"
 description = "Extension of bolt-expressions written in Bolt."
-authors = ["Yeti <arcticyeti1@gmail.com>"]
+authors = ["Amy Opas <amy.opas@proton.me>"]
 license = "MIT"
 
 homepage = "https://github.com/reapermc/wicked-expressions"
